@@ -1,6 +1,6 @@
 # golang-utils
 [![Go Reference](https://pkg.go.dev/badge/github.com/ibrt/golang-utils.svg)](https://pkg.go.dev/github.com/ibrt/golang-utils)
-![CI](https://github.com/ibrt/golang-utils/actions/workflows/ci.yml/badge.svg)
+[![CI](https://github.com/ibrt/golang-utils/actions/workflows/ci.yml/badge.svg)](https://github.com/ibrt/golang-utils/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/github/ibrt/golang-utils/branch/main/graph/badge.svg?token=96DEYB5CZ9)](https://codecov.io/github/ibrt/golang-utils)
 
 Misc bits &amp; pieces complementing the Go standard library.
