@@ -21,4 +21,3 @@ jobs:
           disable_search: true
           fail_ci_if_error: true
           files: '.build/coverage/coverage.out'
-          
