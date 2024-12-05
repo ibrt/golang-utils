@@ -34,6 +34,11 @@ func (s *UtilsSuite) TestMax(g *WithT) {
 	g.Expect(memz.Max(3, 2)).To(BeNumerically("==", 3))
 }
 
+func (*UtilsSuite) TestTernary(g *WithT) {
+	g.Expect(memz.Ternary(true, 1, 2)).To(BeNumerically("==", 1))
+	g.Expect(memz.Ternary(false, 1, 2)).To(BeNumerically("==", 2))
+}
+
 func (s *UtilsSuite) TestIsAnyNil(g *WithT) {
 	g.Expect(memz.IsAnyNil(nil)).To(BeTrue())
 	g.Expect(memz.IsAnyNil(memz.PtrZeroToNil(""))).To(BeTrue())
@@ -49,5 +54,5 @@ func (s *UtilsSuite) TestPredicateIsZeroValue(g *WithT) {
 }
 
 func (s *UtilsSuite) TestTransformSprintf(g *WithT) {
-	g.Expect(memz.TransformSprintf(1)).To(Equal("1"))
+	g.Expect(memz.TransformSprintfV(1)).To(Equal("1"))
 }
