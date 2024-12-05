@@ -55,4 +55,5 @@ func (s *UtilsSuite) TestPredicateIsZeroValue(g *WithT) {
 
 func (s *UtilsSuite) TestTransformSprintf(g *WithT) {
 	g.Expect(memz.TransformSprintfV(1)).To(Equal("1"))
+	g.Expect(memz.TransformSprintfKV(0, 1)).To(Equal("1"))
 }
