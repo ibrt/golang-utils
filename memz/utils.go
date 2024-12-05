@@ -28,6 +28,14 @@ func Max[T cmp.Ordered](v1 T, vs ...T) T {
 	return v1
 }
 
+// Ternary returns "vT" if "cond" is true, "vF" otherwise.
+func Ternary[V any](cond bool, vT V, vF V) V {
+	if cond {
+		return vT
+	}
+	return vF
+}
+
 // IsAnyNil returns true if the given value is a "nil" of any type.
 // Note that this method uses reflection.
 func IsAnyNil(x any) bool {
@@ -49,7 +57,12 @@ func PredicateIsZeroValue[T comparable](v T) bool {
 	return v == z
 }
 
-// TransformSprintf stringifies values using fmt.Sprintf("%v").
-func TransformSprintf[V any](v V) string {
+// TransformSprintfV stringifies values using fmt.Sprintf("%v").
+func TransformSprintfV[V any](v V) string {
+	return fmt.Sprintf("%v", v)
+}
+
+// TransformSprintfKV stringifies values using fmt.Sprintf("%v").
+func TransformSprintfKV[K any, V any](_ K, v V) string {
 	return fmt.Sprintf("%v", v)
 }

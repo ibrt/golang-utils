@@ -126,7 +126,7 @@ func (s *SlicesSuite) TestBatchSlice(g *WithT) {
 }
 
 func (*SlicesSuite) TestTransformSlice(g *WithT) {
-	g.Expect(memz.TransformSlice(nil, memz.TransformSprintf[int])).To(BeNil())
-	g.Expect(memz.TransformSlice([]int{}, memz.TransformSprintf[int])).To(Equal([]string{}))
-	g.Expect(memz.TransformSlice([]int{1, 2, 3}, memz.TransformSprintf[int])).To(Equal([]string{"1", "2", "3"}))
+	g.Expect(memz.TransformSlice(nil, memz.TransformSprintfV[int])).To(BeNil())
+	g.Expect(memz.TransformSlice([]int{}, memz.TransformSprintfV)).To(Equal([]string{}))
+	g.Expect(memz.TransformSlice([]int{1, 2, 3}, memz.TransformSprintfV)).To(Equal([]string{"1", "2", "3"}))
 }
