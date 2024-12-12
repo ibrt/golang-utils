@@ -111,3 +111,18 @@ func TransformSlice[I any, O any](s []I, f func(i int, v I) O) []O {
 
 	return out
 }
+
+// SliceToStructMap converts a slice to struct map.
+func SliceToStructMap[T comparable](s []T) map[T]struct{} {
+	if s == nil {
+		return nil
+	}
+
+	out := make(map[T]struct{}, len(s))
+
+	for _, v := range s {
+		out[v] = struct{}{}
+	}
+
+	return out
+}

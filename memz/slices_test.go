@@ -133,3 +133,9 @@ func (*SlicesSuite) TestTransformSlice(g *WithT) {
 	g.Expect(memz.TransformSlice([]int{}, f)).To(Equal([]string{}))
 	g.Expect(memz.TransformSlice([]int{1, 2, 3}, f)).To(Equal([]string{"1", "2", "3"}))
 }
+
+func (*SlicesSuite) TestSliceToStructMap(g *WithT) {
+	g.Expect(memz.SliceToStructMap[string](nil)).To(BeNil())
+	g.Expect(memz.SliceToStructMap([]string{})).To(Equal(map[string]struct{}{}))
+	g.Expect(memz.SliceToStructMap([]string{"a", "b"})).To(Equal(map[string]struct{}{"a": {}, "b": {}}))
+}
