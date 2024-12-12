@@ -98,15 +98,15 @@ func BatchSlice[T any](s []T, batchSize int) [][]T {
 }
 
 // TransformSlice returns a new slice built by passing all elements through the given function.
-func TransformSlice[I any, O any](s []I, f func(i I) O) []O {
+func TransformSlice[I any, O any](s []I, f func(i int, v I) O) []O {
 	if s == nil {
 		return nil
 	}
 
 	out := make([]O, 0, cap(s))
 
-	for _, i := range s {
-		out = append(out, f(i))
+	for i, v := range s {
+		out = append(out, f(i, v))
 	}
 
 	return out

@@ -2,7 +2,6 @@ package memz
 
 import (
 	"cmp"
-	"fmt"
 	"reflect"
 )
 
@@ -49,20 +48,4 @@ func IsAnyNil(x any) bool {
 	default:
 		return false
 	}
-}
-
-// PredicateIsZeroValue returns true if v is the zero-value of its type.
-func PredicateIsZeroValue[T comparable](v T) bool {
-	var z T
-	return v == z
-}
-
-// TransformSprintfV stringifies values using fmt.Sprintf("%v").
-func TransformSprintfV[V any](v V) string {
-	return fmt.Sprintf("%v", v)
-}
-
-// TransformSprintfKV stringifies values using fmt.Sprintf("%v").
-func TransformSprintfKV[K any, V any](_ K, v V) string {
-	return fmt.Sprintf("%v", v)
 }
