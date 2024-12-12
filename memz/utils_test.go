@@ -47,13 +47,3 @@ func (s *UtilsSuite) TestIsAnyNil(g *WithT) {
 	g.Expect(memz.IsAnyNil("")).To(BeFalse())
 	g.Expect(memz.IsAnyNil(1)).To(BeFalse())
 }
-
-func (s *UtilsSuite) TestPredicateIsZeroValue(g *WithT) {
-	g.Expect(memz.FilterSlice([]int{0, 1, 2}, memz.PredicateIsZeroValue[int])).To(Equal([]int{0}))
-	g.Expect(memz.FilterSlice([]string{"", "1", "2"}, memz.PredicateIsZeroValue[string])).To(Equal([]string{""}))
-}
-
-func (s *UtilsSuite) TestTransformSprintf(g *WithT) {
-	g.Expect(memz.TransformSprintfV(1)).To(Equal("1"))
-	g.Expect(memz.TransformSprintfKV(0, 1)).To(Equal("1"))
-}

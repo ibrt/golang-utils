@@ -2,6 +2,7 @@ package memz_test
 
 import (
 	"cmp"
+	"fmt"
 	"testing"
 
 	. "github.com/onsi/gomega"
@@ -41,9 +42,11 @@ func (*MapsSuite) TestFilterMap(g *WithT) {
 }
 
 func (s *MapsSuite) TestTransformMapValues(g *WithT) {
-	g.Expect(memz.TransformMapValues[int, int, string](nil, memz.TransformSprintfKV)).To(BeNil())
-	g.Expect(memz.TransformMapValues(map[int]int{}, memz.TransformSprintfKV)).To(Equal(map[int]string{}))
-	g.Expect(memz.TransformMapValues(map[int]int{1: 10, 2: 20}, memz.TransformSprintfKV)).To(Equal(map[int]string{1: "10", 2: "20"}))
+	f := func(_, v int) string { return fmt.Sprintf("%v", v) }
+
+	g.Expect(memz.TransformMapValues[int, int, string](nil, f)).To(BeNil())
+	g.Expect(memz.TransformMapValues(map[int]int{}, f)).To(Equal(map[int]string{}))
+	g.Expect(memz.TransformMapValues(map[int]int{1: 10, 2: 20}, f)).To(Equal(map[int]string{1: "10", 2: "20"}))
 }
 
 func (s *MapsSuite) TestGetSortedMapKeys(g *WithT) {

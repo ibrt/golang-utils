@@ -1,6 +1,7 @@
 package memz_test
 
 import (
+	"fmt"
 	"testing"
 
 	. "github.com/onsi/gomega"
@@ -126,7 +127,15 @@ func (s *SlicesSuite) TestBatchSlice(g *WithT) {
 }
 
 func (*SlicesSuite) TestTransformSlice(g *WithT) {
-	g.Expect(memz.TransformSlice(nil, memz.TransformSprintfV[int])).To(BeNil())
-	g.Expect(memz.TransformSlice([]int{}, memz.TransformSprintfV)).To(Equal([]string{}))
-	g.Expect(memz.TransformSlice([]int{1, 2, 3}, memz.TransformSprintfV)).To(Equal([]string{"1", "2", "3"}))
+	f := func(_, v int) string { return fmt.Sprintf("%v", v) }
+
+	g.Expect(memz.TransformSlice(nil, f)).To(BeNil())
+	g.Expect(memz.TransformSlice([]int{}, f)).To(Equal([]string{}))
+	g.Expect(memz.TransformSlice([]int{1, 2, 3}, f)).To(Equal([]string{"1", "2", "3"}))
+}
+
+func (*SlicesSuite) TestSliceToStructMap(g *WithT) {
+	g.Expect(memz.SliceToStructMap[string](nil)).To(BeNil())
+	g.Expect(memz.SliceToStructMap([]string{})).To(Equal(map[string]struct{}{}))
+	g.Expect(memz.SliceToStructMap([]string{"a", "b"})).To(Equal(map[string]struct{}{"a": {}, "b": {}}))
 }
