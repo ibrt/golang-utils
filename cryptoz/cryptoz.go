@@ -1,3 +1,4 @@
+// Package cryptoz provides various utilities for working with encryption keys and PEM files.
 package cryptoz
 
 import (
@@ -13,7 +14,7 @@ const (
 	publicKeyHeader  = "PUBLIC KEY"
 )
 
-// PEMToRSAPrivateKey tries to find and parse an RSA private key in the given PEM file.
+// PEMToRSAPrivateKey tries to find and parse a [*rsa.PrivateKey] in the given PEM file.
 func PEMToRSAPrivateKey(buf []byte) (*rsa.PrivateKey, error) {
 	for {
 		var block *pem.Block
@@ -38,14 +39,14 @@ func PEMToRSAPrivateKey(buf []byte) (*rsa.PrivateKey, error) {
 	}
 }
 
-// MustPEMToRSAPrivateKey is like PEMToRSAPrivateKey but panics on error.
+// MustPEMToRSAPrivateKey is like [PEMToRSAPrivateKey] but panics on error.
 func MustPEMToRSAPrivateKey(buf []byte) *rsa.PrivateKey {
 	key, err := PEMToRSAPrivateKey(buf)
 	errorz.MaybeMustWrap(err)
 	return key
 }
 
-// PEMToRSAPublicKey tries to find and parse an RSA public key in the given PEM file.
+// PEMToRSAPublicKey tries to find and parse a [*rsa.PublicKey] in the given PEM file.
 func PEMToRSAPublicKey(buf []byte) (*rsa.PublicKey, error) {
 	for {
 		var block *pem.Block
@@ -70,14 +71,14 @@ func PEMToRSAPublicKey(buf []byte) (*rsa.PublicKey, error) {
 	}
 }
 
-// MustPEMToRSAPublicKey is like PEMToRSAPublicKey but panics on error.
+// MustPEMToRSAPublicKey is like [PEMToRSAPublicKey] but panics on error.
 func MustPEMToRSAPublicKey(buf []byte) *rsa.PublicKey {
 	key, err := PEMToRSAPublicKey(buf)
 	errorz.MaybeMustWrap(err)
 	return key
 }
 
-// RSAPrivateKeyToPEM encodes an RSA private key to PEM format.
+// RSAPrivateKeyToPEM encodes a [*rsa.PrivateKey] to PEM format.
 func RSAPrivateKeyToPEM(key *rsa.PrivateKey) []byte {
 	buf, err := x509.MarshalPKCS8PrivateKey(key)
 	errorz.MaybeMustWrap(err) // never triggers because we already checked the key type
@@ -88,7 +89,7 @@ func RSAPrivateKeyToPEM(key *rsa.PrivateKey) []byte {
 	})
 }
 
-// RSAPublicKeyToPEM encodes an RSA public key to PEM format.
+// RSAPublicKeyToPEM encodes a [*rsa.PublicKey] to PEM format.
 func RSAPublicKeyToPEM(key *rsa.PublicKey) []byte {
 	buf, err := x509.MarshalPKIXPublicKey(key)
 	errorz.MaybeMustWrap(err) // never triggers because we already checked the key type
