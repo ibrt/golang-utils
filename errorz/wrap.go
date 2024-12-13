@@ -33,7 +33,7 @@ func Wrap(err error, outerErrs ...error) error {
 	return wErr
 }
 
-// MaybeWrap is like Wrap, but returns nil if called with a nil error.
+// MaybeWrap is like [Wrap], but returns nil if called with a nil error.
 func MaybeWrap(err error, outerErrs ...error) error {
 	if err != nil {
 		return Wrap(err, outerErrs...)
@@ -42,12 +42,12 @@ func MaybeWrap(err error, outerErrs ...error) error {
 	return nil
 }
 
-// MustWrap is like Wrap, but panics with the wrapped error instead of returning it.
+// MustWrap is like [Wrap], but panics with the wrapped error instead of returning it.
 func MustWrap(innerErr error, outerErrs ...error) {
 	panic(Wrap(innerErr, outerErrs...))
 }
 
-// MaybeMustWrap is like MustWrap, but does nothing if called with a nil error.
+// MaybeMustWrap is like [MustWrap], but does nothing if called with a nil error.
 func MaybeMustWrap(err error, outerErrs ...error) {
 	if err != nil {
 		MustWrap(err, outerErrs...)
@@ -70,7 +70,7 @@ func WrapRecover(r any, outerErrs ...error) error {
 	return Wrap(err, outerErrs...)
 }
 
-// MaybeWrapRecover is like WrapRecover but returns nil if called with a nil value.
+// MaybeWrapRecover is like [WrapRecover] but returns nil if called with a nil value.
 func MaybeWrapRecover(r any, outerErrs ...error) error {
 	if !isNil(r) {
 		return WrapRecover(r, outerErrs...)
@@ -79,7 +79,7 @@ func MaybeWrapRecover(r any, outerErrs ...error) error {
 	return nil
 }
 
-// As provides a more handy implementation of "errors.As" using generics.
+// As provides a more handy implementation of [errors.As] using generics.
 func As[T any](err error) (T, bool) {
 	var t T
 	return t, errors.As(err, &t)

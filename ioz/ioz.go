@@ -1,3 +1,4 @@
+// Package ioz provides various utilities for working with input/output.
 package ioz
 
 import (
@@ -11,13 +12,13 @@ var (
 	_ io.Reader = (*CountingReader)(nil)
 )
 
-// CountingReader implements a io.Reader that counts bytes.
+// CountingReader implements a [io.Reader] that counts bytes.
 type CountingReader struct {
 	r       io.Reader
 	counter *atomic.Int64
 }
 
-// NewCountingReader initializes a new CountingReader.
+// NewCountingReader initializes a new [*CountingReader].
 func NewCountingReader(r io.Reader) *CountingReader {
 	return &CountingReader{
 		r:       r,
@@ -25,7 +26,7 @@ func NewCountingReader(r io.Reader) *CountingReader {
 	}
 }
 
-// Read implements the io.Reader interface.
+// Read implements the [io.Reader] interface.
 func (c *CountingReader) Read(p []byte) (int, error) {
 	n, err := c.r.Read(p)
 	c.counter.Add(int64(n))
@@ -37,14 +38,14 @@ func (c *CountingReader) Count() int64 {
 	return c.counter.Load()
 }
 
-// MustReadAll is like io.ReadAll, but panics on error.
+// MustReadAll is like [io.ReadAll], but panics on error.
 func MustReadAll(r io.Reader) []byte {
 	buf, err := io.ReadAll(r)
 	errorz.MaybeMustWrap(err)
 	return buf
 }
 
-// MustReadAllString is like MustReadAll, but returns a string.
+// MustReadAllString is like [MustReadAll], but returns a string.
 func MustReadAllString(r io.Reader) string {
 	return string(MustReadAll(r))
 }

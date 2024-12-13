@@ -24,7 +24,7 @@ type OutputSetupFunc func(outW *os.File, errW *os.File) OutputRestoreFunc
 // OutputRestoreFunc describe a function that restores some real streams after capturing.
 type OutputRestoreFunc func()
 
-// OutputSetupStandard is a OutputSetupFunc that configures the stdout/stderr streams.
+// OutputSetupStandard is a [OutputSetupFunc] that configures the stdout/stderr streams.
 func OutputSetupStandard(outW *os.File, errW *os.File) OutputRestoreFunc {
 	origOut := os.Stdout
 	origErr := os.Stderr
@@ -38,7 +38,7 @@ func OutputSetupStandard(outW *os.File, errW *os.File) OutputRestoreFunc {
 	}
 }
 
-// GetOutputSetupFatihColor returns a OutputSetupFunc that configures the color streams (from "github.com/fatih/color").
+// GetOutputSetupFatihColor returns a [OutputSetupFunc] that configures the color streams (from "github.com/fatih/color").
 func GetOutputSetupFatihColor(noColor bool) OutputSetupFunc {
 	return func(outW *os.File, errW *os.File) OutputRestoreFunc {
 		origNoColor := color.NoColor
@@ -57,7 +57,7 @@ func GetOutputSetupFatihColor(noColor bool) OutputSetupFunc {
 	}
 }
 
-// OutputSetupRodaineTable is a OutputSetupFunc that configures the table streams (from "github.com/rodaine/table").
+// OutputSetupRodaineTable is a [OutputSetupFunc] that configures the table streams (from "github.com/rodaine/table").
 func OutputSetupRodaineTable(outW *os.File, _ *os.File) OutputRestoreFunc {
 	origOut := table.DefaultWriter
 	table.DefaultWriter = outW
@@ -100,7 +100,7 @@ func MustEndOutputCapture() (string, string) {
 }
 
 // ResetOutputCapture ensures the output capture is cleared and reset (e.g. after a panic, error or test assertion
-// that prevents EndOutputCapture from being called). Always defer ResetOutputCapture() before using output captures.
+// that prevents [MustEndOutputCapture] from being called). Always defer [ResetOutputCapture] before using output captures.
 func ResetOutputCapture() {
 	m.Lock()
 	defer m.Unlock()

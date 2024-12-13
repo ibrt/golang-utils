@@ -1,3 +1,4 @@
+// Package filez provides various utilities for working with paths, files, and directories.
 package filez
 
 import (
@@ -10,41 +11,41 @@ import (
 	"github.com/ibrt/golang-utils/errorz"
 )
 
-// MustAbs is like filepath.Abs, but panics on error.
+// MustAbs is like [filepath.Abs], but panics on error.
 func MustAbs(path string) string {
 	path, err := filepath.Abs(path)
 	errorz.MaybeMustWrap(err)
 	return path
 }
 
-// MustRel is like filepath.Rel but panics on error.
+// MustRel is like [filepath.Rel] but panics on error.
 func MustRel(src, dst string) string {
 	path, err := filepath.Rel(MustAbs(src), MustAbs(dst))
 	errorz.MaybeMustWrap(err)
 	return path
 }
 
-// MustGetwd is like os.Getwd, but panics on error.
+// MustGetwd is like [os.Getwd], but panics on error.
 func MustGetwd() string {
 	wd, err := os.Getwd()
 	errorz.MaybeMustWrap(err)
 	return wd
 }
 
-// MustChdir is like os.Chdir, but panics on error.
+// MustChdir is like [os.Chdir], but panics on error.
 func MustChdir(wd string) string {
 	errorz.MaybeMustWrap(os.Chdir(wd))
 	return wd
 }
 
-// MustUserHomeDir is like os.UserHomeDir, but panics on error.
+// MustUserHomeDir is like [os.UserHomeDir], but panics on error.
 func MustUserHomeDir() string {
 	dirPath, err := os.UserHomeDir()
 	errorz.MaybeMustWrap(err)
 	return dirPath
 }
 
-// MustRemoveAll is like os.RemoveAll, but panics on error.
+// MustRemoveAll is like [os.RemoveAll], but panics on error.
 func MustRemoveAll(path string) {
 	errorz.MaybeMustWrap(os.RemoveAll(path))
 }
@@ -89,7 +90,7 @@ func MustCreateTempFileString(contents string) string {
 	return MustCreateTempFile([]byte(contents))
 }
 
-// MustCreateTempDir is like os.MkdirTemp, but panics on error.
+// MustCreateTempDir is like [os.MkdirTemp], but panics on error.
 func MustCreateTempDir() string {
 	dirPath, err := os.MkdirTemp("", "golang-utils-")
 	errorz.MaybeMustWrap(err)
@@ -102,7 +103,7 @@ func MustPrepareDir(dirPath string, dirMode os.FileMode) {
 	errorz.MaybeMustWrap(os.MkdirAll(dirPath, dirMode))
 }
 
-// MustCheckPathExists checks if the given path exists, panics on errors other than os.ErrNotExist.
+// MustCheckPathExists checks if the given path exists, panics on errors other than [os.ErrNotExist].
 func MustCheckPathExists(fileOrDirPath string) bool {
 	if _, err := os.Stat(fileOrDirPath); err != nil {
 		if os.IsNotExist(err) {
@@ -113,7 +114,7 @@ func MustCheckPathExists(fileOrDirPath string) bool {
 	return true
 }
 
-// MustCheckFileExists checks if the given path exists and is a regular file, panics on errors other than os.ErrNotExist.
+// MustCheckFileExists checks if the given path exists and is a regular file, panics on errors other than [os.ErrNotExist].
 func MustCheckFileExists(fileOrDirPath string) bool {
 	stat, err := os.Stat(fileOrDirPath)
 	if err != nil {

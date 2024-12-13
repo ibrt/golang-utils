@@ -68,8 +68,7 @@ func (*InitializersSuite) TestMustInitialize_Success(g *WithT, ctrl *gomock.Cont
 	secondReleaser.EXPECT().Release().Do(func() { isSecondReleased = true })
 
 	injector, releaser := injectz.NewBootstrap().
-		Add(firstInitializer.Initialize).
-		AddGroup([]injectz.Initializer{secondInitializer.Initialize}).
+		Add(firstInitializer.Initialize, secondInitializer.Initialize).
 		MustInitialize()
 
 	ctx := injector(context.Background())
@@ -113,8 +112,7 @@ func (*InitializersSuite) TestMustInitialize_Error(g *WithT, ctrl *gomock.Contro
 	g.Expect(
 		func() {
 			injectz.NewBootstrap().
-				Add(firstInitializer.Initialize).
-				AddGroup([]injectz.Initializer{secondInitializer.Initialize}).
+				Add(firstInitializer.Initialize, secondInitializer.Initialize).
 				MustInitialize()
 		}).
 		To(PanicWith(MatchError("initializer error")))

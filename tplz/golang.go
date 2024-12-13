@@ -18,7 +18,7 @@ func ExecuteGo(template *ttpl.Template, data any) ([]byte, error) {
 	return format.Source(buf.Bytes())
 }
 
-// MustExecuteGo is like ExecuteGo but panics on error.
+// MustExecuteGo is like [ExecuteGo] but panics on error.
 func MustExecuteGo(template *ttpl.Template, data any) []byte {
 	buf, err := ExecuteGo(template, data)
 	errorz.MaybeMustWrap(err)
@@ -35,7 +35,7 @@ func ParseAndExecuteGo(template string, data any) ([]byte, error) {
 	return ExecuteGo(parsedTemplate, data)
 }
 
-// MustParseAndExecuteGo is like ParseAndExecuteGo but panics on error.
+// MustParseAndExecuteGo is like [ParseAndExecuteGo] but panics on error.
 func MustParseAndExecuteGo(template string, data any) []byte {
 	buf, err := ParseAndExecuteGo(template, data)
 	errorz.MaybeMustWrap(err)

@@ -23,7 +23,7 @@ func ExecuteJSON(template *ttpl.Template, prefix, indent string, data any) ([]by
 	return dst.Bytes(), nil
 }
 
-// MustExecuteJSON executes a text template, formatting the result as JSON code, panics on error.
+// MustExecuteJSON is like [ExecuteJSON] but panics on error.
 func MustExecuteJSON(template *ttpl.Template, prefix, indent string, data any) []byte {
 	buf, err := ExecuteJSON(template, prefix, indent, data)
 	errorz.MaybeMustWrap(err)
@@ -40,7 +40,7 @@ func ParseAndExecuteJSON(template, prefix, indent string, data any) ([]byte, err
 	return ExecuteJSON(parsedTemplate, prefix, indent, data)
 }
 
-// MustParseAndExecuteJSON is like ParseAndExecuteJSON but panics on error.
+// MustParseAndExecuteJSON is like [ParseAndExecuteJSON] but panics on error.
 func MustParseAndExecuteJSON(template, prefix, indent string, data any) []byte {
 	buf, err := ParseAndExecuteJSON(template, prefix, indent, data)
 	errorz.MaybeMustWrap(err)

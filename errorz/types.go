@@ -18,12 +18,12 @@ type UnwrapMulti interface {
 	Unwrap() []error
 }
 
-// IsHelper describes a method called by errors.Is to allow customizing its logic.
+// IsHelper describes a method called by [errors.Is] to allow customizing its logic.
 type IsHelper interface {
 	Is(error) bool
 }
 
-// AsHelper describes a method called by errors.As to allow customizing its logic.
+// AsHelper describes a method called by [errors.As] to allow customizing its logic.
 type AsHelper interface {
 	As(any) bool
 }
@@ -42,7 +42,7 @@ func (e *valueError) Error() string {
 	return fmt.Sprintf("%v", e.Value)
 }
 
-// Unwrap implements the UnwrapMulti interface.
+// Unwrap implements the [UnwrapMulti] interface.
 func (e *valueError) Unwrap() []error {
 	if e == nil {
 		return nil
@@ -91,7 +91,7 @@ func (e *wrappedError) Error() string {
 	return w.String()
 }
 
-// Is provides interoperability with "errors.Is".
+// Is provides interoperability with [errors.Is].
 func (e *wrappedError) Is(target error) bool {
 	if e == nil || target == nil {
 		return e == target
@@ -103,7 +103,7 @@ func (e *wrappedError) Is(target error) bool {
 	return errors.Is(e.errs[0], target)
 }
 
-// As provides interoperability with "errors.As".
+// As provides interoperability with [errors.As].
 func (e *wrappedError) As(target any) bool {
 	if e == nil {
 		return false
@@ -115,7 +115,7 @@ func (e *wrappedError) As(target any) bool {
 	return errors.As(e.errs[0], target)
 }
 
-// Unwrap implements the UnwrapMulti interface.
+// Unwrap implements the [UnwrapMulti] interface.
 func (e *wrappedError) Unwrap() []error {
 	if e == nil {
 		return nil

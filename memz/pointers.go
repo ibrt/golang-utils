@@ -52,7 +52,7 @@ func ValNilToDef[T any](v *T, d T) T {
 	return *v
 }
 
-// SlicePtr returns a copy of the given slice with each element passed through Ptr.
+// SlicePtr returns a copy of the given slice with each element passed through [Ptr].
 func SlicePtr[T any](s []T) []*T {
 	if s == nil {
 		return nil
@@ -67,7 +67,7 @@ func SlicePtr[T any](s []T) []*T {
 	return out
 }
 
-// SlicePtrZeroToNil returns a copy of the given slice with each element passed through PtrZeroToNil.
+// SlicePtrZeroToNil returns a copy of the given slice with each element passed through [PtrZeroToNil].
 func SlicePtrZeroToNil[T comparable](s []T) []*T {
 	if s == nil {
 		return nil
@@ -82,7 +82,7 @@ func SlicePtrZeroToNil[T comparable](s []T) []*T {
 	return out
 }
 
-// SliceValNilToZero returns a copy of the given slice with each element passed through ValNilToZero.
+// SliceValNilToZero returns a copy of the given slice with each element passed through [ValNilToZero].
 func SliceValNilToZero[T any](s []*T) []T {
 	if s == nil {
 		return nil
@@ -97,7 +97,7 @@ func SliceValNilToZero[T any](s []*T) []T {
 	return out
 }
 
-// SliceValNilToDef returns a copy of the given slice with each element passed through ValNilToDef.
+// SliceValNilToDef returns a copy of the given slice with each element passed through [ValNilToDef].
 func SliceValNilToDef[T any](s []*T, d T) []T {
 	if s == nil {
 		return nil
@@ -112,7 +112,7 @@ func SliceValNilToDef[T any](s []*T, d T) []T {
 	return out
 }
 
-// MapPtr returns a copy of the given map with each value passed through Ptr.
+// MapPtr returns a copy of the given map with each value passed through [Ptr].
 func MapPtr[K comparable, V any](m map[K]V) map[K]*V {
 	if m == nil {
 		return nil
@@ -127,7 +127,7 @@ func MapPtr[K comparable, V any](m map[K]V) map[K]*V {
 	return out
 }
 
-// MapPtrZeroToNil returns a copy of the given map with each value passed through PtrZeroToNil.
+// MapPtrZeroToNil returns a copy of the given map with each value passed through [PtrZeroToNil].
 func MapPtrZeroToNil[K comparable, V comparable](m map[K]V) map[K]*V {
 	if m == nil {
 		return nil
@@ -142,7 +142,7 @@ func MapPtrZeroToNil[K comparable, V comparable](m map[K]V) map[K]*V {
 	return out
 }
 
-// MapValNilToZero returns a copy of the given map with each value passed through ValNilToZero.
+// MapValNilToZero returns a copy of the given map with each value passed through [ValNilToZero].
 func MapValNilToZero[K comparable, V any](m map[K]*V) map[K]V {
 	if m == nil {
 		return nil
@@ -157,7 +157,7 @@ func MapValNilToZero[K comparable, V any](m map[K]*V) map[K]V {
 	return out
 }
 
-// MapValNilToDef returns a copy of the given map with each value passed through ValNilToDef.
+// MapValNilToDef returns a copy of the given map with each value passed through [ValNilToDef].
 func MapValNilToDef[K comparable, V any](m map[K]*V, d V) map[K]V {
 	if m == nil {
 		return nil
