@@ -1,3 +1,4 @@
+// Package vldz provides various utilities for validating data.
 package vldz
 
 import (
@@ -101,7 +102,7 @@ func (e *ValidationError) Error() string {
 	}
 }
 
-// Unwrap implements the errorz.UnwrapSingle interface.
+// Unwrap implements the [errorz.UnwrapSingle] interface.
 func (e *ValidationError) Unwrap() error {
 	if e == nil {
 		return nil
@@ -123,7 +124,7 @@ func ValidateStruct(v any) error {
 	return nil
 }
 
-// MustValidateStruct is like ValidateStruct but panics on error.
+// MustValidateStruct is like [ValidateStruct] but panics on error.
 func MustValidateStruct(v any) {
 	errorz.MaybeMustWrap(ValidateStruct(v))
 }

@@ -1,3 +1,4 @@
+// Package urlz provides various utilities for working URLs.
 package urlz
 
 import (
@@ -6,7 +7,7 @@ import (
 	"github.com/ibrt/golang-utils/errorz"
 )
 
-// MustParse is like url.Parse but panics on error.
+// MustParse is like [url.Parse] but panics on error.
 func MustParse(rawURL string) *url.URL {
 	u, err := url.Parse(rawURL)
 	errorz.MaybeMustWrap(err)
@@ -20,7 +21,7 @@ func MustEdit(rawURL string, f func(*url.URL)) string {
 	return u.String()
 }
 
-// GetValueDef tries to get a key from url.Values, returns def if not found.
+// GetValueDef tries to get a key from [url.Values], returns def if not found.
 func GetValueDef(v url.Values, key, def string) string {
 	if vv := v.Get(key); vv != "" {
 		return vv
