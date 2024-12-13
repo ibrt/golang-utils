@@ -15,9 +15,10 @@ func Wrap(err error, outerErrs ...error) error {
 	wErr, ok := err.(*wrappedError)
 	if !ok {
 		wErr = &wrappedError{
-			m:      &sync.Mutex{},
-			errs:   []error{err},
-			frames: GetFrames(nil),
+			m:        &sync.Mutex{},
+			errs:     []error{err},
+			frames:   GetFrames(nil),
+			metadata: make(map[any]any),
 		}
 	}
 

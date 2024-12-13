@@ -69,9 +69,10 @@ var (
 )
 
 type wrappedError struct {
-	m      *sync.Mutex
-	errs   []error
-	frames Frames
+	m        *sync.Mutex
+	errs     []error
+	frames   Frames
+	metadata map[any]any
 }
 
 // Error implements the error interface.
@@ -126,4 +127,19 @@ func (e *wrappedError) Unwrap() []error {
 
 	errs := slices.Clone(e.errs)
 	return errs[1:]
+}
+
+func (e *wrappedError) setMetadata(k, v any) {
+	e.m.Lock()
+	defer e.m.Unlock()
+
+	e.metadata[k] = v
+}
+
+func (e *wrappedError) getMetadata(k any) (any, bool) {
+	e.m.Lock()
+	defer e.m.Unlock()
+
+	v, ok := e.metadata[k]
+	return v, ok
 }
