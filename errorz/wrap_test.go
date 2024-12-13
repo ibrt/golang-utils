@@ -34,12 +34,12 @@ func TestWrap(t *testing.T) {
 	err := errorz.Wrap(e1, e2)
 	g.Expect(err).ToNot(BeNil())
 	g.Expect(err.Error()).To(Equal("o1: e"))
-	g.Expect(err.(errorz.UnwrapMulti).Unwrap()).To(HaveExactElements(e2))
+	g.Expect(err.(errorz.UnwrapMulti).Unwrap()).To(HaveExactElements(e1, e2))
 
 	err = errorz.Wrap(err, nil, e3)
 	g.Expect(err).ToNot(BeNil())
 	g.Expect(err.Error()).To(Equal("o2: o1: e"))
-	g.Expect(err.(errorz.UnwrapMulti).Unwrap()).To(HaveExactElements(e2, e3))
+	g.Expect(err.(errorz.UnwrapMulti).Unwrap()).To(HaveExactElements(e1, e2, e3))
 
 	g.Expect(func() { _ = errorz.Wrap(nil) }).To(PanicWith(MatchError("err is nil")))
 }

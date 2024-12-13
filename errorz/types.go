@@ -126,7 +126,7 @@ func (e *wrappedError) Unwrap() []error {
 	defer e.m.Unlock()
 
 	errs := slices.Clone(e.errs)
-	return errs[1:]
+	return errs //[1:] // TODO(ibrt): Should this really skip the first error?
 }
 
 func (e *wrappedError) setMetadata(k, v any) {

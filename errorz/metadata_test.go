@@ -1,7 +1,10 @@
 package errorz_test
 
 import (
+	"errors"
 	"fmt"
+	"io/fs"
+	"os"
 	"testing"
 
 	. "github.com/onsi/gomega"
@@ -48,4 +51,32 @@ func TestMetadata(t *testing.T) {
 		g.Expect(ok).To(BeFalse())
 		g.Expect(func() { errorz.MustGetMetadata[string](err, 0) }).To(Panic())
 	}
+}
+
+func TestGetName(t *testing.T) {
+	g := NewWithT(t)
+
+	g.Expect(errorz.GetName(nil)).
+		To(Equal("<nil>"))
+
+	g.Expect(errorz.GetName(fmt.Errorf("test error"))).
+		To(Equal("error"))
+
+	g.Expect(errorz.GetName(errors.New("test error"))).
+		To(Equal("error"))
+
+	g.Expect(errorz.GetName(errorz.Errorf("test error"))).
+		To(Equal("error"))
+
+	g.Expect(errorz.GetName(errorz.Wrap(fmt.Errorf("test error"), &fs.PathError{}, &os.LinkError{}))).
+		To(Equal("*fs.PathError"))
+
+	g.Expect(errorz.GetName(errors.Join(fmt.Errorf("test error"), &fs.PathError{}, &os.LinkError{}))).
+		To(Equal("*fs.PathError"))
+
+	g.Expect(errorz.GetName(errorz.Wrap(errors.Join(fmt.Errorf("test error"), &fs.PathError{}, &os.LinkError{})))).
+		To(Equal("*fs.PathError"))
+
+	g.Expect(errorz.GetName(errorz.Wrap(fmt.Errorf("test error: %w", &fs.PathError{})))).
+		To(Equal("*fs.PathError"))
 }
