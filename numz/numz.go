@@ -1,3 +1,4 @@
+// Package numz provides various utilities for working with numbers.
 package numz
 
 import (
@@ -60,7 +61,7 @@ func Parse[T Number](s string) (T, error) {
 	}
 }
 
-// MustParse is like parse, but panics on error.
+// MustParse is like [Parse], but panics on error.
 func MustParse[T Number](s string) T {
 	t, err := Parse[T](s)
 	errorz.MaybeMustWrap(err)

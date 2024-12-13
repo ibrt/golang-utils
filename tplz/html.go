@@ -19,7 +19,7 @@ func ExecuteHTML(template *htpl.Template, data any) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-// MustExecuteHTML is like ExecuteHTML but panics on error.
+// MustExecuteHTML is like [ExecuteHTML] but panics on error.
 func MustExecuteHTML(template *htpl.Template, data any) []byte {
 	buf, err := ExecuteHTML(template, data)
 	errorz.MaybeMustWrap(err)
@@ -36,7 +36,7 @@ func ParseAndExecuteHTML(template string, data any) ([]byte, error) {
 	return ExecuteHTML(parsedTemplate, data)
 }
 
-// MustParseAndExecuteHTML is like ParseAndExecuteHTML but panics on error.
+// MustParseAndExecuteHTML is like [ParseAndExecuteHTML] but panics on error.
 func MustParseAndExecuteHTML(template string, data any) []byte {
 	buf, err := ParseAndExecuteHTML(template, data)
 	errorz.MaybeMustWrap(err)

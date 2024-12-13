@@ -1,3 +1,4 @@
+// Package stringz provides various utilities for working with strings.
 package stringz
 
 import (
