@@ -1,3 +1,4 @@
+// Package hashz provides various utilities calculating hashes.
 package hashz
 
 import (

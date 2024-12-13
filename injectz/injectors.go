@@ -4,24 +4,24 @@ import (
 	"context"
 )
 
-// Injector injects values into a Context.
+// Injector injects modules into a [context.Context].
 type Injector func(ctx context.Context) context.Context
 
-// NewNoopInjector returns an injector that does nothing.
+// NewNoopInjector returns an [Injector] that does nothing.
 func NewNoopInjector() Injector {
 	return func(ctx context.Context) context.Context {
 		return ctx
 	}
 }
 
-// NewSingletonInjector always injects the given value using the given context key.
+// NewSingletonInjector returns a constant [Injector].
 func NewSingletonInjector(contextKey, value interface{}) Injector {
 	return func(ctx context.Context) context.Context {
 		return context.WithValue(ctx, contextKey, value)
 	}
 }
 
-// NewInjectors combines multiple injectors into one.
+// NewInjectors combines multiple [Injector] into a compound one.
 func NewInjectors(injectors ...Injector) Injector {
 	return func(ctx context.Context) context.Context {
 		for _, injector := range injectors {
