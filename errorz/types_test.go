@@ -109,7 +109,7 @@ func TestWrappedError(t *testing.T) {
 		frames: GetFrames(nil),
 	}
 	g.Expect(err.Error()).To(Equal("e"))
-	g.Expect(err.Unwrap()).To(BeEmpty())
+	g.Expect(err.Unwrap()).To(HaveExactElements(e1))
 	g.Expect(err.Is(e1)).To(BeTrue())
 	g.Expect(err.Is(fmt.Errorf("e"))).To(BeFalse())
 	g.Expect(err.Is(nil)).To(BeFalse())
@@ -130,7 +130,7 @@ func TestWrappedError(t *testing.T) {
 		frames: GetFrames(nil),
 	}
 	g.Expect(err.Error()).To(Equal("e"))
-	g.Expect(err.Unwrap()).To(BeEmpty())
+	g.Expect(err.Unwrap()).To(HaveExactElements(stringError("e")))
 	g.Expect(err.Is(stringError("e"))).To(BeTrue())
 	g.Expect(err.Is(stringError(""))).To(BeFalse())
 	g.Expect(err.Is(fmt.Errorf("unknown network e"))).To(BeFalse())
@@ -158,7 +158,7 @@ func TestWrappedError(t *testing.T) {
 		frames: GetFrames(nil),
 	}
 	g.Expect(err.Error()).To(Equal("e"))
-	g.Expect(err.Unwrap()).To(BeEmpty())
+	g.Expect(err.Unwrap()).To(HaveExactElements(e2))
 	g.Expect(err.Is(e2)).To(BeTrue())
 	g.Expect(err.Is(&structError{k: "e"})).To(BeFalse()) // errors.Is requires "==" true or an "Is() bool" method returning true
 	g.Expect(err.Is(stringError(""))).To(BeFalse())
@@ -189,7 +189,7 @@ func TestWrappedError(t *testing.T) {
 		frames: GetFrames(nil),
 	}
 	g.Expect(err.Error()).To(Equal("o2: o1: e"))
-	g.Expect(err.Unwrap()).To(HaveExactElements(e4, e5))
+	g.Expect(err.Unwrap()).To(HaveExactElements(e3, e4, e5))
 	g.Expect(err.Is(e3)).To(BeTrue())
 	g.Expect(err.Is(e4)).To(BeFalse())
 	g.Expect(err.Is(e5)).To(BeFalse())

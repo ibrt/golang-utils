@@ -1,6 +1,7 @@
 package errorz_test
 
 import (
+	"fmt"
 	"testing"
 
 	. "github.com/onsi/gomega"
@@ -14,7 +15,7 @@ func TestErrorf(t *testing.T) {
 	err := errorz.Errorf("e: %v", "v")
 	g.Expect(err).ToNot(BeNil())
 	g.Expect(err.Error()).To(Equal("e: v"))
-	g.Expect(err.(errorz.UnwrapMulti).Unwrap()).To(BeEmpty())
+	g.Expect(err.(errorz.UnwrapMulti).Unwrap()).To(HaveExactElements(fmt.Errorf("e: v")))
 }
 
 func TestMustErrorf(t *testing.T) {
