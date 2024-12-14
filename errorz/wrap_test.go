@@ -3,6 +3,7 @@ package errorz_test
 import (
 	"errors"
 	"fmt"
+	"net/http"
 	"strings"
 	"testing"
 
@@ -12,13 +13,14 @@ import (
 )
 
 var (
-	_ error = (*structError)(nil)
-	_ error = (*stringError)(nil)
-	_ error = (*wrapSingle)(nil)
-	_ error = (*wrapMulti)(nil)
-
-	_ errorz.UnwrapSingle = (*wrapSingle)(nil)
-	_ errorz.UnwrapMulti  = (*wrapMulti)(nil)
+	_ error                  = (*structError)(nil)
+	_ error                  = stringError("")
+	_ error                  = (*wrapSingle)(nil)
+	_ error                  = (*wrapMulti)(nil)
+	_ errorz.ErrorName       = stringError("")
+	_ errorz.ErrorHTTPStatus = (*structError)(nil)
+	_ errorz.UnwrapSingle    = (*wrapSingle)(nil)
+	_ errorz.UnwrapMulti     = (*wrapMulti)(nil)
 )
 
 type structError struct {
@@ -29,10 +31,18 @@ func (e *structError) Error() string {
 	return e.k
 }
 
+func (e *structError) GetErrorHTTPStatus() int {
+	return http.StatusBadRequest
+}
+
 type stringError string
 
 func (e stringError) Error() string {
 	return string(e)
+}
+
+func (e stringError) GetErrorName() string {
+	return "string-error"
 }
 
 type wrapSingle struct {

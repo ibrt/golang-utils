@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io/fs"
+	"net/http"
 	"os"
 	"testing"
 
@@ -62,6 +63,12 @@ func TestGetName(t *testing.T) {
 	g.Expect(errorz.GetName(fmt.Errorf("test error"))).
 		To(Equal("error"))
 
+	g.Expect(errorz.GetName(fmt.Errorf("test error: %w", fmt.Errorf("test error")))).
+		To(Equal("error"))
+
+	g.Expect(errorz.GetName(fmt.Errorf("test error: %w %w", fmt.Errorf("e1"), fmt.Errorf("e2")))).
+		To(Equal("error"))
+
 	g.Expect(errorz.GetName(errors.New("test error"))).
 		To(Equal("error"))
 
@@ -74,9 +81,20 @@ func TestGetName(t *testing.T) {
 	g.Expect(errorz.GetName(errors.Join(fmt.Errorf("test error"), &fs.PathError{}, &os.LinkError{}))).
 		To(Equal("*fs.PathError"))
 
+	g.Expect(errorz.GetName(errors.Join(fmt.Errorf("test error"), stringError(""), &fs.PathError{}))).
+		To(Equal("string-error"))
+
 	g.Expect(errorz.GetName(errorz.Wrap(errors.Join(fmt.Errorf("test error"), &fs.PathError{}, &os.LinkError{})))).
 		To(Equal("*fs.PathError"))
 
 	g.Expect(errorz.GetName(errorz.Wrap(fmt.Errorf("test error: %w", &fs.PathError{})))).
 		To(Equal("*fs.PathError"))
+}
+
+func TestGetHTTPStatus(t *testing.T) {
+	g := NewWithT(t)
+
+	g.Expect(errorz.GetHTTPStatus(nil)).To(Equal(http.StatusInternalServerError))
+	g.Expect(errorz.GetHTTPStatus(fmt.Errorf("test error"))).To(Equal(http.StatusInternalServerError))
+	g.Expect(errorz.GetHTTPStatus(&structError{})).To(Equal(http.StatusBadRequest))
 }
