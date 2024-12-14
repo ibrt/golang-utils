@@ -98,3 +98,53 @@ func isNil(x any) bool {
 		return false
 	}
 }
+
+// Unwrap is similar to [errors.Unwrap] but works for errors implementing either [UnwrapSingle] and [UnwrapMulti].
+func Unwrap(err error) []error {
+	if err == nil {
+		return nil
+	}
+
+	switch e := err.(type) {
+	case UnwrapSingle:
+		if ee := e.Unwrap(); ee != nil {
+			return []error{ee}
+		}
+		return nil
+	case UnwrapMulti:
+		if es := e.Unwrap(); len(es) > 0 {
+			return es
+		}
+		return nil
+	default:
+		return nil
+	}
+}
+
+// Flatten recursively unwraps the error and returns a slice of all unwrapped errors, from innermost to outermost.
+func Flatten(err error) []error {
+	f := &flattener{errs: make([]error, 0, 128)}
+	f.flatten(err)
+	return f.errs
+}
+
+type flattener struct {
+	errs []error
+}
+
+func (f *flattener) flatten(err error) {
+	if err == nil {
+		return
+	}
+
+	switch e := err.(type) {
+	case UnwrapMulti:
+		for _, ee := range e.Unwrap() {
+			f.flatten(ee)
+		}
+	case UnwrapSingle:
+		f.flatten(e.Unwrap())
+	}
+
+	f.errs = append(f.errs, err)
+}
