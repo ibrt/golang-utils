@@ -1,3 +1,4 @@
+// Package fixturez provides a test suite framework.
 package fixturez
 
 import (

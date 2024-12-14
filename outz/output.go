@@ -1,4 +1,4 @@
-package fixturez
+package outz
 
 import (
 	"io"
@@ -7,8 +7,13 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/rodaine/table"
+	"github.com/sirupsen/logrus"
 
 	"github.com/ibrt/golang-utils/errorz"
+)
+
+var (
+	sysStderr = os.Stderr
 )
 
 var (
@@ -16,6 +21,7 @@ var (
 	isCapturing            = false
 	outR, outW, errR, errW *os.File
 	restoreFuncs           []func()
+	loggers                = []*logrus.Logger{logrus.StandardLogger()}
 )
 
 // OutputSetupFunc describes a function that replaces some streams with mock ones for capturing.
@@ -64,6 +70,26 @@ func OutputSetupRodaineTable(outW *os.File, _ *os.File) OutputRestoreFunc {
 
 	return func() {
 		table.DefaultWriter = origOut
+	}
+}
+
+// OutputSetupSirupsenLogrus is a [OutputSetupFunc] that configures the logging streams (from "github.com/sirupsen/logrus").
+func OutputSetupSirupsenLogrus(_ *os.File, errW *os.File) OutputRestoreFunc {
+	origErr := map[*logrus.Logger]io.Writer{}
+
+	for _, logger := range loggers {
+		origErr[logger] = logger.Out
+		logger.SetOutput(errW)
+	}
+
+	return func() {
+		for _, logger := range loggers {
+			if o, ok := origErr[logger]; ok {
+				logger.SetOutput(o)
+			} else {
+				logger.SetOutput(sysStderr)
+			}
+		}
 	}
 }
 
@@ -140,4 +166,21 @@ func mustFlush() (string, string) {
 	errorz.MaybeMustWrap(err)
 
 	return string(outBuf), string(errBuf)
+}
+
+// NewLogger initializes and registers a new logger.
+func NewLogger() *logrus.Logger {
+	m.Lock()
+	defer m.Unlock()
+
+	logger := logrus.New()
+	loggers = append(loggers, logger)
+
+	if isCapturing {
+		logger.SetOutput(errW)
+	} else {
+		logger.SetOutput(sysStderr)
+	}
+
+	return logger
 }

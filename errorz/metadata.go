@@ -1,8 +1,19 @@
 package errorz
 
 import (
+	"net/http"
 	"reflect"
 )
+
+// ErrorName can be implemented by errors to return a name different from their Go type.
+type ErrorName interface {
+	GetErrorName() string
+}
+
+// ErrorHTTPStatus can be implemented by errors to attach an HTTP status to themselves.
+type ErrorHTTPStatus interface {
+	GetErrorHTTPStatus() int
+}
 
 // MaybeSetMetadata sets the given metadata (k, v) on the error if it has been wrapped, does nothing otherwise.
 func MaybeSetMetadata(err error, k, v any) {
@@ -30,35 +41,18 @@ func MaybeGetMetadata[T any](err error, k any) (T, bool) {
 	return v, false
 }
 
-// GetName attempts to get a meaningful name for the given error.
+// GetName attempts to get a meaningful, stable name for the given error, defaulting to "error".
 func GetName(err error) string {
 	if err == nil {
 		return "<nil>"
 	}
 
-	errs := make([]error, 0)
-	errs = append(errs, err)
-
-	for i := 0; i < len(errs); i++ {
-		switch e := errs[i].(type) {
-		case *wrappedError:
-			for j := len(e.errs) - 1; j >= 0; j-- {
-				errs = append(errs, e.errs[j])
-			}
-		case UnwrapMulti:
-			es := e.Unwrap()
-			for j := len(es) - 1; j >= 0; j-- {
-				errs = append(errs, es[j])
-			}
-		case UnwrapSingle:
-			if ee := e.Unwrap(); ee != nil {
-				errs = append(errs, ee)
-			}
+	for _, e := range Flatten(err) {
+		if n, ok := e.(ErrorName); ok {
+			return n.GetErrorName()
 		}
-	}
 
-	for i := len(errs) - 1; i >= 0; i-- {
-		switch n := reflect.TypeOf(errs[i]).String(); n {
+		switch n := reflect.TypeOf(e).String(); n {
 		case
 			"*errors.errorString",
 			"*errors.joinError",
@@ -72,4 +66,17 @@ func GetName(err error) string {
 	}
 
 	return "error"
+}
+
+// GetHTTPStatus attempts to get a meaningful, stable HTTP status for the given error, defaulting to 500.
+func GetHTTPStatus(err error) int {
+	f := Flatten(err)
+
+	for i := len(f) - 1; i >= 0; i-- {
+		if h, ok := f[i].(ErrorHTTPStatus); ok {
+			return h.GetErrorHTTPStatus()
+		}
+	}
+
+	return http.StatusInternalServerError
 }

@@ -1,7 +1,6 @@
 package errorz
 
 import (
-	"errors"
 	"fmt"
 	"slices"
 	"strings"
@@ -18,53 +17,34 @@ type UnwrapMulti interface {
 	Unwrap() []error
 }
 
-// IsHelper describes a method called by [errors.Is] to allow customizing its logic.
-type IsHelper interface {
-	Is(error) bool
-}
-
-// AsHelper describes a method called by [errors.As] to allow customizing its logic.
-type AsHelper interface {
-	As(any) bool
-}
-
 var (
-	_ error       = (*valueError)(nil)
-	_ UnwrapMulti = (*valueError)(nil)
+	_ error        = (*valueError)(nil)
+	_ UnwrapSingle = (*valueError)(nil)
 )
 
 type valueError struct {
-	Value any
+	value any
 }
 
 // Error implements the error interface.
 func (e *valueError) Error() string {
-	return fmt.Sprintf("%v", e.Value)
+	return fmt.Sprintf("%v", e.value)
 }
 
-// Unwrap implements the [UnwrapMulti] interface.
-func (e *valueError) Unwrap() []error {
+// Unwrap implements the [UnwrapSingle] interface.
+func (e *valueError) Unwrap() error {
 	if e == nil {
 		return nil
 	}
 
-	switch v := e.Value.(type) {
-	case UnwrapMulti:
-		return v.Unwrap()
-	case UnwrapSingle:
-		if err := v.Unwrap(); err != nil {
-			return []error{err}
-		}
-		return nil
-	default:
-		return nil
+	if ee, ok := e.value.(error); ok {
+		return ee
 	}
+	return nil
 }
 
 var (
 	_ error       = (*wrappedError)(nil)
-	_ IsHelper    = (*wrappedError)(nil)
-	_ AsHelper    = (*wrappedError)(nil)
 	_ UnwrapMulti = (*wrappedError)(nil)
 )
 
@@ -92,30 +72,6 @@ func (e *wrappedError) Error() string {
 	return w.String()
 }
 
-// Is provides interoperability with [errors.Is].
-func (e *wrappedError) Is(target error) bool {
-	if e == nil || target == nil {
-		return e == target
-	}
-
-	e.m.Lock()
-	defer e.m.Unlock()
-
-	return errors.Is(e.errs[0], target)
-}
-
-// As provides interoperability with [errors.As].
-func (e *wrappedError) As(target any) bool {
-	if e == nil {
-		return false
-	}
-
-	e.m.Lock()
-	defer e.m.Unlock()
-
-	return errors.As(e.errs[0], target)
-}
-
 // Unwrap implements the [UnwrapMulti] interface.
 func (e *wrappedError) Unwrap() []error {
 	if e == nil {
@@ -126,7 +82,7 @@ func (e *wrappedError) Unwrap() []error {
 	defer e.m.Unlock()
 
 	errs := slices.Clone(e.errs)
-	return errs //[1:] // TODO(ibrt): Should this really skip the first error?
+	return errs
 }
 
 func (e *wrappedError) setMetadata(k, v any) {

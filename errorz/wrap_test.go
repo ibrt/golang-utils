@@ -3,11 +3,24 @@ package errorz_test
 import (
 	"errors"
 	"fmt"
+	"net/http"
+	"strings"
 	"testing"
 
 	. "github.com/onsi/gomega"
 
 	"github.com/ibrt/golang-utils/errorz"
+)
+
+var (
+	_ error                  = (*structError)(nil)
+	_ error                  = stringError("")
+	_ error                  = (*wrapSingle)(nil)
+	_ error                  = (*wrapMulti)(nil)
+	_ errorz.ErrorName       = stringError("")
+	_ errorz.ErrorHTTPStatus = (*structError)(nil)
+	_ errorz.UnwrapSingle    = (*wrapSingle)(nil)
+	_ errorz.UnwrapMulti     = (*wrapMulti)(nil)
 )
 
 type structError struct {
@@ -18,10 +31,55 @@ func (e *structError) Error() string {
 	return e.k
 }
 
+func (e *structError) GetErrorHTTPStatus() int {
+	return http.StatusBadRequest
+}
+
 type stringError string
 
 func (e stringError) Error() string {
 	return string(e)
+}
+
+func (e stringError) GetErrorName() string {
+	return "string-error"
+}
+
+type wrapSingle struct {
+	err error
+}
+
+func (e *wrapSingle) Error() string {
+	if e.err != nil {
+		return e.err.Error()
+	}
+	return "<empty>"
+}
+
+func (e *wrapSingle) Unwrap() error {
+	return e.err
+}
+
+type wrapMulti struct {
+	errs []error
+}
+
+func (e *wrapMulti) Error() string {
+	if len(e.errs) > 0 {
+		ms := make([]string, 0, len(e.errs))
+
+		for _, err := range e.errs {
+			ms = append(ms, err.Error())
+		}
+
+		return strings.Join(ms, ": ")
+	}
+
+	return "<empty>"
+}
+
+func (e *wrapMulti) Unwrap() []error {
+	return e.errs
 }
 
 func TestWrap(t *testing.T) {
@@ -241,4 +299,36 @@ func TestAs(t *testing.T) {
 		g.Expect(ok).To(BeTrue())
 		g.Expect(e).To(Equal(e3))
 	}
+}
+
+func TestUnwrap(t *testing.T) {
+	g := NewWithT(t)
+
+	g.Expect(errorz.Unwrap(nil)).To(BeNil())
+	g.Expect(errorz.Unwrap(&wrapSingle{})).To(BeNil())
+	g.Expect(errorz.Unwrap(&wrapMulti{})).To(BeNil())
+	g.Expect(errorz.Unwrap(fmt.Errorf("e1"))).To(BeNil())
+
+	g.Expect(errorz.Unwrap(errors.Join(fmt.Errorf("e1"), fmt.Errorf("e2")))).
+		To(HaveExactElements(fmt.Errorf("e1"), fmt.Errorf("e2")))
+
+	g.Expect(errorz.Unwrap(fmt.Errorf("e2: %w", fmt.Errorf("e1")))).
+		To(HaveExactElements(fmt.Errorf("e1")))
+}
+
+func TestFlatten(t *testing.T) {
+	g := NewWithT(t)
+
+	e1a := fmt.Errorf("e1a")
+	e1b := fmt.Errorf("e1b: %w", e1a)
+	e2a := fmt.Errorf("e2a")
+	e2b := fmt.Errorf("e2b: %w", e2a)
+	e3 := fmt.Errorf("e3")
+	e4 := errors.Join(e2b, e3)
+	e5 := errorz.Wrap(e1b, e4)
+
+	g.Expect(errorz.Flatten(e5)).To(
+		HaveExactElements(e1a, e1b, e2a, e2b, e3, e4, e5))
+
+	g.Expect(errorz.Flatten(nil)).To(BeNil())
 }
