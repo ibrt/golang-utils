@@ -123,7 +123,7 @@ func Unwrap(err error) []error {
 
 // Flatten recursively unwraps the error and returns a slice of all unwrapped errors, from innermost to outermost.
 func Flatten(err error) []error {
-	f := &flattener{errs: make([]error, 0, 128)}
+	f := &flattener{}
 	f.flatten(err)
 	return f.errs
 }
