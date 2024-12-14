@@ -167,20 +167,3 @@ func mustFlush() (string, string) {
 
 	return string(outBuf), string(errBuf)
 }
-
-// NewLogger initializes and registers a new logger.
-func NewLogger() *logrus.Logger {
-	m.Lock()
-	defer m.Unlock()
-
-	logger := logrus.New()
-	loggers = append(loggers, logger)
-
-	if isCapturing {
-		logger.SetOutput(errW)
-	} else {
-		logger.SetOutput(sysStderr)
-	}
-
-	return logger
-}
