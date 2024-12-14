@@ -18,36 +18,29 @@ type UnwrapMulti interface {
 }
 
 var (
-	_ error       = (*valueError)(nil)
-	_ UnwrapMulti = (*valueError)(nil)
+	_ error        = (*valueError)(nil)
+	_ UnwrapSingle = (*valueError)(nil)
 )
 
 type valueError struct {
-	Value any
+	value any
 }
 
 // Error implements the error interface.
 func (e *valueError) Error() string {
-	return fmt.Sprintf("%v", e.Value)
+	return fmt.Sprintf("%v", e.value)
 }
 
-// Unwrap implements the [UnwrapMulti] interface.
-func (e *valueError) Unwrap() []error {
+// Unwrap implements the [UnwrapSingle] interface.
+func (e *valueError) Unwrap() error {
 	if e == nil {
 		return nil
 	}
 
-	switch v := e.Value.(type) {
-	case UnwrapMulti:
-		return v.Unwrap()
-	case UnwrapSingle:
-		if err := v.Unwrap(); err != nil {
-			return []error{err}
-		}
-		return nil
-	default:
-		return nil
+	if ee, ok := e.value.(error); ok {
+		return ee
 	}
+	return nil
 }
 
 var (

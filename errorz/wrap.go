@@ -64,7 +64,7 @@ func WrapRecover(r any, outerErrs ...error) error {
 	err, ok := r.(error)
 	if !ok {
 		err = &valueError{
-			Value: r,
+			value: r,
 		}
 	}
 

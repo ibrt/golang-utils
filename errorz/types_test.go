@@ -9,32 +9,6 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-type unwrapSingle struct {
-	k   string
-	err error
-}
-
-func (u *unwrapSingle) String() string {
-	return u.k
-}
-
-func (u *unwrapSingle) Unwrap() error {
-	return u.err
-}
-
-type unwrapMulti struct {
-	k    string
-	errs []error
-}
-
-func (u *unwrapMulti) String() string {
-	return u.k
-}
-
-func (u *unwrapMulti) Unwrap() []error {
-	return u.errs
-}
-
 type structError struct {
 	k string
 }
@@ -53,47 +27,16 @@ func TestValueError(t *testing.T) {
 	g := NewWithT(t)
 
 	err := &valueError{
-		Value: "test value",
+		value: "test value",
 	}
 	g.Expect(err.Error()).To(Equal("test value"))
 	g.Expect(err.Unwrap()).To(BeNil())
 
 	err = &valueError{
-		Value: &unwrapSingle{
-			k: "v",
-		},
+		value: fmt.Errorf("test error"),
 	}
-	g.Expect(err.Error()).To(Equal("v"))
-	g.Expect(err.Unwrap()).To(BeNil())
-
-	err = &valueError{
-		Value: &unwrapSingle{
-			k:   "v",
-			err: fmt.Errorf("w"),
-		},
-	}
-	g.Expect(err.Error()).To(Equal("v"))
-	g.Expect(err.Unwrap()).To(HaveExactElements(fmt.Errorf("w")))
-
-	err = &valueError{
-		Value: &unwrapMulti{
-			k: "v",
-		},
-	}
-	g.Expect(err.Error()).To(Equal("v"))
-	g.Expect(err.Unwrap()).To(BeNil())
-
-	err = &valueError{
-		Value: &unwrapMulti{
-			k: "v",
-			errs: []error{
-				fmt.Errorf("w1"),
-				fmt.Errorf("w2"),
-			},
-		},
-	}
-	g.Expect(err.Error()).To(Equal("v"))
-	g.Expect(err.Unwrap()).To(HaveExactElements(fmt.Errorf("w1"), fmt.Errorf("w2")))
+	g.Expect(err.Error()).To(Equal("test error"))
+	g.Expect(err.Unwrap()).To(Equal(fmt.Errorf("test error")))
 
 	g.Expect(func() { _ = (*valueError)(nil).Error() }).To(Panic())
 	g.Expect((*valueError)(nil).Unwrap()).To(BeNil())
