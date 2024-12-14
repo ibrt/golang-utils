@@ -1,4 +1,4 @@
-package fixturez
+package outz
 
 import (
 	"io"
