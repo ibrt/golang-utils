@@ -1,7 +1,6 @@
 package errorz
 
 import (
-	"net/http"
 	"reflect"
 )
 
@@ -41,8 +40,9 @@ func MaybeGetMetadata[T any](err error, k any) (T, bool) {
 	return v, false
 }
 
-// GetName attempts to get a meaningful, stable name for the given error, defaulting to "error".
-func GetName(err error) string {
+// GetName attempts to get a meaningful, stable name for the given error.
+// It returns "def" if a name cannot be found.
+func GetName(err error, def string) string {
 	if err == nil {
 		return "<nil>"
 	}
@@ -65,11 +65,12 @@ func GetName(err error) string {
 		}
 	}
 
-	return "error"
+	return def
 }
 
-// GetHTTPStatus attempts to get a meaningful, stable HTTP status for the given error, defaulting to 500.
-func GetHTTPStatus(err error) int {
+// GetHTTPStatus attempts to get a meaningful, stable HTTP status for the given error.
+// It returns "def" if an HTTP status cannot be found.
+func GetHTTPStatus(err error, def int) int {
 	f := Flatten(err)
 
 	for i := len(f) - 1; i >= 0; i-- {
@@ -78,5 +79,5 @@ func GetHTTPStatus(err error) int {
 		}
 	}
 
-	return http.StatusInternalServerError
+	return def
 }
