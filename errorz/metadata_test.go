@@ -57,44 +57,49 @@ func TestMetadata(t *testing.T) {
 func TestGetName(t *testing.T) {
 	g := NewWithT(t)
 
-	g.Expect(errorz.GetName(nil)).
+	g.Expect(errorz.GetName(nil, "error")).
 		To(Equal("<nil>"))
 
-	g.Expect(errorz.GetName(fmt.Errorf("test error"))).
+	g.Expect(errorz.GetName(fmt.Errorf("test error"), "error")).
 		To(Equal("error"))
 
-	g.Expect(errorz.GetName(fmt.Errorf("test error: %w", fmt.Errorf("test error")))).
+	g.Expect(errorz.GetName(fmt.Errorf("test error: %w", fmt.Errorf("test error")), "error")).
 		To(Equal("error"))
 
-	g.Expect(errorz.GetName(fmt.Errorf("test error: %w %w", fmt.Errorf("e1"), fmt.Errorf("e2")))).
+	g.Expect(errorz.GetName(fmt.Errorf("test error: %w %w", fmt.Errorf("e1"), fmt.Errorf("e2")), "error")).
 		To(Equal("error"))
 
-	g.Expect(errorz.GetName(errors.New("test error"))).
+	g.Expect(errorz.GetName(errors.New("test error"), "error")).
 		To(Equal("error"))
 
-	g.Expect(errorz.GetName(errorz.Errorf("test error"))).
+	g.Expect(errorz.GetName(errorz.Errorf("test error"), "error")).
 		To(Equal("error"))
 
-	g.Expect(errorz.GetName(errorz.Wrap(fmt.Errorf("test error"), &fs.PathError{}, &os.LinkError{}))).
+	g.Expect(errorz.GetName(errorz.Wrap(fmt.Errorf("test error"), &fs.PathError{}, &os.LinkError{}), "error")).
 		To(Equal("*fs.PathError"))
 
-	g.Expect(errorz.GetName(errors.Join(fmt.Errorf("test error"), &fs.PathError{}, &os.LinkError{}))).
+	g.Expect(errorz.GetName(errors.Join(fmt.Errorf("test error"), &fs.PathError{}, &os.LinkError{}), "error")).
 		To(Equal("*fs.PathError"))
 
-	g.Expect(errorz.GetName(errors.Join(fmt.Errorf("test error"), stringError(""), &fs.PathError{}))).
+	g.Expect(errorz.GetName(errors.Join(fmt.Errorf("test error"), stringError(""), &fs.PathError{}), "error")).
 		To(Equal("string-error"))
 
-	g.Expect(errorz.GetName(errorz.Wrap(errors.Join(fmt.Errorf("test error"), &fs.PathError{}, &os.LinkError{})))).
+	g.Expect(errorz.GetName(errorz.Wrap(errors.Join(fmt.Errorf("test error"), &fs.PathError{}, &os.LinkError{})), "error")).
 		To(Equal("*fs.PathError"))
 
-	g.Expect(errorz.GetName(errorz.Wrap(fmt.Errorf("test error: %w", &fs.PathError{})))).
+	g.Expect(errorz.GetName(errorz.Wrap(fmt.Errorf("test error: %w", &fs.PathError{})), "error")).
 		To(Equal("*fs.PathError"))
 }
 
 func TestGetHTTPStatus(t *testing.T) {
 	g := NewWithT(t)
 
-	g.Expect(errorz.GetHTTPStatus(nil)).To(Equal(http.StatusInternalServerError))
-	g.Expect(errorz.GetHTTPStatus(fmt.Errorf("test error"))).To(Equal(http.StatusInternalServerError))
-	g.Expect(errorz.GetHTTPStatus(&structError{})).To(Equal(http.StatusBadRequest))
+	g.Expect(errorz.GetHTTPStatus(nil, http.StatusInternalServerError)).
+		To(Equal(http.StatusInternalServerError))
+
+	g.Expect(errorz.GetHTTPStatus(fmt.Errorf("test error"), http.StatusInternalServerError)).
+		To(Equal(http.StatusInternalServerError))
+
+	g.Expect(errorz.GetHTTPStatus(&structError{}, http.StatusInternalServerError)).
+		To(Equal(http.StatusBadRequest))
 }

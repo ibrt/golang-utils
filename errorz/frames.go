@@ -106,7 +106,7 @@ func GetFrames(err error) Frames {
 		callerFrame, more := callersFrames.Next()
 		frame := NewFrame(callerFrame.Function, callerFrame.File, callerFrame.Line)
 
-		if frame.ShortPackage == "errorz" || frame.ShortLocation == "runtime.gopanic" {
+		if frame.ShortPackage == "errorz" {
 			continue
 		}
 
