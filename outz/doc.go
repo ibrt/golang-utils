@@ -1,2 +1,2 @@
-// Package outz provides various utilities for styling and capturing output.
+// Package outz provides various utilities for styling, formatting, and capturing output.
 package outz
