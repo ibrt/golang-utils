@@ -3,7 +3,9 @@ package filez
 
 import (
 	"bytes"
+	"embed"
 	"io"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
@@ -141,4 +143,36 @@ func MustRelForDisplay(path string) string {
 	}
 
 	return filepath.Clean(path)
+}
+
+// MustExport exports an embedded FS to disk.
+func MustExport(eFS embed.FS, rootDirPath string, outDirPath string) {
+	errorz.MaybeMustWrap(fs.WalkDir(eFS, rootDirPath, func(path string, d fs.DirEntry, err error) error {
+		errorz.MaybeMustWrap(err)
+
+		if d.Type().IsRegular() {
+			buf, err := eFS.ReadFile(path)
+			errorz.MaybeMustWrap(err)
+			MustWriteFile(MustAbs(filepath.Join(outDirPath, strings.TrimPrefix(path, rootDirPath+"/"))), 0777, 0666, buf)
+		}
+
+		return nil
+	}))
+}
+
+// MustListRegularFilePaths returns a list of regular file paths found in the given root directory, relative to it.
+func MustListRegularFilePaths(rootDirPath string) []string {
+	filePaths := make([]string, 0)
+
+	errorz.MaybeMustWrap(filepath.WalkDir(MustAbs(rootDirPath), func(path string, d fs.DirEntry, err error) error {
+		errorz.MaybeMustWrap(err)
+
+		if d.Type().IsRegular() {
+			filePaths = append(filePaths, MustRel(rootDirPath, path))
+		}
+
+		return nil
+	}))
+
+	return filePaths
 }
