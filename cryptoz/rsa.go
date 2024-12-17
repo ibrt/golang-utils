@@ -1,4 +1,3 @@
-// Package cryptoz provides various utilities for working with encryption keys and PEM files.
 package cryptoz
 
 import (
