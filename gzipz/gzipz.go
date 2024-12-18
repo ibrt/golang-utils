@@ -1,3 +1,4 @@
+// Package gzipz provides various compression and decompression utilities.
 package gzipz
 
 import (
