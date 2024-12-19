@@ -3,14 +3,12 @@ package errorz_test
 import (
 	"errors"
 	"fmt"
-	"io/fs"
-	"net/http"
-	"os"
 	"testing"
 
 	. "github.com/onsi/gomega"
 
 	"github.com/ibrt/golang-utils/errorz"
+	"github.com/ibrt/golang-utils/errorz/terrorz"
 )
 
 func TestMetadata(t *testing.T) {
@@ -54,52 +52,189 @@ func TestMetadata(t *testing.T) {
 	}
 }
 
-func TestGetName(t *testing.T) {
+func TestSummary(t *testing.T) {
 	g := NewWithT(t)
 
-	g.Expect(errorz.GetName(nil, "error")).
-		To(Equal("<nil>"))
+	e1a := terrorz.NewTestDetailedError("e1a-err", "e1a", 101, map[string]any{"e1a": true})
+	e1b := fmt.Errorf("e1b: %w", e1a)
+	e2a := terrorz.NewTestDetailedError("e2a-err", "e2a", 102, map[string]any{"e2a": true})
+	e2b := terrorz.NewTestDetailedErrorUnwrapSingle("e2b-err", "", 0, nil, e2a)
+	e3 := fmt.Errorf("e3")
+	e4 := errors.Join(e2b, e3)
 
-	g.Expect(errorz.GetName(fmt.Errorf("test error"), "error")).
-		To(Equal("error"))
+	g.Expect(errorz.GetSummary(nil, true)).To(BeNil())
+	g.Expect(errorz.GetSummary(nil, false)).To(BeNil())
 
-	g.Expect(errorz.GetName(fmt.Errorf("test error: %w", fmt.Errorf("test error")), "error")).
-		To(Equal("error"))
+	g.Expect(errorz.GetSummary(errorz.Wrap(e1b, e4), true)).
+		To(Equal(&errorz.Summary{
+			Name:       "e1a",
+			Message:    "e2b-err\ne3: e1b: e1a-err",
+			HTTPStatus: 102,
+			Details: map[string]any{
+				"e1a": true,
+				"e2a": true,
+			},
+			Components: []*errorz.Summary{
+				{
+					Name: "[wrap]",
+					Components: []*errorz.Summary{
+						{
+							Message: "e1b: e1a-err",
+							Components: []*errorz.Summary{
+								{
+									Name:       "e1a",
+									Message:    "e1a-err",
+									HTTPStatus: 101,
+									Details: map[string]any{
+										"e1a": true,
+									},
+								},
+							},
+						},
+						{
+							Name: "[join]",
+							Components: []*errorz.Summary{
+								{
 
-	g.Expect(errorz.GetName(fmt.Errorf("test error: %w %w", fmt.Errorf("e1"), fmt.Errorf("e2")), "error")).
-		To(Equal("error"))
+									Name:    "*terrorz.testDetailedErrorUnwrapSingle",
+									Message: "e2b-err",
+									Components: []*errorz.Summary{
+										{
+											Name:       "e2a",
+											Message:    "e2a-err",
+											HTTPStatus: 102,
+											Details: map[string]any{
+												"e2a": true,
+											},
+										},
+									},
+								},
+								{
+									Message: "e3",
+								},
+							},
+						},
+					},
+				},
+			},
+		}))
 
-	g.Expect(errorz.GetName(errors.New("test error"), "error")).
-		To(Equal("error"))
+	g.Expect(errorz.GetSummary(errors.Join(e1b, e4), true)).
+		To(Equal(&errorz.Summary{
+			Name:       "e1a",
+			Message:    "e1b: e1a-err\ne2b-err\ne3",
+			HTTPStatus: 102,
+			Details: map[string]any{
+				"e1a": true,
+				"e2a": true,
+			},
+			Components: []*errorz.Summary{
+				{
+					Name: "[join]",
+					Components: []*errorz.Summary{
+						{
+							Message: "e1b: e1a-err",
+							Components: []*errorz.Summary{
+								{
+									Name:       "e1a",
+									Message:    "e1a-err",
+									HTTPStatus: 101,
+									Details: map[string]any{
+										"e1a": true,
+									},
+								},
+							},
+						},
+						{
+							Name: "[join]",
+							Components: []*errorz.Summary{
+								{
 
-	g.Expect(errorz.GetName(errorz.Errorf("test error"), "error")).
-		To(Equal("error"))
+									Name:    "*terrorz.testDetailedErrorUnwrapSingle",
+									Message: "e2b-err",
+									Components: []*errorz.Summary{
+										{
+											Name:       "e2a",
+											Message:    "e2a-err",
+											HTTPStatus: 102,
+											Details: map[string]any{
+												"e2a": true,
+											},
+										},
+									},
+								},
+								{
+									Message: "e3",
+								},
+							},
+						},
+					},
+				},
+			},
+		}))
 
-	g.Expect(errorz.GetName(errorz.Wrap(fmt.Errorf("test error"), &fs.PathError{}, &os.LinkError{}), "error")).
-		To(Equal("*fs.PathError"))
+	g.Expect(errorz.GetSummary(e1a, true)).
+		To(Equal(&errorz.Summary{
+			Name:       "e1a",
+			Message:    "e1a-err",
+			HTTPStatus: 101,
+			Details: map[string]any{
+				"e1a": true,
+			},
+			Components: []*errorz.Summary{
+				{
+					Name:       "e1a",
+					Message:    "e1a-err",
+					HTTPStatus: 101,
+					Details: map[string]any{
+						"e1a": true,
+					},
+				},
+			},
+		}))
 
-	g.Expect(errorz.GetName(errors.Join(fmt.Errorf("test error"), &fs.PathError{}, &os.LinkError{}), "error")).
-		To(Equal("*fs.PathError"))
+	g.Expect(errorz.GetSummary(e1a, false)).
+		To(Equal(&errorz.Summary{
+			Name:       "e1a",
+			Message:    "e1a-err",
+			HTTPStatus: 101,
+			Details: map[string]any{
+				"e1a": true,
+			},
+		}))
 
-	g.Expect(errorz.GetName(errors.Join(fmt.Errorf("test error"), stringError(""), &fs.PathError{}), "error")).
-		To(Equal("string-error"))
+	g.Expect(errorz.GetSummary(e1b, true)).
+		To(Equal(&errorz.Summary{
+			Name:       "e1a",
+			Message:    "e1b: e1a-err",
+			HTTPStatus: 101,
+			Details: map[string]any{
+				"e1a": true,
+			},
+			Components: []*errorz.Summary{
+				{
+					Message: "e1b: e1a-err",
+					Components: []*errorz.Summary{
+						{
+							Name:       "e1a",
+							Message:    "e1a-err",
+							HTTPStatus: 101,
+							Details: map[string]any{
+								"e1a": true,
+							},
+						},
+					},
+				},
+			},
+		}))
 
-	g.Expect(errorz.GetName(errorz.Wrap(errors.Join(fmt.Errorf("test error"), &fs.PathError{}, &os.LinkError{})), "error")).
-		To(Equal("*fs.PathError"))
-
-	g.Expect(errorz.GetName(errorz.Wrap(fmt.Errorf("test error: %w", &fs.PathError{})), "error")).
-		To(Equal("*fs.PathError"))
-}
-
-func TestGetHTTPStatus(t *testing.T) {
-	g := NewWithT(t)
-
-	g.Expect(errorz.GetHTTPStatus(nil, http.StatusInternalServerError)).
-		To(Equal(http.StatusInternalServerError))
-
-	g.Expect(errorz.GetHTTPStatus(fmt.Errorf("test error"), http.StatusInternalServerError)).
-		To(Equal(http.StatusInternalServerError))
-
-	g.Expect(errorz.GetHTTPStatus(&structError{}, http.StatusInternalServerError)).
-		To(Equal(http.StatusBadRequest))
+	g.Expect(errorz.GetSummary(e1b, false)).
+		To(Equal(&errorz.Summary{
+			Name:       "e1a",
+			Message:    "e1b: e1a-err",
+			HTTPStatus: 101,
+			Details: map[string]any{
+				"e1a": true,
+			},
+		}))
 }

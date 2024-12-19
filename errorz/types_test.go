@@ -3,6 +3,7 @@ package errorz
 import (
 	"errors"
 	"fmt"
+	"os"
 	"sync"
 	"testing"
 
@@ -21,6 +22,42 @@ type stringError string
 
 func (e stringError) Error() string {
 	return string(e)
+}
+
+func TestGenericErrors(t *testing.T) {
+	g := NewWithT(t)
+
+	g.Expect(genericErrorsErrorStringName).To(Equal("*errors.errorString"))
+	g.Expect(genericErrorsJoinErrorName).To(Equal("*errors.joinError"))
+	g.Expect(genericFmtWrapErrorName).To(Equal("*fmt.wrapError"))
+	g.Expect(genericFmtWrapErrorsName).To(Equal("*fmt.wrapErrors"))
+}
+
+func TestIsGenericError(t *testing.T) {
+	g := NewWithT(t)
+
+	g.Expect(isGenericError(nil)).To(BeFalse())
+	g.Expect(isGenericError(fmt.Errorf("e"))).To(BeTrue())
+	g.Expect(isGenericError(errors.Join(fmt.Errorf("e")))).To(BeTrue())
+	g.Expect(isGenericError(fmt.Errorf("%w", fmt.Errorf("e")))).To(BeTrue())
+	g.Expect(isGenericError(fmt.Errorf("%w%w", fmt.Errorf("e"), fmt.Errorf("e")))).To(BeTrue())
+	g.Expect(isGenericError(&os.PathError{})).To(BeFalse())
+}
+
+func TestIsJoinError(t *testing.T) {
+	g := NewWithT(t)
+
+	g.Expect(isJoinError(nil)).To(BeFalse())
+	g.Expect(isJoinError(fmt.Errorf("e"))).To(BeFalse())
+	g.Expect(isJoinError(errors.Join(fmt.Errorf("e")))).To(BeTrue())
+}
+
+func TestIsWrapError(t *testing.T) {
+	g := NewWithT(t)
+
+	g.Expect(isWrapError(nil)).To(BeFalse())
+	g.Expect(isWrapError(fmt.Errorf("e"))).To(BeFalse())
+	g.Expect(isWrapError(Errorf("e"))).To(BeTrue())
 }
 
 func TestValueError(t *testing.T) {

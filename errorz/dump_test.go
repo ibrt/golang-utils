@@ -12,7 +12,7 @@ import (
 func TestDump(t *testing.T) {
 	g := NewWithT(t)
 
-	g.Expect(errorz.SDump(nil)).To(Equal("<nil>"))
+	g.Expect(errorz.SDump(nil)).To(Equal("[nil]"))
 	g.Expect(errorz.SDump(fmt.Errorf("e"))).ToNot(BeEmpty())
 	g.Expect(errorz.SDump(errorz.Errorf("e"))).ToNot(BeEmpty())
 }
