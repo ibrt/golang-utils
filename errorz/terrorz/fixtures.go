@@ -15,123 +15,77 @@ type TestDetailedError interface {
 }
 
 var (
-	_ TestDetailedError = (*testDetailedError)(nil)
+	_ TestDetailedError = (*TestDetailedErrorImpl)(nil)
 )
 
-type testDetailedError struct {
-	errorMessage string
-	name         string
-	httpStatus   int
-	details      map[string]any
-}
-
-// NewTestDetailedError initializes a new [TestDetailedError].
-func NewTestDetailedError(
-	errorMessage string,
-	name string,
-	httpStatus int,
-	details map[string]any,
-) TestDetailedError {
-	return &testDetailedError{
-		errorMessage: errorMessage,
-		name:         name,
-		httpStatus:   httpStatus,
-		details:      details,
-	}
+// TestDetailedErrorImpl is a simple implementation of [TestDetailedError] for test purposes.
+type TestDetailedErrorImpl struct {
+	ErrorMessage string
+	Name         string
+	HTTPStatus   int
+	Details      map[string]any
 }
 
 // Error implements the [TestDetailedError] interface.
-func (e *testDetailedError) Error() string {
-	return e.errorMessage
+func (e *TestDetailedErrorImpl) Error() string {
+	return e.ErrorMessage
 }
 
 // GetErrorName implements the [TestDetailedError] interface.
-func (e *testDetailedError) GetErrorName() string {
-	return e.name
+func (e *TestDetailedErrorImpl) GetErrorName() string {
+	return e.Name
 }
 
 // GetErrorHTTPStatus implements the [TestDetailedError] interface.
-func (e *testDetailedError) GetErrorHTTPStatus() int {
-	return e.httpStatus
+func (e *TestDetailedErrorImpl) GetErrorHTTPStatus() int {
+	return e.HTTPStatus
 }
 
 // GetErrorDetails implements the [TestDetailedError] interface.
-func (e *testDetailedError) GetErrorDetails() map[string]any {
-	return e.details
+func (e *TestDetailedErrorImpl) GetErrorDetails() map[string]any {
+	return e.Details
 }
 
 // TestDetailedErrorUnwrapSingle is a mock blueprint.
 type TestDetailedErrorUnwrapSingle interface {
-	error
-	errorz.ErrorName
-	errorz.ErrorHTTPStatus
-	errorz.ErrorDetails
+	TestDetailedError
 	errorz.UnwrapSingle
 }
 
 var (
-	_ TestDetailedErrorUnwrapSingle = (*testDetailedErrorUnwrapSingle)(nil)
+	_ TestDetailedErrorUnwrapSingle = (*TestDetailedErrorUnwrapSingleImpl)(nil)
 )
 
-type testDetailedErrorUnwrapSingle struct {
-	TestDetailedError
-	unwrapSingle error
-}
-
-// NewTestDetailedErrorUnwrapSingle initializes a new [TestDetailedErrorUnwrapSingle].
-func NewTestDetailedErrorUnwrapSingle(
-	errorMessage string,
-	name string,
-	httpStatus int,
-	details map[string]any,
-	unwrapSingle error,
-) TestDetailedErrorUnwrapSingle {
-	return &testDetailedErrorUnwrapSingle{
-		TestDetailedError: NewTestDetailedError(errorMessage, name, httpStatus, details),
-		unwrapSingle:      unwrapSingle,
-	}
+// TestDetailedErrorUnwrapSingleImpl is a simple implementation of [TestDetailedErrorUnwrapSingle] for test purposes.
+type TestDetailedErrorUnwrapSingleImpl struct {
+	*TestDetailedErrorImpl
+	UnwrapSingle error
 }
 
 // Unwrap implements the [TestDetailedErrorUnwrapSingle] interface.
-func (e *testDetailedErrorUnwrapSingle) Unwrap() error {
-	return e.unwrapSingle
+func (e *TestDetailedErrorUnwrapSingleImpl) Unwrap() error {
+	return e.UnwrapSingle
 }
 
 // TestDetailedErrorUnwrapMulti is a mock blueprint.
 type TestDetailedErrorUnwrapMulti interface {
-	error
-	errorz.ErrorName
-	errorz.ErrorHTTPStatus
-	errorz.ErrorDetails
+	TestDetailedError
 	errorz.UnwrapMulti
 }
 
 var (
-	_ TestDetailedErrorUnwrapMulti = (*testDetailedErrorUnwrapMulti)(nil)
+	_ TestDetailedErrorUnwrapMulti = (*TestDetailedErrorUnwrapMultiImpl)(nil)
 )
 
-type testDetailedErrorUnwrapMulti struct {
-	TestDetailedError
-	unwrapMulti []error
-}
-
-// NewTestDetailedErrorUnwrapMulti initializes a new [TestDetailedErrorUnwrapMulti].
-func NewTestDetailedErrorUnwrapMulti(
-	errorMessage string,
-	name string,
-	httpStatus int,
-	details map[string]any,
-	unwrapMulti []error,
-) TestDetailedErrorUnwrapMulti {
-	return &testDetailedErrorUnwrapMulti{
-		TestDetailedError: NewTestDetailedError(errorMessage, name, httpStatus, details),
-		unwrapMulti:       unwrapMulti,
-	}
+// TestDetailedErrorUnwrapMultiImpl is a simple implementation of [TestDetailedErrorUnwrapMulti] for test purposes.
+type TestDetailedErrorUnwrapMultiImpl struct {
+	*TestDetailedErrorImpl
+	UnwrapMulti []error
 }
 
 // Unwrap implements the [TestDetailedErrorUnwrapMulti] interface.
-func (e *testDetailedErrorUnwrapMulti) Unwrap() []error {
-	return e.unwrapMulti
+func (e *TestDetailedErrorUnwrapMultiImpl) Unwrap() []error {
+	return e.UnwrapMulti
 }
 
 // TestStringError is a test error.

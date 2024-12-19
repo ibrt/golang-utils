@@ -12,12 +12,12 @@ import (
 func TestTestDetailedError(t *testing.T) {
 	g := NewWithT(t)
 
-	e := terrorz.NewTestDetailedError(
-		"errorMessage",
-		"name",
-		500,
-		map[string]any{"k": "v"})
-
+	e := &terrorz.TestDetailedErrorImpl{
+		ErrorMessage: "errorMessage",
+		Name:         "name",
+		HTTPStatus:   500,
+		Details:      map[string]any{"k": "v"},
+	}
 	g.Expect(e.Error()).To(Equal("errorMessage"))
 	g.Expect(e.GetErrorName()).To(Equal("name"))
 	g.Expect(e.GetErrorHTTPStatus()).To(Equal(500))
@@ -27,13 +27,15 @@ func TestTestDetailedError(t *testing.T) {
 func TestTestDetailedErrorUnwrapSingle(t *testing.T) {
 	g := NewWithT(t)
 
-	e := terrorz.NewTestDetailedErrorUnwrapSingle(
-		"errorMessage",
-		"name",
-		500,
-		map[string]any{"k": "v"},
-		fmt.Errorf("innerErrorMessage"))
-
+	e := &terrorz.TestDetailedErrorUnwrapSingleImpl{
+		TestDetailedErrorImpl: &terrorz.TestDetailedErrorImpl{
+			ErrorMessage: "errorMessage",
+			Name:         "name",
+			HTTPStatus:   500,
+			Details:      map[string]any{"k": "v"},
+		},
+		UnwrapSingle: fmt.Errorf("innerErrorMessage"),
+	}
 	g.Expect(e.Error()).To(Equal("errorMessage"))
 	g.Expect(e.GetErrorName()).To(Equal("name"))
 	g.Expect(e.GetErrorHTTPStatus()).To(Equal(500))
@@ -44,13 +46,17 @@ func TestTestDetailedErrorUnwrapSingle(t *testing.T) {
 func TestTestDetailedErrorUnwrapMulti(t *testing.T) {
 	g := NewWithT(t)
 
-	e := terrorz.NewTestDetailedErrorUnwrapMulti(
-		"errorMessage",
-		"name",
-		500,
-		map[string]any{"k": "v"},
-		[]error{fmt.Errorf("innerErrorMessage")})
-
+	e := &terrorz.TestDetailedErrorUnwrapMultiImpl{
+		TestDetailedErrorImpl: &terrorz.TestDetailedErrorImpl{
+			ErrorMessage: "errorMessage",
+			Name:         "name",
+			HTTPStatus:   500,
+			Details:      map[string]any{"k": "v"},
+		},
+		UnwrapMulti: []error{
+			fmt.Errorf("innerErrorMessage"),
+		},
+	}
 	g.Expect(e.Error()).To(Equal("errorMessage"))
 	g.Expect(e.GetErrorName()).To(Equal("name"))
 	g.Expect(e.GetErrorHTTPStatus()).To(Equal(500))
