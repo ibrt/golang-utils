@@ -20,7 +20,7 @@ var (
 // SDump converts the error to a string representation for debug purposes.
 func SDump(err error) string {
 	if err == nil {
-		return "<nil>"
+		return "[nil]"
 	}
 
 	if e, ok := err.(*wrappedError); ok {
