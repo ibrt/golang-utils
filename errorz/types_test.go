@@ -3,6 +3,7 @@ package errorz
 import (
 	"errors"
 	"fmt"
+	"os"
 	"sync"
 	"testing"
 
@@ -47,9 +48,10 @@ func TestWrappedError(t *testing.T) {
 
 	e1 := fmt.Errorf("e")
 	err := &wrappedError{
-		m:      &sync.Mutex{},
-		errs:   []error{e1},
-		frames: GetFrames(nil),
+		m:        &sync.Mutex{},
+		errs:     []error{e1},
+		frames:   GetFrames(nil),
+		metadata: map[any]any{},
 	}
 	g.Expect(err.Error()).To(Equal("e"))
 	g.Expect(err.Unwrap()).To(HaveExactElements(e1))
@@ -64,11 +66,34 @@ func TestWrappedError(t *testing.T) {
 		var e *structError
 		g.Expect(errors.As(err, &e)).To(BeFalse())
 	}
+	{
+		type mk1 int
+		type mk2 int
+
+		const k1 mk1 = 0
+		const k2 mk2 = 0
+
+		v, ok := err.getMetadata(k1)
+		g.Expect(ok).To(BeFalse())
+		g.Expect(v).To(BeNil())
+
+		err.setMetadata(k1, 1)
+		err.setMetadata(k2, 2)
+
+		v, ok = err.getMetadata(k1)
+		g.Expect(ok).To(BeTrue())
+		g.Expect(v).To(Equal(1))
+
+		v, ok = err.getMetadata(k2)
+		g.Expect(ok).To(BeTrue())
+		g.Expect(v).To(Equal(2))
+	}
 
 	err = &wrappedError{
-		m:      &sync.Mutex{},
-		errs:   []error{stringError("e")},
-		frames: GetFrames(nil),
+		m:        &sync.Mutex{},
+		errs:     []error{stringError("e")},
+		frames:   GetFrames(nil),
+		metadata: map[any]any{},
 	}
 	g.Expect(err.Error()).To(Equal("e"))
 	g.Expect(err.Unwrap()).To(HaveExactElements(stringError("e")))
@@ -88,9 +113,10 @@ func TestWrappedError(t *testing.T) {
 
 	e2 := &structError{k: "e"}
 	err = &wrappedError{
-		m:      &sync.Mutex{},
-		errs:   []error{e2},
-		frames: GetFrames(nil),
+		m:        &sync.Mutex{},
+		errs:     []error{e2},
+		frames:   GetFrames(nil),
+		metadata: map[any]any{},
 	}
 	g.Expect(err.Error()).To(Equal("e"))
 	g.Expect(err.Unwrap()).To(HaveExactElements(e2))
@@ -113,9 +139,10 @@ func TestWrappedError(t *testing.T) {
 	e4 := fmt.Errorf("o1")
 	e5 := stringError("o2")
 	err = &wrappedError{
-		m:      &sync.Mutex{},
-		errs:   []error{e3, e4, e5},
-		frames: GetFrames(nil),
+		m:        &sync.Mutex{},
+		errs:     []error{e3, e4, e5},
+		frames:   GetFrames(nil),
+		metadata: map[any]any{},
 	}
 	g.Expect(err.Error()).To(Equal("o2: o1: e"))
 	g.Expect(err.Unwrap()).To(HaveExactElements(e3, e4, e5))
@@ -141,4 +168,40 @@ func TestWrappedError(t *testing.T) {
 
 	g.Expect(func() { _ = (*wrappedError)(nil).Error() }).To(Panic())
 	g.Expect((*wrappedError)(nil).Unwrap()).To(BeNil())
+}
+
+func TestGenericErrors(t *testing.T) {
+	g := NewWithT(t)
+
+	g.Expect(genericErrorsErrorStringName).To(Equal("*errors.errorString"))
+	g.Expect(genericErrorsJoinErrorName).To(Equal("*errors.joinError"))
+	g.Expect(genericFmtWrapErrorName).To(Equal("*fmt.wrapError"))
+	g.Expect(genericFmtWrapErrorsName).To(Equal("*fmt.wrapErrors"))
+}
+
+func TestIsGenericError(t *testing.T) {
+	g := NewWithT(t)
+
+	g.Expect(isGenericError(nil)).To(BeFalse())
+	g.Expect(isGenericError(fmt.Errorf("e"))).To(BeTrue())
+	g.Expect(isGenericError(errors.Join(fmt.Errorf("e")))).To(BeTrue())
+	g.Expect(isGenericError(fmt.Errorf("%w", fmt.Errorf("e")))).To(BeTrue())
+	g.Expect(isGenericError(fmt.Errorf("%w%w", fmt.Errorf("e"), fmt.Errorf("e")))).To(BeTrue())
+	g.Expect(isGenericError(&os.PathError{})).To(BeFalse())
+}
+
+func TestIsJoinError(t *testing.T) {
+	g := NewWithT(t)
+
+	g.Expect(isJoinError(nil)).To(BeFalse())
+	g.Expect(isJoinError(fmt.Errorf("e"))).To(BeFalse())
+	g.Expect(isJoinError(errors.Join(fmt.Errorf("e")))).To(BeTrue())
+}
+
+func TestIsWrapError(t *testing.T) {
+	g := NewWithT(t)
+
+	g.Expect(isWrapError(nil)).To(BeFalse())
+	g.Expect(isWrapError(fmt.Errorf("e"))).To(BeFalse())
+	g.Expect(isWrapError(Errorf("e"))).To(BeTrue())
 }

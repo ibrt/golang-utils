@@ -1,11 +1,28 @@
 package errorz
 
 import (
+	"errors"
 	"fmt"
+	"reflect"
 	"slices"
 	"strings"
 	"sync"
 )
+
+// ErrorName can be implemented by errors to return a name different from their Go type.
+type ErrorName interface {
+	GetErrorName() string
+}
+
+// ErrorHTTPStatus can be implemented by errors to attach an HTTP status to themselves.
+type ErrorHTTPStatus interface {
+	GetErrorHTTPStatus() int
+}
+
+// ErrorDetails can be implemented by errors to export some additional, human-readable information about the error.
+type ErrorDetails interface {
+	GetErrorDetails() map[string]any
+}
 
 // UnwrapSingle describes a method which returns a single error.
 type UnwrapSingle interface {
@@ -98,4 +115,45 @@ func (e *wrappedError) getMetadata(k any) (any, bool) {
 
 	v, ok := e.metadata[k]
 	return v, ok
+}
+
+var (
+	genericErrorsErrorString     = reflect.TypeOf(fmt.Errorf("e"))
+	genericErrorsErrorStringName = genericErrorsErrorString.String()
+	genericErrorsJoinError       = reflect.TypeOf(errors.Join(fmt.Errorf("e")))
+	genericErrorsJoinErrorName   = genericErrorsJoinError.String()
+	genericFmtWrapError          = reflect.TypeOf(fmt.Errorf("%w", fmt.Errorf("e")))
+	genericFmtWrapErrorName      = genericFmtWrapError.String()
+	genericFmtWrapErrors         = reflect.TypeOf(fmt.Errorf("%w%w", fmt.Errorf("e"), fmt.Errorf("e")))
+	genericFmtWrapErrorsName     = genericFmtWrapErrors.String()
+)
+
+func isGenericError(err error) bool {
+	if err == nil {
+		return false
+	}
+
+	switch reflect.TypeOf(err) {
+	case genericErrorsErrorString, genericErrorsJoinError, genericFmtWrapError, genericFmtWrapErrors:
+		return true
+	default:
+		return false
+	}
+}
+
+func isJoinError(err error) bool {
+	if err == nil {
+		return false
+	}
+
+	return reflect.TypeOf(err) == genericErrorsJoinError
+}
+
+func isWrapError(err error) bool {
+	if err == nil {
+		return false
+	}
+
+	_, ok := err.(*wrappedError)
+	return ok
 }

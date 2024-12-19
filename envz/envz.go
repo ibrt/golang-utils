@@ -1,3 +1,4 @@
+// Package envz provides various utilities for working with environment variables.
 package envz
 
 import (
