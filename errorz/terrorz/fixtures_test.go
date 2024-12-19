@@ -57,3 +57,9 @@ func TestTestDetailedErrorUnwrapMulti(t *testing.T) {
 	g.Expect(e.GetErrorDetails()).To(Equal(map[string]any{"k": "v"}))
 	g.Expect(e.Unwrap()).To(Equal([]error{fmt.Errorf("innerErrorMessage")}))
 }
+
+func TestTestStringError(t *testing.T) {
+	g := NewWithT(t)
+	
+	g.Expect(terrorz.TestStringError("errorMessage").Error()).To(Equal("errorMessage"))
+}

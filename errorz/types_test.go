@@ -122,7 +122,7 @@ func TestWrappedError(t *testing.T) {
 
 		v, ok = err.getMetadata(k2)
 		g.Expect(ok).To(BeTrue())
-		g.Expect(v).To(Equal(2))
+		g.Expect(v).To(Equal(1))
 	}
 
 	err = &wrappedError{

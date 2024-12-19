@@ -133,3 +133,11 @@ func NewTestDetailedErrorUnwrapMulti(
 func (e *testDetailedErrorUnwrapMulti) Unwrap() []error {
 	return e.unwrapMulti
 }
+
+// TestStringError is a test error.
+type TestStringError string
+
+// Error implements the [error] interface.
+func (s TestStringError) Error() string {
+	return string(s)
+}
