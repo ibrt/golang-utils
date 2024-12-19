@@ -60,6 +60,6 @@ func TestTestDetailedErrorUnwrapMulti(t *testing.T) {
 
 func TestTestStringError(t *testing.T) {
 	g := NewWithT(t)
-	
+
 	g.Expect(terrorz.TestStringError("errorMessage").Error()).To(Equal("errorMessage"))
 }
