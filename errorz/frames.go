@@ -106,6 +106,7 @@ func GetFrames(err error) Frames {
 		callerFrame, more := callersFrames.Next()
 		frame := NewFrame(callerFrame.Function, callerFrame.File, callerFrame.Line)
 
+		// TODO(ibrt): Improve package detection.
 		if frame.ShortPackage == "errorz" {
 			continue
 		}

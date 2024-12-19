@@ -17,7 +17,7 @@ var (
 	}
 )
 
-// SDump converts the error to a string representation for debug purposes.
+// SDump converts the error to an extremely detailed string representation for debug purposes.
 func SDump(err error) string {
 	if err == nil {
 		return "[nil]"

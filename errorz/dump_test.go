@@ -9,7 +9,7 @@ import (
 	"github.com/ibrt/golang-utils/errorz"
 )
 
-func TestDump(t *testing.T) {
+func TestSDump(t *testing.T) {
 	g := NewWithT(t)
 
 	g.Expect(errorz.SDump(nil)).To(Equal("[nil]"))
