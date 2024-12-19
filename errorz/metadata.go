@@ -1,20 +1,5 @@
 package errorz
 
-// ErrorName can be implemented by errors to return a name different from their Go type.
-type ErrorName interface {
-	GetErrorName() string
-}
-
-// ErrorHTTPStatus can be implemented by errors to attach an HTTP status to themselves.
-type ErrorHTTPStatus interface {
-	GetErrorHTTPStatus() int
-}
-
-// ErrorDetails can be implemented by errors to export some additional, human-readable information about the error.
-type ErrorDetails interface {
-	GetErrorDetails() map[string]any
-}
-
 // MaybeSetMetadata sets the given metadata (k, v) on the error if it has been wrapped, does nothing otherwise.
 func MaybeSetMetadata(err error, k, v any) {
 	if e, ok := err.(*wrappedError); ok {
