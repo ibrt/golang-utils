@@ -12,6 +12,7 @@ linters:
     - errorlint
     - exhaustruct
     - forcetypeassert
+    - makezero
     - gci
     - ginkgolinter
     - gocheckcompilerdirectives
