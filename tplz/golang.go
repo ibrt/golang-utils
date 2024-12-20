@@ -15,7 +15,8 @@ func ExecuteGo(template *ttpl.Template, data any) ([]byte, error) {
 		return nil, errorz.Wrap(err)
 	}
 
-	return format.Source(buf.Bytes())
+	fBuf, err := format.Source(buf.Bytes())
+	return fBuf, errorz.MaybeWrap(err)
 }
 
 // MustExecuteGo is like [ExecuteGo] but panics on error.

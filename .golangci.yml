@@ -48,6 +48,7 @@ linters:
     - usestdlibvars
     - wastedassign
     - whitespace
+    - wrapcheck
 linters-settings:
   exhaustive:
     check:
@@ -91,6 +92,11 @@ linters-settings:
   whitespace:
     multi-func: true
     multi-if: true
+  wrapcheck:
+    ignoreSigs:
+      - 'errorz.Wrap'
+      - 'errorz.MaybeWrap'
+      - 'errorz.Errorf'
 issues:
   max-issues-per-linter: 0
   max-same-issues: 0
@@ -101,3 +107,4 @@ issues:
         - exhaustruct
         - forcetypeassert
         - goconst
+        - wrapcheck
