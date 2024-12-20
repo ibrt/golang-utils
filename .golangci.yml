@@ -1,0 +1,24 @@
+linters:
+  disable-all: true
+  enable:
+    - copyloopvar
+    - errcheck
+    - gci
+    - gosimple
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+linters-settings:
+  gci:
+    sections:
+      - standard
+      - default
+      - localmodule
+  gofmt:
+    rewrite-rules:
+      - pattern: 'interface{}'
+        replacement: 'any'

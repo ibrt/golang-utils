@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/ibrt/golang-utils/errorz/terrorz"
 	. "github.com/onsi/gomega"
 
 	"github.com/ibrt/golang-utils/errorz"
+	"github.com/ibrt/golang-utils/errorz/terrorz"
 )
 
 func TestGetSummary(t *testing.T) {

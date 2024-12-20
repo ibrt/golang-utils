@@ -133,7 +133,7 @@ func ResetOutputCapture() {
 
 	if isCapturing {
 		func() {
-			defer func() { recover() }()
+			defer func() { _ = recover() }()
 			mustFlush()
 		}()
 	}
