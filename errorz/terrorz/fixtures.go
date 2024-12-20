@@ -1,5 +1,6 @@
-//go:generate go run go.uber.org/mock/mockgen@v0.5.0 -typed -source ./fixtures.go -destination ./mocks.gen.go -package terrorz
+//go:generate go run go.uber.org/mock/mockgen@v0.5.0 -typed -write_package_comment=false -source ./fixtures.go -destination ./mocks.gen.go -package terrorz
 
+// Package terrorz provides test fixtures for the "errorz" package.
 package terrorz
 
 import (

@@ -1,5 +1,6 @@
-//go:generate go run go.uber.org/mock/mockgen@v0.5.0 -typed -source ./fixtures.go -destination ./mocks.gen.go -package tinjectz
+//go:generate go run go.uber.org/mock/mockgen@v0.5.0 -typed -write_package_comment=false -source ./fixtures.go -destination ./mocks.gen.go -package tinjectz
 
+// Package tinjectz provides test fixtures for the "injectz" package.
 package tinjectz
 
 import (
