@@ -28,6 +28,9 @@ linters:
     - makezero
     - mirror
     - misspell
+    - musttag
+    - noctx
+    - nolintlint
     - staticcheck
     - stylecheck
     - testpackage
