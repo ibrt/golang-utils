@@ -35,6 +35,10 @@ linters:
     - nosprintfhostport
     - predeclared
     - protogetter
+    - recvcheck
+    - rowserrcheck
+    - sqlclosecheck
+    - testableexamples
     - staticcheck
     - stylecheck
     - testpackage
