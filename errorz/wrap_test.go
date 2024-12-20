@@ -315,20 +315,3 @@ func TestUnwrap(t *testing.T) {
 	g.Expect(errorz.Unwrap(fmt.Errorf("e2: %w", fmt.Errorf("e1")))).
 		To(HaveExactElements(fmt.Errorf("e1")))
 }
-
-func TestFlatten(t *testing.T) {
-	g := NewWithT(t)
-
-	e1a := fmt.Errorf("e1a")
-	e1b := fmt.Errorf("e1b: %w", e1a)
-	e2a := fmt.Errorf("e2a")
-	e2b := fmt.Errorf("e2b: %w", e2a)
-	e3 := fmt.Errorf("e3")
-	e4 := errors.Join(e2b, e3)
-	e5 := errorz.Wrap(e1b, e4)
-
-	g.Expect(errorz.Flatten(e5)).To(
-		HaveExactElements(e1a, e1b, e2a, e2b, e3, e4, e5))
-
-	g.Expect(errorz.Flatten(nil)).To(BeNil())
-}

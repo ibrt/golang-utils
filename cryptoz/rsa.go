@@ -83,8 +83,9 @@ func RSAPrivateKeyToPEM(key *rsa.PrivateKey) []byte {
 	errorz.MaybeMustWrap(err) // never triggers because we already checked the key type
 
 	return pem.EncodeToMemory(&pem.Block{
-		Type:  privateKeyHeader,
-		Bytes: buf,
+		Type:    privateKeyHeader,
+		Headers: nil,
+		Bytes:   buf,
 	})
 }
 
@@ -94,7 +95,8 @@ func RSAPublicKeyToPEM(key *rsa.PublicKey) []byte {
 	errorz.MaybeMustWrap(err) // never triggers because we already checked the key type
 
 	return pem.EncodeToMemory(&pem.Block{
-		Type:  publicKeyHeader,
-		Bytes: buf,
+		Type:    publicKeyHeader,
+		Headers: nil,
+		Bytes:   buf,
 	})
 }

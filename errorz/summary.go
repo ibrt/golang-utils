@@ -20,8 +20,10 @@ func GetSummary(err error, includeComponents bool) *Summary {
 	}
 
 	s := &Summary{
-		Message: err.Error(),
-		Details: make(map[string]any),
+		Name:       "",
+		Message:    err.Error(),
+		HTTPStatus: 0,
+		Details:    make(map[string]any),
 		Components: []*Summary{
 			getSummaryInternal(err),
 		},
@@ -54,6 +56,7 @@ func getSummaryInternal(err error) *Summary {
 		Message:    err.Error(),
 		HTTPStatus: maybeGetHTTPStatus(err),
 		Details:    maybeGetDetails(err),
+		Components: nil,
 	}
 
 	switch {

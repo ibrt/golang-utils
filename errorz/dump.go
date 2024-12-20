@@ -9,11 +9,14 @@ import (
 var (
 	spewConfig = &spew.ConfigState{
 		Indent:                  "    ",
+		MaxDepth:                0,
 		DisableMethods:          true,
 		DisablePointerMethods:   true,
 		DisablePointerAddresses: true,
 		DisableCapacities:       true,
+		ContinueOnMethod:        false,
 		SortKeys:                true,
+		SpewKeys:                false,
 	}
 )
 

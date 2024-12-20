@@ -73,7 +73,9 @@ func NewValidationError(err error) *ValidationError {
 	}
 
 	return &ValidationError{
-		otherError: err,
+		fieldsSummary:    nil,
+		validationErrors: nil,
+		otherError:       err,
 	}
 }
 

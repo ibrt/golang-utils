@@ -3,11 +3,14 @@ linters:
   enable:
     - asciicheck
     - bidichk
+    - bodyclose
+    - canonicalheader
     - contextcheck
     - copyloopvar
     - errcheck
     - errname
     - errorlint
+    - exhaustruct
     - forcetypeassert
     - gci
     - gosimple

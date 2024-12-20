@@ -120,31 +120,3 @@ func Unwrap(err error) []error {
 		return nil
 	}
 }
-
-// Flatten recursively unwraps the error and returns a slice of all unwrapped errors, from innermost to outermost.
-func Flatten(err error) []error {
-	f := &flattener{}
-	f.flatten(err)
-	return f.errs
-}
-
-type flattener struct {
-	errs []error
-}
-
-func (f *flattener) flatten(err error) {
-	if err == nil {
-		return
-	}
-
-	switch e := err.(type) { //nolint:errorlint
-	case UnwrapMulti:
-		for _, ee := range e.Unwrap() {
-			f.flatten(ee)
-		}
-	case UnwrapSingle:
-		f.flatten(e.Unwrap())
-	}
-
-	f.errs = append(f.errs, err)
-}
