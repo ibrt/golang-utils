@@ -8,6 +8,7 @@ linters:
     - errcheck
     - errname
     - errorlint
+    - forcetypeassert
     - gci
     - gosimple
     - govet
@@ -20,10 +21,6 @@ linters:
     - unparam
     - unused
     - whitespace
-issues:
-  exclude-use-default: false
-  max-issues-per-linter: 0
-  max-same-issues: 0
 linters-settings:
   gci:
     sections:
@@ -44,3 +41,12 @@ linters-settings:
   whitespace:
     multi-func: true
     multi-if: true
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+  exclude-use-default: false
+  exclude-rules:
+    - path: '_test\.go'
+      linters:
+        - exhaustruct
+        - forcetypeassert

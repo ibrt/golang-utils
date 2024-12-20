@@ -9,7 +9,7 @@ func MaybeSetMetadata(err error, k, v any) {
 
 // MustGetMetadata gets the given metadata key from the error, panics if not found or wrong type.
 func MustGetMetadata[T any](err error, k any) T {
-	return err.(*wrappedError).metadata[k].(T) //nolint:errorlint
+	return err.(*wrappedError).metadata[k].(T) //nolint:errorlint,forcetypeassert
 }
 
 // MaybeGetMetadata tries to get the given metadata key from the error.

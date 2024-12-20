@@ -98,8 +98,10 @@ func (f *HumanLogFormatter) prepareField(k string, v any) (string, any, bool) {
 	case "name":
 		return "", nil, false
 	case "duration_ms":
-		k = "duration"
-		v = time.Duration(v.(float64)) * time.Millisecond
+		if vv, ok := v.(float64); ok {
+			k = "duration"
+			v = time.Duration(vv) * time.Millisecond
+		}
 	}
 
 	if vv := reflect.Indirect(reflect.ValueOf(v)); vv.IsValid() {
