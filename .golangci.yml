@@ -29,8 +29,12 @@ linters:
     - mirror
     - misspell
     - musttag
+    - nakedret
     - noctx
     - nolintlint
+    - nosprintfhostport
+    - predeclared
+    - protogetter
     - staticcheck
     - stylecheck
     - testpackage
@@ -75,6 +79,8 @@ linters-settings:
     var-require-grouping: true
   inamedparam:
     skip-single-param: false
+  nakedret:
+    max-func-lines: 1
   whitespace:
     multi-func: true
     multi-if: true
