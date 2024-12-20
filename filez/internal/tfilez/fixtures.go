@@ -1,3 +1,4 @@
+// Package tfilez provides test fixtures for the "filez" package.
 package tfilez
 
 import (
