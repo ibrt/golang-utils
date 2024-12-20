@@ -30,7 +30,7 @@ func NewCountingReader(r io.Reader) *CountingReader {
 func (c *CountingReader) Read(p []byte) (int, error) {
 	n, err := c.r.Read(p)
 	c.counter.Add(int64(n))
-	return n, err
+	return n, err //nolint:wrapcheck
 }
 
 // Count returns the number of bytes read.

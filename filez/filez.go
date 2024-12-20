@@ -116,7 +116,8 @@ func MustCheckPathExists(fileOrDirPath string) bool {
 	return true
 }
 
-// MustCheckFileExists checks if the given path exists and is a regular file, panics on errors other than [os.ErrNotExist].
+// MustCheckFileExists checks if the given path exists and is a regular file, panics on errors other than
+// [os.ErrNotExist].
 func MustCheckFileExists(fileOrDirPath string) bool {
 	stat, err := os.Stat(fileOrDirPath)
 	if err != nil {
@@ -153,7 +154,9 @@ func MustExport(eFS embed.FS, rootDirPath string, outDirPath string) {
 		if d.Type().IsRegular() {
 			buf, err := eFS.ReadFile(path)
 			errorz.MaybeMustWrap(err)
-			MustWriteFile(MustAbs(filepath.Join(outDirPath, strings.TrimPrefix(path, rootDirPath+"/"))), 0777, 0666, buf)
+			MustWriteFile(
+				MustAbs(filepath.Join(outDirPath, strings.TrimPrefix(path, rootDirPath+"/"))),
+				0777, 0666, buf)
 		}
 
 		return nil

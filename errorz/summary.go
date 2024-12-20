@@ -20,8 +20,10 @@ func GetSummary(err error, includeComponents bool) *Summary {
 	}
 
 	s := &Summary{
-		Message: err.Error(),
-		Details: make(map[string]any),
+		Name:       "",
+		Message:    err.Error(),
+		HTTPStatus: 0,
+		Details:    make(map[string]any),
 		Components: []*Summary{
 			getSummaryInternal(err),
 		},
@@ -54,6 +56,7 @@ func getSummaryInternal(err error) *Summary {
 		Message:    err.Error(),
 		HTTPStatus: maybeGetHTTPStatus(err),
 		Details:    maybeGetDetails(err),
+		Components: nil,
 	}
 
 	switch {
@@ -65,7 +68,7 @@ func getSummaryInternal(err error) *Summary {
 		s.Message = ""
 	}
 
-	switch e := err.(type) {
+	switch e := err.(type) { //nolint:errorlint
 	case UnwrapMulti:
 		for _, uErr := range e.Unwrap() {
 			if uErr != nil {
@@ -75,7 +78,6 @@ func getSummaryInternal(err error) *Summary {
 	case UnwrapSingle:
 		if uErr := e.Unwrap(); uErr != nil {
 			s.Components = append(s.Components, getSummaryInternal(uErr))
-
 		}
 	}
 

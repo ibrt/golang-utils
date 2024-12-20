@@ -23,7 +23,8 @@ func PtrZeroToNil[T comparable](v T) *T {
 	return &v
 }
 
-// PtrZeroToNilIfTrue returns a pointer to the given value if different from the zero-value and cond is true, nil otherwise.
+// PtrZeroToNilIfTrue returns a pointer to the given value if different from the zero-value and cond is true, nil
+// otherwise.
 func PtrZeroToNilIfTrue[T comparable](cond bool, v T) *T {
 	var z T
 	if !cond || v == z {

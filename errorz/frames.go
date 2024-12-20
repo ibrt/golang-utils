@@ -29,10 +29,15 @@ func NewFrame(frameFunction string, file string, line int) *Frame {
 	}
 
 	f := &Frame{
-		Summary:     fileAndLine,
-		FileAndLine: fileAndLine,
-		File:        file,
-		Line:        line,
+		Summary:       fileAndLine,
+		Location:      "",
+		ShortLocation: "",
+		Package:       "",
+		ShortPackage:  "",
+		Function:      "",
+		FileAndLine:   fileAndLine,
+		File:          file,
+		Line:          line,
 	}
 
 	if frameFunction != "" {
@@ -92,7 +97,7 @@ func (f Frames) ToSummaries() []string {
 
 // GetFrames returns the frames from the error, or the current frames the error is not wrapped or is nil.
 func GetFrames(err error) Frames {
-	if e, ok := err.(*wrappedError); ok {
+	if e, ok := err.(*wrappedError); ok { //nolint:errorlint
 		return e.frames
 	}
 

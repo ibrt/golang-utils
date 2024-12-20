@@ -24,7 +24,8 @@ func init() {
 	})
 
 	MustRegisterValidator("kind-struct-or-struct-ptr", func(fl validator.FieldLevel) bool {
-		return fl.Field().Kind() == reflect.Struct || (fl.Field().Kind() == reflect.Pointer && fl.Field().Elem().Kind() == reflect.Struct)
+		return fl.Field().Kind() == reflect.Struct ||
+			(fl.Field().Kind() == reflect.Pointer && fl.Field().Elem().Kind() == reflect.Struct)
 	})
 }
 
@@ -73,7 +74,9 @@ func NewValidationError(err error) *ValidationError {
 	}
 
 	return &ValidationError{
-		otherError: err,
+		fieldsSummary:    nil,
+		validationErrors: nil,
+		otherError:       err,
 	}
 }
 

@@ -15,12 +15,12 @@ import (
 var (
 	_ error                  = (*structError)(nil)
 	_ error                  = stringError("")
-	_ error                  = (*wrapSingle)(nil)
-	_ error                  = (*wrapMulti)(nil)
+	_ error                  = (*wrapSingleError)(nil)
+	_ error                  = (*wrapMultiError)(nil)
 	_ errorz.ErrorName       = stringError("")
 	_ errorz.ErrorHTTPStatus = (*structError)(nil)
-	_ errorz.UnwrapSingle    = (*wrapSingle)(nil)
-	_ errorz.UnwrapMulti     = (*wrapMulti)(nil)
+	_ errorz.UnwrapSingle    = (*wrapSingleError)(nil)
+	_ errorz.UnwrapMulti     = (*wrapMultiError)(nil)
 )
 
 type structError struct {
@@ -45,26 +45,26 @@ func (e stringError) GetErrorName() string {
 	return "string-error"
 }
 
-type wrapSingle struct {
+type wrapSingleError struct {
 	err error
 }
 
-func (e *wrapSingle) Error() string {
+func (e *wrapSingleError) Error() string {
 	if e.err != nil {
 		return e.err.Error()
 	}
 	return "<empty>"
 }
 
-func (e *wrapSingle) Unwrap() error {
+func (e *wrapSingleError) Unwrap() error {
 	return e.err
 }
 
-type wrapMulti struct {
+type wrapMultiError struct {
 	errs []error
 }
 
-func (e *wrapMulti) Error() string {
+func (e *wrapMultiError) Error() string {
 	if len(e.errs) > 0 {
 		ms := make([]string, 0, len(e.errs))
 
@@ -78,7 +78,7 @@ func (e *wrapMulti) Error() string {
 	return "<empty>"
 }
 
-func (e *wrapMulti) Unwrap() []error {
+func (e *wrapMultiError) Unwrap() []error {
 	return e.errs
 }
 
@@ -90,12 +90,12 @@ func TestWrap(t *testing.T) {
 	e3 := stringError("o2")
 
 	err := errorz.Wrap(e1, e2)
-	g.Expect(err).ToNot(BeNil())
+	g.Expect(err).To(HaveOccurred())
 	g.Expect(err.Error()).To(Equal("o1: e"))
 	g.Expect(err.(errorz.UnwrapMulti).Unwrap()).To(HaveExactElements(e1, e2))
 
 	err = errorz.Wrap(err, nil, e3)
-	g.Expect(err).ToNot(BeNil())
+	g.Expect(err).To(HaveOccurred())
 	g.Expect(err.Error()).To(Equal("o2: o1: e"))
 	g.Expect(err.(errorz.UnwrapMulti).Unwrap()).To(HaveExactElements(e1, e2, e3))
 
@@ -109,11 +109,11 @@ func TestMaybeWrap(t *testing.T) {
 	e2 := &structError{k: "o1"}
 
 	err := errorz.MaybeWrap(e1, e2)
-	g.Expect(err).ToNot(BeNil())
+	g.Expect(err).To(HaveOccurred())
 	g.Expect(err.Error()).To(Equal("o1: e"))
 
 	err = errorz.MaybeWrap(nil)
-	g.Expect(err).To(BeNil())
+	g.Expect(err).To(Succeed())
 }
 
 func TestMustWrap(t *testing.T) {
@@ -143,11 +143,11 @@ func TestWrapRecover(t *testing.T) {
 	e2 := &structError{k: "o1"}
 
 	err := errorz.WrapRecover(e1, e2)
-	g.Expect(err).ToNot(BeNil())
+	g.Expect(err).To(HaveOccurred())
 	g.Expect(err.Error()).To(Equal("o1: e"))
 
 	err = errorz.WrapRecover("e", e2)
-	g.Expect(err).ToNot(BeNil())
+	g.Expect(err).To(HaveOccurred())
 	g.Expect(err.Error()).To(Equal("o1: e"))
 
 	g.Expect(func() { _ = errorz.WrapRecover(nil) }).To(PanicWith(MatchError("r is nil")))
@@ -160,11 +160,11 @@ func TestMaybeWrapRecover(t *testing.T) {
 	e2 := &structError{k: "o1"}
 
 	err := errorz.MaybeWrapRecover(e1, e2)
-	g.Expect(err).ToNot(BeNil())
+	g.Expect(err).To(HaveOccurred())
 	g.Expect(err.Error()).To(Equal("o1: e"))
 
 	err = errorz.MaybeWrapRecover("e", e2)
-	g.Expect(err).ToNot(BeNil())
+	g.Expect(err).To(HaveOccurred())
 	g.Expect(err.Error()).To(Equal("o1: e"))
 
 	g.Expect(func() { _ = errorz.MaybeWrapRecover(nil) }).ToNot(Panic())
@@ -305,8 +305,8 @@ func TestUnwrap(t *testing.T) {
 	g := NewWithT(t)
 
 	g.Expect(errorz.Unwrap(nil)).To(BeNil())
-	g.Expect(errorz.Unwrap(&wrapSingle{})).To(BeNil())
-	g.Expect(errorz.Unwrap(&wrapMulti{})).To(BeNil())
+	g.Expect(errorz.Unwrap(&wrapSingleError{})).To(BeNil())
+	g.Expect(errorz.Unwrap(&wrapMultiError{})).To(BeNil())
 	g.Expect(errorz.Unwrap(fmt.Errorf("e1"))).To(BeNil())
 
 	g.Expect(errorz.Unwrap(errors.Join(fmt.Errorf("e1"), fmt.Errorf("e2")))).
@@ -314,21 +314,4 @@ func TestUnwrap(t *testing.T) {
 
 	g.Expect(errorz.Unwrap(fmt.Errorf("e2: %w", fmt.Errorf("e1")))).
 		To(HaveExactElements(fmt.Errorf("e1")))
-}
-
-func TestFlatten(t *testing.T) {
-	g := NewWithT(t)
-
-	e1a := fmt.Errorf("e1a")
-	e1b := fmt.Errorf("e1b: %w", e1a)
-	e2a := fmt.Errorf("e2a")
-	e2b := fmt.Errorf("e2b: %w", e2a)
-	e3 := fmt.Errorf("e3")
-	e4 := errors.Join(e2b, e3)
-	e5 := errorz.Wrap(e1b, e4)
-
-	g.Expect(errorz.Flatten(e5)).To(
-		HaveExactElements(e1a, e1b, e2a, e2b, e3, e4, e5))
-
-	g.Expect(errorz.Flatten(nil)).To(BeNil())
 }

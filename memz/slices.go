@@ -14,7 +14,8 @@ func SafeSliceIndexZero[T any](s []T, i int) T {
 	return s[i]
 }
 
-// SafeSliceIndexDef indexes a slice, supports negative indexes (from end), and returns a default value instead of panic.
+// SafeSliceIndexDef indexes a slice, supports negative indexes (from end), and returns a default value instead of
+// panic.
 func SafeSliceIndexDef[T any](s []T, i int, d T) T {
 	if i < 0 {
 		i = len(s) + i
@@ -27,7 +28,8 @@ func SafeSliceIndexDef[T any](s []T, i int, d T) T {
 	return s[i]
 }
 
-// SafeSliceIndexPtr indexes a slice, supports negative indexes (from end), and returns pointer to value instead of panic.
+// SafeSliceIndexPtr indexes a slice, supports negative indexes (from end), and returns pointer to value instead of
+// panic.
 func SafeSliceIndexPtr[T any](s []T, i int) *T {
 	if i < 0 {
 		i = len(s) + i

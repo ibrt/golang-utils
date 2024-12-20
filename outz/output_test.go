@@ -48,7 +48,7 @@ func (*OutputSuite) TestOutputCapture_FatihColor_False(g *WithT) {
 
 	outz.MustBeginOutputCapture(outz.GetOutputSetupFatihColor(false))
 
-	g.Expect(outz.DefaultStyles.Default().Printf("<out>"))
+	g.Expect(outz.DefaultStyles.Default().Printf("<out>")).Error().To(Succeed())
 	g.Expect(fmt.Fprint(color.Output, "<out>")).Error().To(Succeed())
 	g.Expect(fmt.Fprint(color.Error, "<err>")).Error().To(Succeed())
 
@@ -68,7 +68,7 @@ func (*OutputSuite) TestOutputCapture_FatihColor_True(g *WithT) {
 
 	outz.MustBeginOutputCapture(outz.GetOutputSetupFatihColor(true))
 
-	g.Expect(outz.DefaultStyles.Default().Printf("<out>"))
+	g.Expect(outz.DefaultStyles.Default().Printf("<out>")).Error().To(Succeed())
 	g.Expect(fmt.Fprint(color.Output, "<out>")).Error().To(Succeed())
 	g.Expect(fmt.Fprint(color.Error, "<err>")).Error().To(Succeed())
 

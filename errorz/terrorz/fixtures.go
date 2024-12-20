@@ -1,5 +1,6 @@
-//go:generate go run go.uber.org/mock/mockgen@v0.5.0 -typed -source ./fixtures.go -destination ./mocks.gen.go -package terrorz
+//go:generate go run go.uber.org/mock/mockgen@v0.5.0 -typed -write_package_comment=false -source ./fixtures.go -destination ./mocks.gen.go -package terrorz
 
+// Package terrorz provides test fixtures for the "errorz" package.
 package terrorz
 
 import (
@@ -15,11 +16,11 @@ type TestDetailedError interface {
 }
 
 var (
-	_ TestDetailedError = (*TestDetailedErrorImpl)(nil)
+	_ TestDetailedError = (*SimpleMockTestDetailedError)(nil)
 )
 
-// TestDetailedErrorImpl is a simple implementation of [TestDetailedError] for test purposes.
-type TestDetailedErrorImpl struct {
+// SimpleMockTestDetailedError is a simple implementation of [TestDetailedError] for test purposes.
+type SimpleMockTestDetailedError struct {
 	ErrorMessage string
 	Name         string
 	HTTPStatus   int
@@ -27,64 +28,66 @@ type TestDetailedErrorImpl struct {
 }
 
 // Error implements the [TestDetailedError] interface.
-func (e *TestDetailedErrorImpl) Error() string {
+func (e *SimpleMockTestDetailedError) Error() string {
 	return e.ErrorMessage
 }
 
 // GetErrorName implements the [TestDetailedError] interface.
-func (e *TestDetailedErrorImpl) GetErrorName() string {
+func (e *SimpleMockTestDetailedError) GetErrorName() string {
 	return e.Name
 }
 
 // GetErrorHTTPStatus implements the [TestDetailedError] interface.
-func (e *TestDetailedErrorImpl) GetErrorHTTPStatus() int {
+func (e *SimpleMockTestDetailedError) GetErrorHTTPStatus() int {
 	return e.HTTPStatus
 }
 
 // GetErrorDetails implements the [TestDetailedError] interface.
-func (e *TestDetailedErrorImpl) GetErrorDetails() map[string]any {
+func (e *SimpleMockTestDetailedError) GetErrorDetails() map[string]any {
 	return e.Details
 }
 
-// TestDetailedErrorUnwrapSingle is a mock blueprint.
-type TestDetailedErrorUnwrapSingle interface {
+// TestDetailedUnwrapSingleError is a mock blueprint.
+type TestDetailedUnwrapSingleError interface {
 	TestDetailedError
 	errorz.UnwrapSingle
 }
 
 var (
-	_ TestDetailedErrorUnwrapSingle = (*TestDetailedErrorUnwrapSingleImpl)(nil)
+	_ TestDetailedUnwrapSingleError = (*SimpleMockTestDetailedUnwrapSingleError)(nil)
 )
 
-// TestDetailedErrorUnwrapSingleImpl is a simple implementation of [TestDetailedErrorUnwrapSingle] for test purposes.
-type TestDetailedErrorUnwrapSingleImpl struct {
-	*TestDetailedErrorImpl
+// SimpleMockTestDetailedUnwrapSingleError is a simple implementation of [TestDetailedUnwrapSingleError] for test
+// purposes.
+type SimpleMockTestDetailedUnwrapSingleError struct {
+	*SimpleMockTestDetailedError
 	UnwrapSingle error
 }
 
-// Unwrap implements the [TestDetailedErrorUnwrapSingle] interface.
-func (e *TestDetailedErrorUnwrapSingleImpl) Unwrap() error {
+// Unwrap implements the [TestDetailedUnwrapSingleError] interface.
+func (e *SimpleMockTestDetailedUnwrapSingleError) Unwrap() error {
 	return e.UnwrapSingle
 }
 
-// TestDetailedErrorUnwrapMulti is a mock blueprint.
-type TestDetailedErrorUnwrapMulti interface {
+// TestDetailedUnwrapMultiError is a mock blueprint.
+type TestDetailedUnwrapMultiError interface {
 	TestDetailedError
 	errorz.UnwrapMulti
 }
 
 var (
-	_ TestDetailedErrorUnwrapMulti = (*TestDetailedErrorUnwrapMultiImpl)(nil)
+	_ TestDetailedUnwrapMultiError = (*SimpleMockTestDetailedUnwrapMultiError)(nil)
 )
 
-// TestDetailedErrorUnwrapMultiImpl is a simple implementation of [TestDetailedErrorUnwrapMulti] for test purposes.
-type TestDetailedErrorUnwrapMultiImpl struct {
-	*TestDetailedErrorImpl
+// SimpleMockTestDetailedUnwrapMultiError is a simple implementation of [TestDetailedUnwrapMultiError] for test
+// purposes.
+type SimpleMockTestDetailedUnwrapMultiError struct {
+	*SimpleMockTestDetailedError
 	UnwrapMulti []error
 }
 
-// Unwrap implements the [TestDetailedErrorUnwrapMulti] interface.
-func (e *TestDetailedErrorUnwrapMultiImpl) Unwrap() []error {
+// Unwrap implements the [TestDetailedUnwrapMultiError] interface.
+func (e *SimpleMockTestDetailedUnwrapMultiError) Unwrap() []error {
 	return e.UnwrapMulti
 }
 

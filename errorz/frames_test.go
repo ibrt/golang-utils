@@ -153,14 +153,14 @@ func TestGetFrames(t *testing.T) {
 	g := NewWithT(t)
 
 	frames := errorz.GetFrames(nil)
-	g.Expect(len(frames)).To(BeNumerically(">", 0))
+	g.Expect(frames).ToNot(BeEmpty())
 	g.Expect(frames[0].ShortLocation).To(Equal("errorz_test.TestGetFrames"))
 
 	frames = errorz.GetFrames(fmt.Errorf("err"))
-	g.Expect(len(frames)).To(BeNumerically(">", 0))
+	g.Expect(frames).ToNot(BeEmpty())
 	g.Expect(frames[0].ShortLocation).To(Equal("errorz_test.TestGetFrames"))
 
 	frames = errorz.GetFrames(errorz.Errorf("err"))
-	g.Expect(len(frames)).To(BeNumerically(">", 0))
+	g.Expect(frames).ToNot(BeEmpty())
 	g.Expect(frames[0].ShortLocation).To(Equal("errorz_test.TestGetFrames"))
 }

@@ -76,7 +76,9 @@ func (f *HumanLogFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 
 	for _, rk := range memz.GetSortedMapKeys(entry.Data, cmp.Less) {
 		if k, v, ok := f.prepareField(rk, entry.Data[rk]); ok {
-			lines = append(lines, strings.Split(fmt.Sprintf("%v=%v", f.styles.LogLevel(entry.Level).Sprintf("%v", k), v), "\n")...)
+			lines = append(lines, strings.Split(
+				fmt.Sprintf("%v=%v", f.styles.LogLevel(entry.Level).Sprintf("%v", k), v),
+				"\n")...)
 		}
 	}
 
@@ -98,8 +100,10 @@ func (f *HumanLogFormatter) prepareField(k string, v any) (string, any, bool) {
 	case "name":
 		return "", nil, false
 	case "duration_ms":
-		k = "duration"
-		v = time.Duration(v.(float64)) * time.Millisecond
+		if vv, ok := v.(float64); ok {
+			k = "duration"
+			v = time.Duration(vv) * time.Millisecond
+		}
 	}
 
 	if vv := reflect.Indirect(reflect.ValueOf(v)); vv.IsValid() {

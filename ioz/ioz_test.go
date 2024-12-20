@@ -19,12 +19,12 @@ type readCloser struct {
 	isClosed bool
 }
 
-func (r *readCloser) Read(p []byte) (n int, err error) {
-	if r.isClosed {
+func (c *readCloser) Read(p []byte) (n int, err error) {
+	if c.isClosed {
 		return 0, fmt.Errorf("already closed")
 	}
 
-	return r.r.Read(p)
+	return c.r.Read(p)
 }
 
 func (c *readCloser) Close() error {

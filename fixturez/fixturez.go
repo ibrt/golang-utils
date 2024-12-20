@@ -17,22 +17,22 @@ import (
 
 // BeforeSuite describes a method invoked before starting a test suite.
 type BeforeSuite interface {
-	BeforeSuite(context.Context, *gomega.WithT) context.Context
+	BeforeSuite(ctx context.Context, g *gomega.WithT) context.Context
 }
 
 // AfterSuite represents a method invoked after completing a test suite.
 type AfterSuite interface {
-	AfterSuite(context.Context, *gomega.WithT)
+	AfterSuite(ctx context.Context, g *gomega.WithT)
 }
 
 // BeforeTest represents a method invoked before each test method in a suite.
 type BeforeTest interface {
-	BeforeTest(context.Context, *gomega.WithT, *gomock.Controller) context.Context
+	BeforeTest(ctx context.Context, g *gomega.WithT, ctrl *gomock.Controller) context.Context
 }
 
 // AfterTest represents a method invoked after each test method in a suite.
 type AfterTest interface {
-	AfterTest(context.Context, *gomega.WithT)
+	AfterTest(ctx context.Context, g *gomega.WithT)
 }
 
 // RunSuite runs the test suite.
@@ -94,7 +94,7 @@ func newRunnableSuite(t *testing.T, s any) (*runnableSuite, error) {
 func (rs *runnableSuite) inspectFields() error {
 	rs.t.Helper()
 
-	for i := 0; i < rs.sVI.NumField(); i++ {
+	for i := range rs.sVI.NumField() {
 		fV := rs.sVI.Field(i)
 		f := rs.sTI.Field(i)
 
@@ -119,7 +119,7 @@ func (rs *runnableSuite) inspectFields() error {
 func (rs *runnableSuite) inspectMethods() error {
 	rs.t.Helper()
 
-	for i := 0; i < rs.sV.NumMethod(); i++ {
+	for i := range rs.sV.NumMethod() {
 		m := rs.sT.Method(i)
 
 		if !rs.isTestMethod(rs.sV.Method(i), m) {
@@ -147,7 +147,7 @@ func (rs *runnableSuite) isTestMethod(mV reflect.Value, m reflect.Method) bool {
 		return false
 	}
 
-	for i := 0; i < mV.Type().NumIn(); i++ {
+	for i := range mV.Type().NumIn() {
 		switch mV.Type().In(i) {
 		case ctxT, gmgT, ctrT:
 			// ok
@@ -293,7 +293,7 @@ func (rs *runnableSuite) invokeTestMethod(
 	gmgT := reflect.TypeOf((*gomega.WithT)(nil))
 	ctrT := reflect.TypeOf((*gomock.Controller)(nil))
 
-	for i := 0; i < mV.Type().NumIn(); i++ {
+	for i := range mV.Type().NumIn() {
 		switch mV.Type().In(i) {
 		case ctxT:
 			args = append(args, reflect.ValueOf(ctx))

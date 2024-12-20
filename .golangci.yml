@@ -1,0 +1,121 @@
+linters:
+  disable-all: true
+  enable:
+    - asciicheck
+    - bidichk
+    - bodyclose
+    - canonicalheader
+    - contextcheck
+    - copyloopvar
+    - errcheck
+    - errname
+    - errorlint
+    - exhaustive
+    - exhaustruct
+    - forcetypeassert
+    - gci
+    - ginkgolinter
+    - gocheckcompilerdirectives
+    - goconst
+    - godot
+    - goprintffuncname
+    - gosec
+    - gosimple
+    - govet
+    - grouper
+    - iface
+    - inamedparam
+    - ineffassign
+    - intrange
+    - lll
+    - makezero
+    - mirror
+    - misspell
+    - musttag
+    - nakedret
+    - noctx
+    - nolintlint
+    - nosprintfhostport
+    - predeclared
+    - protogetter
+    - recvcheck
+    - rowserrcheck
+    - sqlclosecheck
+    - staticcheck
+    - stylecheck
+    - tagalign
+    - tagliatelle
+    - testableexamples
+    - testpackage
+    - unparam
+    - unused
+    - usestdlibvars
+    - wastedassign
+    - whitespace
+    - wrapcheck
+linters-settings:
+  exhaustive:
+    check:
+      - switch
+      - map
+    explicit-exhaustive-switch: true
+    explicit-exhaustive-map: true
+  gci:
+    sections:
+      - standard
+      - default
+      - localmodule
+  ginkgolinter:
+    forbid-spec-pollution: true
+    force-expect-to: true
+  godot:
+    scope: toplevel
+    capital: true
+  gofmt:
+    rewrite-rules:
+      - pattern: 'interface{}'
+        replacement: 'any'
+  gosec:
+    excludes:
+      - G103
+      - G104
+      - G204
+      - G301
+      - G302
+      - G304
+      - G307
+  grouper:
+    import-require-single-import: true
+    import-require-grouping: true
+    const-require-grouping: true
+    var-require-grouping: true
+  inamedparam:
+    skip-single-param: false
+  lll:
+    tab-width: 4
+  nakedret:
+    max-func-lines: 0
+  tagalign:
+    align: false
+    sort: true
+    strict: true
+  whitespace:
+    multi-func: true
+    multi-if: true
+  wrapcheck:
+    ignoreSigs:
+      - 'errorz.Wrap'
+      - 'errorz.MaybeWrap'
+      - 'errorz.Errorf'
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+  exclude-use-default: false
+  exclude-rules:
+    - path: '_test\.go'
+      linters:
+        - exhaustruct
+        - forcetypeassert
+        - goconst
+        - lll
+        - wrapcheck
