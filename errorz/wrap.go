@@ -12,7 +12,7 @@ func Wrap(err error, outerErrs ...error) error {
 		MustErrorf("err is nil")
 	}
 
-	wErr, ok := err.(*wrappedError)
+	wErr, ok := err.(*wrappedError) //nolint:errorlint
 	if !ok {
 		wErr = &wrappedError{
 			m:        &sync.Mutex{},
@@ -105,7 +105,7 @@ func Unwrap(err error) []error {
 		return nil
 	}
 
-	switch e := err.(type) {
+	switch e := err.(type) { //nolint:errorlint
 	case UnwrapSingle:
 		if ee := e.Unwrap(); ee != nil {
 			return []error{ee}
@@ -137,7 +137,7 @@ func (f *flattener) flatten(err error) {
 		return
 	}
 
-	switch e := err.(type) {
+	switch e := err.(type) { //nolint:errorlint
 	case UnwrapMulti:
 		for _, ee := range e.Unwrap() {
 			f.flatten(ee)

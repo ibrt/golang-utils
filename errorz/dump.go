@@ -23,31 +23,15 @@ func SDump(err error) string {
 		return "[nil]"
 	}
 
-	if e, ok := err.(*wrappedError); ok {
-		type dump struct {
-			Message string
-			Debug   []error
-			Frames  []string
-		}
-
-		return strings.TrimSuffix(
-			spewConfig.Sdump(dump{
-				Message: e.Error(),
-				Debug:   e.errs,
-				Frames:  e.frames.ToSummaries(),
-			}),
-			"\n")
-	}
-
 	type dump struct {
-		Message string
-		Debug   []error
+		Summary *Summary
+		Raw     any
 	}
 
 	return strings.TrimSuffix(
 		spewConfig.Sdump(dump{
-			Message: err.Error(),
-			Debug:   []error{err},
+			Summary: GetSummary(err, true),
+			Raw:     err,
 		}),
 		"\n")
 }

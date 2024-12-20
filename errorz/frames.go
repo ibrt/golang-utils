@@ -92,7 +92,7 @@ func (f Frames) ToSummaries() []string {
 
 // GetFrames returns the frames from the error, or the current frames the error is not wrapped or is nil.
 func GetFrames(err error) Frames {
-	if e, ok := err.(*wrappedError); ok {
+	if e, ok := err.(*wrappedError); ok { //nolint:errorlint
 		return e.frames
 	}
 

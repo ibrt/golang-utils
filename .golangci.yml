@@ -7,6 +7,7 @@ linters:
     - copyloopvar
     - errcheck
     - errname
+    - errorlint
     - gci
     - gosimple
     - govet

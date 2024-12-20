@@ -154,6 +154,6 @@ func isWrapError(err error) bool {
 		return false
 	}
 
-	_, ok := err.(*wrappedError)
+	_, ok := err.(*wrappedError) //nolint:errorlint
 	return ok
 }

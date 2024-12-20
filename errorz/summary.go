@@ -65,7 +65,7 @@ func getSummaryInternal(err error) *Summary {
 		s.Message = ""
 	}
 
-	switch e := err.(type) {
+	switch e := err.(type) { //nolint:errorlint
 	case UnwrapMulti:
 		for _, uErr := range e.Unwrap() {
 			if uErr != nil {
