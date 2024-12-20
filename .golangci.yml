@@ -6,17 +6,18 @@ linters:
     - contextcheck
     - copyloopvar
     - errcheck
+    - errname
     - gci
     - gosimple
     - govet
     - grouper
+    - inamedparam
     - ineffassign
     - staticcheck
-    - unused
     - stylecheck
-    - whitespace
     - unparam
-    - inamedparam
+    - unused
+    - whitespace
 issues:
   exclude-use-default: false
   max-issues-per-linter: 0
