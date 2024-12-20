@@ -191,32 +191,32 @@ func (c *MockTestDetailedErrorGetErrorNameCall) DoAndReturn(f func() string) *Mo
 	return c
 }
 
-// MockTestDetailedErrorUnwrapSingle is a mock of TestDetailedErrorUnwrapSingle interface.
-type MockTestDetailedErrorUnwrapSingle struct {
+// MockTestDetailedUnwrapSingleError is a mock of TestDetailedUnwrapSingleError interface.
+type MockTestDetailedUnwrapSingleError struct {
 	ctrl     *gomock.Controller
-	recorder *MockTestDetailedErrorUnwrapSingleMockRecorder
+	recorder *MockTestDetailedUnwrapSingleErrorMockRecorder
 	isgomock struct{}
 }
 
-// MockTestDetailedErrorUnwrapSingleMockRecorder is the mock recorder for MockTestDetailedErrorUnwrapSingle.
-type MockTestDetailedErrorUnwrapSingleMockRecorder struct {
-	mock *MockTestDetailedErrorUnwrapSingle
+// MockTestDetailedUnwrapSingleErrorMockRecorder is the mock recorder for MockTestDetailedUnwrapSingleError.
+type MockTestDetailedUnwrapSingleErrorMockRecorder struct {
+	mock *MockTestDetailedUnwrapSingleError
 }
 
-// NewMockTestDetailedErrorUnwrapSingle creates a new mock instance.
-func NewMockTestDetailedErrorUnwrapSingle(ctrl *gomock.Controller) *MockTestDetailedErrorUnwrapSingle {
-	mock := &MockTestDetailedErrorUnwrapSingle{ctrl: ctrl}
-	mock.recorder = &MockTestDetailedErrorUnwrapSingleMockRecorder{mock}
+// NewMockTestDetailedUnwrapSingleError creates a new mock instance.
+func NewMockTestDetailedUnwrapSingleError(ctrl *gomock.Controller) *MockTestDetailedUnwrapSingleError {
+	mock := &MockTestDetailedUnwrapSingleError{ctrl: ctrl}
+	mock.recorder = &MockTestDetailedUnwrapSingleErrorMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockTestDetailedErrorUnwrapSingle) EXPECT() *MockTestDetailedErrorUnwrapSingleMockRecorder {
+func (m *MockTestDetailedUnwrapSingleError) EXPECT() *MockTestDetailedUnwrapSingleErrorMockRecorder {
 	return m.recorder
 }
 
 // Error mocks base method.
-func (m *MockTestDetailedErrorUnwrapSingle) Error() string {
+func (m *MockTestDetailedUnwrapSingleError) Error() string {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Error")
 	ret0, _ := ret[0].(string)
@@ -224,37 +224,37 @@ func (m *MockTestDetailedErrorUnwrapSingle) Error() string {
 }
 
 // Error indicates an expected call of Error.
-func (mr *MockTestDetailedErrorUnwrapSingleMockRecorder) Error() *MockTestDetailedErrorUnwrapSingleErrorCall {
+func (mr *MockTestDetailedUnwrapSingleErrorMockRecorder) Error() *MockTestDetailedUnwrapSingleErrorErrorCall {
 	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Error", reflect.TypeOf((*MockTestDetailedErrorUnwrapSingle)(nil).Error))
-	return &MockTestDetailedErrorUnwrapSingleErrorCall{Call: call}
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Error", reflect.TypeOf((*MockTestDetailedUnwrapSingleError)(nil).Error))
+	return &MockTestDetailedUnwrapSingleErrorErrorCall{Call: call}
 }
 
-// MockTestDetailedErrorUnwrapSingleErrorCall wrap *gomock.Call
-type MockTestDetailedErrorUnwrapSingleErrorCall struct {
+// MockTestDetailedUnwrapSingleErrorErrorCall wrap *gomock.Call
+type MockTestDetailedUnwrapSingleErrorErrorCall struct {
 	*gomock.Call
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockTestDetailedErrorUnwrapSingleErrorCall) Return(arg0 string) *MockTestDetailedErrorUnwrapSingleErrorCall {
+func (c *MockTestDetailedUnwrapSingleErrorErrorCall) Return(arg0 string) *MockTestDetailedUnwrapSingleErrorErrorCall {
 	c.Call = c.Call.Return(arg0)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockTestDetailedErrorUnwrapSingleErrorCall) Do(f func() string) *MockTestDetailedErrorUnwrapSingleErrorCall {
+func (c *MockTestDetailedUnwrapSingleErrorErrorCall) Do(f func() string) *MockTestDetailedUnwrapSingleErrorErrorCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockTestDetailedErrorUnwrapSingleErrorCall) DoAndReturn(f func() string) *MockTestDetailedErrorUnwrapSingleErrorCall {
+func (c *MockTestDetailedUnwrapSingleErrorErrorCall) DoAndReturn(f func() string) *MockTestDetailedUnwrapSingleErrorErrorCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // GetErrorDetails mocks base method.
-func (m *MockTestDetailedErrorUnwrapSingle) GetErrorDetails() map[string]any {
+func (m *MockTestDetailedUnwrapSingleError) GetErrorDetails() map[string]any {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetErrorDetails")
 	ret0, _ := ret[0].(map[string]any)
@@ -262,37 +262,37 @@ func (m *MockTestDetailedErrorUnwrapSingle) GetErrorDetails() map[string]any {
 }
 
 // GetErrorDetails indicates an expected call of GetErrorDetails.
-func (mr *MockTestDetailedErrorUnwrapSingleMockRecorder) GetErrorDetails() *MockTestDetailedErrorUnwrapSingleGetErrorDetailsCall {
+func (mr *MockTestDetailedUnwrapSingleErrorMockRecorder) GetErrorDetails() *MockTestDetailedUnwrapSingleErrorGetErrorDetailsCall {
 	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetErrorDetails", reflect.TypeOf((*MockTestDetailedErrorUnwrapSingle)(nil).GetErrorDetails))
-	return &MockTestDetailedErrorUnwrapSingleGetErrorDetailsCall{Call: call}
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetErrorDetails", reflect.TypeOf((*MockTestDetailedUnwrapSingleError)(nil).GetErrorDetails))
+	return &MockTestDetailedUnwrapSingleErrorGetErrorDetailsCall{Call: call}
 }
 
-// MockTestDetailedErrorUnwrapSingleGetErrorDetailsCall wrap *gomock.Call
-type MockTestDetailedErrorUnwrapSingleGetErrorDetailsCall struct {
+// MockTestDetailedUnwrapSingleErrorGetErrorDetailsCall wrap *gomock.Call
+type MockTestDetailedUnwrapSingleErrorGetErrorDetailsCall struct {
 	*gomock.Call
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockTestDetailedErrorUnwrapSingleGetErrorDetailsCall) Return(arg0 map[string]any) *MockTestDetailedErrorUnwrapSingleGetErrorDetailsCall {
+func (c *MockTestDetailedUnwrapSingleErrorGetErrorDetailsCall) Return(arg0 map[string]any) *MockTestDetailedUnwrapSingleErrorGetErrorDetailsCall {
 	c.Call = c.Call.Return(arg0)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockTestDetailedErrorUnwrapSingleGetErrorDetailsCall) Do(f func() map[string]any) *MockTestDetailedErrorUnwrapSingleGetErrorDetailsCall {
+func (c *MockTestDetailedUnwrapSingleErrorGetErrorDetailsCall) Do(f func() map[string]any) *MockTestDetailedUnwrapSingleErrorGetErrorDetailsCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockTestDetailedErrorUnwrapSingleGetErrorDetailsCall) DoAndReturn(f func() map[string]any) *MockTestDetailedErrorUnwrapSingleGetErrorDetailsCall {
+func (c *MockTestDetailedUnwrapSingleErrorGetErrorDetailsCall) DoAndReturn(f func() map[string]any) *MockTestDetailedUnwrapSingleErrorGetErrorDetailsCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // GetErrorHTTPStatus mocks base method.
-func (m *MockTestDetailedErrorUnwrapSingle) GetErrorHTTPStatus() int {
+func (m *MockTestDetailedUnwrapSingleError) GetErrorHTTPStatus() int {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetErrorHTTPStatus")
 	ret0, _ := ret[0].(int)
@@ -300,37 +300,37 @@ func (m *MockTestDetailedErrorUnwrapSingle) GetErrorHTTPStatus() int {
 }
 
 // GetErrorHTTPStatus indicates an expected call of GetErrorHTTPStatus.
-func (mr *MockTestDetailedErrorUnwrapSingleMockRecorder) GetErrorHTTPStatus() *MockTestDetailedErrorUnwrapSingleGetErrorHTTPStatusCall {
+func (mr *MockTestDetailedUnwrapSingleErrorMockRecorder) GetErrorHTTPStatus() *MockTestDetailedUnwrapSingleErrorGetErrorHTTPStatusCall {
 	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetErrorHTTPStatus", reflect.TypeOf((*MockTestDetailedErrorUnwrapSingle)(nil).GetErrorHTTPStatus))
-	return &MockTestDetailedErrorUnwrapSingleGetErrorHTTPStatusCall{Call: call}
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetErrorHTTPStatus", reflect.TypeOf((*MockTestDetailedUnwrapSingleError)(nil).GetErrorHTTPStatus))
+	return &MockTestDetailedUnwrapSingleErrorGetErrorHTTPStatusCall{Call: call}
 }
 
-// MockTestDetailedErrorUnwrapSingleGetErrorHTTPStatusCall wrap *gomock.Call
-type MockTestDetailedErrorUnwrapSingleGetErrorHTTPStatusCall struct {
+// MockTestDetailedUnwrapSingleErrorGetErrorHTTPStatusCall wrap *gomock.Call
+type MockTestDetailedUnwrapSingleErrorGetErrorHTTPStatusCall struct {
 	*gomock.Call
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockTestDetailedErrorUnwrapSingleGetErrorHTTPStatusCall) Return(arg0 int) *MockTestDetailedErrorUnwrapSingleGetErrorHTTPStatusCall {
+func (c *MockTestDetailedUnwrapSingleErrorGetErrorHTTPStatusCall) Return(arg0 int) *MockTestDetailedUnwrapSingleErrorGetErrorHTTPStatusCall {
 	c.Call = c.Call.Return(arg0)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockTestDetailedErrorUnwrapSingleGetErrorHTTPStatusCall) Do(f func() int) *MockTestDetailedErrorUnwrapSingleGetErrorHTTPStatusCall {
+func (c *MockTestDetailedUnwrapSingleErrorGetErrorHTTPStatusCall) Do(f func() int) *MockTestDetailedUnwrapSingleErrorGetErrorHTTPStatusCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockTestDetailedErrorUnwrapSingleGetErrorHTTPStatusCall) DoAndReturn(f func() int) *MockTestDetailedErrorUnwrapSingleGetErrorHTTPStatusCall {
+func (c *MockTestDetailedUnwrapSingleErrorGetErrorHTTPStatusCall) DoAndReturn(f func() int) *MockTestDetailedUnwrapSingleErrorGetErrorHTTPStatusCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // GetErrorName mocks base method.
-func (m *MockTestDetailedErrorUnwrapSingle) GetErrorName() string {
+func (m *MockTestDetailedUnwrapSingleError) GetErrorName() string {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetErrorName")
 	ret0, _ := ret[0].(string)
@@ -338,37 +338,37 @@ func (m *MockTestDetailedErrorUnwrapSingle) GetErrorName() string {
 }
 
 // GetErrorName indicates an expected call of GetErrorName.
-func (mr *MockTestDetailedErrorUnwrapSingleMockRecorder) GetErrorName() *MockTestDetailedErrorUnwrapSingleGetErrorNameCall {
+func (mr *MockTestDetailedUnwrapSingleErrorMockRecorder) GetErrorName() *MockTestDetailedUnwrapSingleErrorGetErrorNameCall {
 	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetErrorName", reflect.TypeOf((*MockTestDetailedErrorUnwrapSingle)(nil).GetErrorName))
-	return &MockTestDetailedErrorUnwrapSingleGetErrorNameCall{Call: call}
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetErrorName", reflect.TypeOf((*MockTestDetailedUnwrapSingleError)(nil).GetErrorName))
+	return &MockTestDetailedUnwrapSingleErrorGetErrorNameCall{Call: call}
 }
 
-// MockTestDetailedErrorUnwrapSingleGetErrorNameCall wrap *gomock.Call
-type MockTestDetailedErrorUnwrapSingleGetErrorNameCall struct {
+// MockTestDetailedUnwrapSingleErrorGetErrorNameCall wrap *gomock.Call
+type MockTestDetailedUnwrapSingleErrorGetErrorNameCall struct {
 	*gomock.Call
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockTestDetailedErrorUnwrapSingleGetErrorNameCall) Return(arg0 string) *MockTestDetailedErrorUnwrapSingleGetErrorNameCall {
+func (c *MockTestDetailedUnwrapSingleErrorGetErrorNameCall) Return(arg0 string) *MockTestDetailedUnwrapSingleErrorGetErrorNameCall {
 	c.Call = c.Call.Return(arg0)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockTestDetailedErrorUnwrapSingleGetErrorNameCall) Do(f func() string) *MockTestDetailedErrorUnwrapSingleGetErrorNameCall {
+func (c *MockTestDetailedUnwrapSingleErrorGetErrorNameCall) Do(f func() string) *MockTestDetailedUnwrapSingleErrorGetErrorNameCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockTestDetailedErrorUnwrapSingleGetErrorNameCall) DoAndReturn(f func() string) *MockTestDetailedErrorUnwrapSingleGetErrorNameCall {
+func (c *MockTestDetailedUnwrapSingleErrorGetErrorNameCall) DoAndReturn(f func() string) *MockTestDetailedUnwrapSingleErrorGetErrorNameCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // Unwrap mocks base method.
-func (m *MockTestDetailedErrorUnwrapSingle) Unwrap() error {
+func (m *MockTestDetailedUnwrapSingleError) Unwrap() error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Unwrap")
 	ret0, _ := ret[0].(error)
@@ -376,61 +376,61 @@ func (m *MockTestDetailedErrorUnwrapSingle) Unwrap() error {
 }
 
 // Unwrap indicates an expected call of Unwrap.
-func (mr *MockTestDetailedErrorUnwrapSingleMockRecorder) Unwrap() *MockTestDetailedErrorUnwrapSingleUnwrapCall {
+func (mr *MockTestDetailedUnwrapSingleErrorMockRecorder) Unwrap() *MockTestDetailedUnwrapSingleErrorUnwrapCall {
 	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Unwrap", reflect.TypeOf((*MockTestDetailedErrorUnwrapSingle)(nil).Unwrap))
-	return &MockTestDetailedErrorUnwrapSingleUnwrapCall{Call: call}
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Unwrap", reflect.TypeOf((*MockTestDetailedUnwrapSingleError)(nil).Unwrap))
+	return &MockTestDetailedUnwrapSingleErrorUnwrapCall{Call: call}
 }
 
-// MockTestDetailedErrorUnwrapSingleUnwrapCall wrap *gomock.Call
-type MockTestDetailedErrorUnwrapSingleUnwrapCall struct {
+// MockTestDetailedUnwrapSingleErrorUnwrapCall wrap *gomock.Call
+type MockTestDetailedUnwrapSingleErrorUnwrapCall struct {
 	*gomock.Call
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockTestDetailedErrorUnwrapSingleUnwrapCall) Return(arg0 error) *MockTestDetailedErrorUnwrapSingleUnwrapCall {
+func (c *MockTestDetailedUnwrapSingleErrorUnwrapCall) Return(arg0 error) *MockTestDetailedUnwrapSingleErrorUnwrapCall {
 	c.Call = c.Call.Return(arg0)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockTestDetailedErrorUnwrapSingleUnwrapCall) Do(f func() error) *MockTestDetailedErrorUnwrapSingleUnwrapCall {
+func (c *MockTestDetailedUnwrapSingleErrorUnwrapCall) Do(f func() error) *MockTestDetailedUnwrapSingleErrorUnwrapCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockTestDetailedErrorUnwrapSingleUnwrapCall) DoAndReturn(f func() error) *MockTestDetailedErrorUnwrapSingleUnwrapCall {
+func (c *MockTestDetailedUnwrapSingleErrorUnwrapCall) DoAndReturn(f func() error) *MockTestDetailedUnwrapSingleErrorUnwrapCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
-// MockTestDetailedErrorUnwrapMulti is a mock of TestDetailedErrorUnwrapMulti interface.
-type MockTestDetailedErrorUnwrapMulti struct {
+// MockTestDetailedUnwrapMultiError is a mock of TestDetailedUnwrapMultiError interface.
+type MockTestDetailedUnwrapMultiError struct {
 	ctrl     *gomock.Controller
-	recorder *MockTestDetailedErrorUnwrapMultiMockRecorder
+	recorder *MockTestDetailedUnwrapMultiErrorMockRecorder
 	isgomock struct{}
 }
 
-// MockTestDetailedErrorUnwrapMultiMockRecorder is the mock recorder for MockTestDetailedErrorUnwrapMulti.
-type MockTestDetailedErrorUnwrapMultiMockRecorder struct {
-	mock *MockTestDetailedErrorUnwrapMulti
+// MockTestDetailedUnwrapMultiErrorMockRecorder is the mock recorder for MockTestDetailedUnwrapMultiError.
+type MockTestDetailedUnwrapMultiErrorMockRecorder struct {
+	mock *MockTestDetailedUnwrapMultiError
 }
 
-// NewMockTestDetailedErrorUnwrapMulti creates a new mock instance.
-func NewMockTestDetailedErrorUnwrapMulti(ctrl *gomock.Controller) *MockTestDetailedErrorUnwrapMulti {
-	mock := &MockTestDetailedErrorUnwrapMulti{ctrl: ctrl}
-	mock.recorder = &MockTestDetailedErrorUnwrapMultiMockRecorder{mock}
+// NewMockTestDetailedUnwrapMultiError creates a new mock instance.
+func NewMockTestDetailedUnwrapMultiError(ctrl *gomock.Controller) *MockTestDetailedUnwrapMultiError {
+	mock := &MockTestDetailedUnwrapMultiError{ctrl: ctrl}
+	mock.recorder = &MockTestDetailedUnwrapMultiErrorMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockTestDetailedErrorUnwrapMulti) EXPECT() *MockTestDetailedErrorUnwrapMultiMockRecorder {
+func (m *MockTestDetailedUnwrapMultiError) EXPECT() *MockTestDetailedUnwrapMultiErrorMockRecorder {
 	return m.recorder
 }
 
 // Error mocks base method.
-func (m *MockTestDetailedErrorUnwrapMulti) Error() string {
+func (m *MockTestDetailedUnwrapMultiError) Error() string {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Error")
 	ret0, _ := ret[0].(string)
@@ -438,37 +438,37 @@ func (m *MockTestDetailedErrorUnwrapMulti) Error() string {
 }
 
 // Error indicates an expected call of Error.
-func (mr *MockTestDetailedErrorUnwrapMultiMockRecorder) Error() *MockTestDetailedErrorUnwrapMultiErrorCall {
+func (mr *MockTestDetailedUnwrapMultiErrorMockRecorder) Error() *MockTestDetailedUnwrapMultiErrorErrorCall {
 	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Error", reflect.TypeOf((*MockTestDetailedErrorUnwrapMulti)(nil).Error))
-	return &MockTestDetailedErrorUnwrapMultiErrorCall{Call: call}
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Error", reflect.TypeOf((*MockTestDetailedUnwrapMultiError)(nil).Error))
+	return &MockTestDetailedUnwrapMultiErrorErrorCall{Call: call}
 }
 
-// MockTestDetailedErrorUnwrapMultiErrorCall wrap *gomock.Call
-type MockTestDetailedErrorUnwrapMultiErrorCall struct {
+// MockTestDetailedUnwrapMultiErrorErrorCall wrap *gomock.Call
+type MockTestDetailedUnwrapMultiErrorErrorCall struct {
 	*gomock.Call
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockTestDetailedErrorUnwrapMultiErrorCall) Return(arg0 string) *MockTestDetailedErrorUnwrapMultiErrorCall {
+func (c *MockTestDetailedUnwrapMultiErrorErrorCall) Return(arg0 string) *MockTestDetailedUnwrapMultiErrorErrorCall {
 	c.Call = c.Call.Return(arg0)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockTestDetailedErrorUnwrapMultiErrorCall) Do(f func() string) *MockTestDetailedErrorUnwrapMultiErrorCall {
+func (c *MockTestDetailedUnwrapMultiErrorErrorCall) Do(f func() string) *MockTestDetailedUnwrapMultiErrorErrorCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockTestDetailedErrorUnwrapMultiErrorCall) DoAndReturn(f func() string) *MockTestDetailedErrorUnwrapMultiErrorCall {
+func (c *MockTestDetailedUnwrapMultiErrorErrorCall) DoAndReturn(f func() string) *MockTestDetailedUnwrapMultiErrorErrorCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // GetErrorDetails mocks base method.
-func (m *MockTestDetailedErrorUnwrapMulti) GetErrorDetails() map[string]any {
+func (m *MockTestDetailedUnwrapMultiError) GetErrorDetails() map[string]any {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetErrorDetails")
 	ret0, _ := ret[0].(map[string]any)
@@ -476,37 +476,37 @@ func (m *MockTestDetailedErrorUnwrapMulti) GetErrorDetails() map[string]any {
 }
 
 // GetErrorDetails indicates an expected call of GetErrorDetails.
-func (mr *MockTestDetailedErrorUnwrapMultiMockRecorder) GetErrorDetails() *MockTestDetailedErrorUnwrapMultiGetErrorDetailsCall {
+func (mr *MockTestDetailedUnwrapMultiErrorMockRecorder) GetErrorDetails() *MockTestDetailedUnwrapMultiErrorGetErrorDetailsCall {
 	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetErrorDetails", reflect.TypeOf((*MockTestDetailedErrorUnwrapMulti)(nil).GetErrorDetails))
-	return &MockTestDetailedErrorUnwrapMultiGetErrorDetailsCall{Call: call}
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetErrorDetails", reflect.TypeOf((*MockTestDetailedUnwrapMultiError)(nil).GetErrorDetails))
+	return &MockTestDetailedUnwrapMultiErrorGetErrorDetailsCall{Call: call}
 }
 
-// MockTestDetailedErrorUnwrapMultiGetErrorDetailsCall wrap *gomock.Call
-type MockTestDetailedErrorUnwrapMultiGetErrorDetailsCall struct {
+// MockTestDetailedUnwrapMultiErrorGetErrorDetailsCall wrap *gomock.Call
+type MockTestDetailedUnwrapMultiErrorGetErrorDetailsCall struct {
 	*gomock.Call
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockTestDetailedErrorUnwrapMultiGetErrorDetailsCall) Return(arg0 map[string]any) *MockTestDetailedErrorUnwrapMultiGetErrorDetailsCall {
+func (c *MockTestDetailedUnwrapMultiErrorGetErrorDetailsCall) Return(arg0 map[string]any) *MockTestDetailedUnwrapMultiErrorGetErrorDetailsCall {
 	c.Call = c.Call.Return(arg0)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockTestDetailedErrorUnwrapMultiGetErrorDetailsCall) Do(f func() map[string]any) *MockTestDetailedErrorUnwrapMultiGetErrorDetailsCall {
+func (c *MockTestDetailedUnwrapMultiErrorGetErrorDetailsCall) Do(f func() map[string]any) *MockTestDetailedUnwrapMultiErrorGetErrorDetailsCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockTestDetailedErrorUnwrapMultiGetErrorDetailsCall) DoAndReturn(f func() map[string]any) *MockTestDetailedErrorUnwrapMultiGetErrorDetailsCall {
+func (c *MockTestDetailedUnwrapMultiErrorGetErrorDetailsCall) DoAndReturn(f func() map[string]any) *MockTestDetailedUnwrapMultiErrorGetErrorDetailsCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // GetErrorHTTPStatus mocks base method.
-func (m *MockTestDetailedErrorUnwrapMulti) GetErrorHTTPStatus() int {
+func (m *MockTestDetailedUnwrapMultiError) GetErrorHTTPStatus() int {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetErrorHTTPStatus")
 	ret0, _ := ret[0].(int)
@@ -514,37 +514,37 @@ func (m *MockTestDetailedErrorUnwrapMulti) GetErrorHTTPStatus() int {
 }
 
 // GetErrorHTTPStatus indicates an expected call of GetErrorHTTPStatus.
-func (mr *MockTestDetailedErrorUnwrapMultiMockRecorder) GetErrorHTTPStatus() *MockTestDetailedErrorUnwrapMultiGetErrorHTTPStatusCall {
+func (mr *MockTestDetailedUnwrapMultiErrorMockRecorder) GetErrorHTTPStatus() *MockTestDetailedUnwrapMultiErrorGetErrorHTTPStatusCall {
 	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetErrorHTTPStatus", reflect.TypeOf((*MockTestDetailedErrorUnwrapMulti)(nil).GetErrorHTTPStatus))
-	return &MockTestDetailedErrorUnwrapMultiGetErrorHTTPStatusCall{Call: call}
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetErrorHTTPStatus", reflect.TypeOf((*MockTestDetailedUnwrapMultiError)(nil).GetErrorHTTPStatus))
+	return &MockTestDetailedUnwrapMultiErrorGetErrorHTTPStatusCall{Call: call}
 }
 
-// MockTestDetailedErrorUnwrapMultiGetErrorHTTPStatusCall wrap *gomock.Call
-type MockTestDetailedErrorUnwrapMultiGetErrorHTTPStatusCall struct {
+// MockTestDetailedUnwrapMultiErrorGetErrorHTTPStatusCall wrap *gomock.Call
+type MockTestDetailedUnwrapMultiErrorGetErrorHTTPStatusCall struct {
 	*gomock.Call
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockTestDetailedErrorUnwrapMultiGetErrorHTTPStatusCall) Return(arg0 int) *MockTestDetailedErrorUnwrapMultiGetErrorHTTPStatusCall {
+func (c *MockTestDetailedUnwrapMultiErrorGetErrorHTTPStatusCall) Return(arg0 int) *MockTestDetailedUnwrapMultiErrorGetErrorHTTPStatusCall {
 	c.Call = c.Call.Return(arg0)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockTestDetailedErrorUnwrapMultiGetErrorHTTPStatusCall) Do(f func() int) *MockTestDetailedErrorUnwrapMultiGetErrorHTTPStatusCall {
+func (c *MockTestDetailedUnwrapMultiErrorGetErrorHTTPStatusCall) Do(f func() int) *MockTestDetailedUnwrapMultiErrorGetErrorHTTPStatusCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockTestDetailedErrorUnwrapMultiGetErrorHTTPStatusCall) DoAndReturn(f func() int) *MockTestDetailedErrorUnwrapMultiGetErrorHTTPStatusCall {
+func (c *MockTestDetailedUnwrapMultiErrorGetErrorHTTPStatusCall) DoAndReturn(f func() int) *MockTestDetailedUnwrapMultiErrorGetErrorHTTPStatusCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // GetErrorName mocks base method.
-func (m *MockTestDetailedErrorUnwrapMulti) GetErrorName() string {
+func (m *MockTestDetailedUnwrapMultiError) GetErrorName() string {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetErrorName")
 	ret0, _ := ret[0].(string)
@@ -552,37 +552,37 @@ func (m *MockTestDetailedErrorUnwrapMulti) GetErrorName() string {
 }
 
 // GetErrorName indicates an expected call of GetErrorName.
-func (mr *MockTestDetailedErrorUnwrapMultiMockRecorder) GetErrorName() *MockTestDetailedErrorUnwrapMultiGetErrorNameCall {
+func (mr *MockTestDetailedUnwrapMultiErrorMockRecorder) GetErrorName() *MockTestDetailedUnwrapMultiErrorGetErrorNameCall {
 	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetErrorName", reflect.TypeOf((*MockTestDetailedErrorUnwrapMulti)(nil).GetErrorName))
-	return &MockTestDetailedErrorUnwrapMultiGetErrorNameCall{Call: call}
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetErrorName", reflect.TypeOf((*MockTestDetailedUnwrapMultiError)(nil).GetErrorName))
+	return &MockTestDetailedUnwrapMultiErrorGetErrorNameCall{Call: call}
 }
 
-// MockTestDetailedErrorUnwrapMultiGetErrorNameCall wrap *gomock.Call
-type MockTestDetailedErrorUnwrapMultiGetErrorNameCall struct {
+// MockTestDetailedUnwrapMultiErrorGetErrorNameCall wrap *gomock.Call
+type MockTestDetailedUnwrapMultiErrorGetErrorNameCall struct {
 	*gomock.Call
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockTestDetailedErrorUnwrapMultiGetErrorNameCall) Return(arg0 string) *MockTestDetailedErrorUnwrapMultiGetErrorNameCall {
+func (c *MockTestDetailedUnwrapMultiErrorGetErrorNameCall) Return(arg0 string) *MockTestDetailedUnwrapMultiErrorGetErrorNameCall {
 	c.Call = c.Call.Return(arg0)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockTestDetailedErrorUnwrapMultiGetErrorNameCall) Do(f func() string) *MockTestDetailedErrorUnwrapMultiGetErrorNameCall {
+func (c *MockTestDetailedUnwrapMultiErrorGetErrorNameCall) Do(f func() string) *MockTestDetailedUnwrapMultiErrorGetErrorNameCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockTestDetailedErrorUnwrapMultiGetErrorNameCall) DoAndReturn(f func() string) *MockTestDetailedErrorUnwrapMultiGetErrorNameCall {
+func (c *MockTestDetailedUnwrapMultiErrorGetErrorNameCall) DoAndReturn(f func() string) *MockTestDetailedUnwrapMultiErrorGetErrorNameCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // Unwrap mocks base method.
-func (m *MockTestDetailedErrorUnwrapMulti) Unwrap() []error {
+func (m *MockTestDetailedUnwrapMultiError) Unwrap() []error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Unwrap")
 	ret0, _ := ret[0].([]error)
@@ -590,31 +590,31 @@ func (m *MockTestDetailedErrorUnwrapMulti) Unwrap() []error {
 }
 
 // Unwrap indicates an expected call of Unwrap.
-func (mr *MockTestDetailedErrorUnwrapMultiMockRecorder) Unwrap() *MockTestDetailedErrorUnwrapMultiUnwrapCall {
+func (mr *MockTestDetailedUnwrapMultiErrorMockRecorder) Unwrap() *MockTestDetailedUnwrapMultiErrorUnwrapCall {
 	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Unwrap", reflect.TypeOf((*MockTestDetailedErrorUnwrapMulti)(nil).Unwrap))
-	return &MockTestDetailedErrorUnwrapMultiUnwrapCall{Call: call}
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Unwrap", reflect.TypeOf((*MockTestDetailedUnwrapMultiError)(nil).Unwrap))
+	return &MockTestDetailedUnwrapMultiErrorUnwrapCall{Call: call}
 }
 
-// MockTestDetailedErrorUnwrapMultiUnwrapCall wrap *gomock.Call
-type MockTestDetailedErrorUnwrapMultiUnwrapCall struct {
+// MockTestDetailedUnwrapMultiErrorUnwrapCall wrap *gomock.Call
+type MockTestDetailedUnwrapMultiErrorUnwrapCall struct {
 	*gomock.Call
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockTestDetailedErrorUnwrapMultiUnwrapCall) Return(arg0 []error) *MockTestDetailedErrorUnwrapMultiUnwrapCall {
+func (c *MockTestDetailedUnwrapMultiErrorUnwrapCall) Return(arg0 []error) *MockTestDetailedUnwrapMultiErrorUnwrapCall {
 	c.Call = c.Call.Return(arg0)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockTestDetailedErrorUnwrapMultiUnwrapCall) Do(f func() []error) *MockTestDetailedErrorUnwrapMultiUnwrapCall {
+func (c *MockTestDetailedUnwrapMultiErrorUnwrapCall) Do(f func() []error) *MockTestDetailedUnwrapMultiErrorUnwrapCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockTestDetailedErrorUnwrapMultiUnwrapCall) DoAndReturn(f func() []error) *MockTestDetailedErrorUnwrapMultiUnwrapCall {
+func (c *MockTestDetailedUnwrapMultiErrorUnwrapCall) DoAndReturn(f func() []error) *MockTestDetailedUnwrapMultiErrorUnwrapCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }

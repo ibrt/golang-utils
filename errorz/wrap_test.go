@@ -15,12 +15,12 @@ import (
 var (
 	_ error                  = (*structError)(nil)
 	_ error                  = stringError("")
-	_ error                  = (*wrapSingle)(nil)
-	_ error                  = (*wrapMulti)(nil)
+	_ error                  = (*wrapSingleError)(nil)
+	_ error                  = (*wrapMultiError)(nil)
 	_ errorz.ErrorName       = stringError("")
 	_ errorz.ErrorHTTPStatus = (*structError)(nil)
-	_ errorz.UnwrapSingle    = (*wrapSingle)(nil)
-	_ errorz.UnwrapMulti     = (*wrapMulti)(nil)
+	_ errorz.UnwrapSingle    = (*wrapSingleError)(nil)
+	_ errorz.UnwrapMulti     = (*wrapMultiError)(nil)
 )
 
 type structError struct {
@@ -45,26 +45,26 @@ func (e stringError) GetErrorName() string {
 	return "string-error"
 }
 
-type wrapSingle struct {
+type wrapSingleError struct {
 	err error
 }
 
-func (e *wrapSingle) Error() string {
+func (e *wrapSingleError) Error() string {
 	if e.err != nil {
 		return e.err.Error()
 	}
 	return "<empty>"
 }
 
-func (e *wrapSingle) Unwrap() error {
+func (e *wrapSingleError) Unwrap() error {
 	return e.err
 }
 
-type wrapMulti struct {
+type wrapMultiError struct {
 	errs []error
 }
 
-func (e *wrapMulti) Error() string {
+func (e *wrapMultiError) Error() string {
 	if len(e.errs) > 0 {
 		ms := make([]string, 0, len(e.errs))
 
@@ -78,7 +78,7 @@ func (e *wrapMulti) Error() string {
 	return "<empty>"
 }
 
-func (e *wrapMulti) Unwrap() []error {
+func (e *wrapMultiError) Unwrap() []error {
 	return e.errs
 }
 
@@ -305,8 +305,8 @@ func TestUnwrap(t *testing.T) {
 	g := NewWithT(t)
 
 	g.Expect(errorz.Unwrap(nil)).To(BeNil())
-	g.Expect(errorz.Unwrap(&wrapSingle{})).To(BeNil())
-	g.Expect(errorz.Unwrap(&wrapMulti{})).To(BeNil())
+	g.Expect(errorz.Unwrap(&wrapSingleError{})).To(BeNil())
+	g.Expect(errorz.Unwrap(&wrapMultiError{})).To(BeNil())
 	g.Expect(errorz.Unwrap(fmt.Errorf("e1"))).To(BeNil())
 
 	g.Expect(errorz.Unwrap(errors.Join(fmt.Errorf("e1"), fmt.Errorf("e2")))).

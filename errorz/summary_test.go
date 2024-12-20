@@ -14,7 +14,7 @@ import (
 func TestGetSummary(t *testing.T) {
 	g := NewWithT(t)
 
-	e1a := &terrorz.TestDetailedErrorImpl{
+	e1a := &terrorz.SimpleMockTestDetailedError{
 		ErrorMessage: "e1a-err",
 		Name:         "e1a",
 		HTTPStatus:   101,
@@ -23,15 +23,15 @@ func TestGetSummary(t *testing.T) {
 
 	e1b := fmt.Errorf("e1b: %w", e1a)
 
-	e2a := &terrorz.TestDetailedErrorImpl{
+	e2a := &terrorz.SimpleMockTestDetailedError{
 		ErrorMessage: "e2a-err",
 		Name:         "e2a",
 		HTTPStatus:   102,
 		Details:      map[string]any{"e2a": true},
 	}
 
-	e2b := &terrorz.TestDetailedErrorUnwrapSingleImpl{
-		TestDetailedErrorImpl: &terrorz.TestDetailedErrorImpl{
+	e2b := &terrorz.SimpleMockTestDetailedUnwrapSingleError{
+		SimpleMockTestDetailedError: &terrorz.SimpleMockTestDetailedError{
 			ErrorMessage: "e2b-err",
 		},
 		UnwrapSingle: e2a,
@@ -75,7 +75,7 @@ func TestGetSummary(t *testing.T) {
 							Components: []*errorz.Summary{
 								{
 
-									Name:    "*terrorz.TestDetailedErrorUnwrapSingleImpl",
+									Name:    "*terrorz.SimpleMockTestDetailedUnwrapSingleError",
 									Message: "e2b-err",
 									Components: []*errorz.Summary{
 										{
@@ -129,7 +129,7 @@ func TestGetSummary(t *testing.T) {
 							Components: []*errorz.Summary{
 								{
 
-									Name:    "*terrorz.TestDetailedErrorUnwrapSingleImpl",
+									Name:    "*terrorz.SimpleMockTestDetailedUnwrapSingleError",
 									Message: "e2b-err",
 									Components: []*errorz.Summary{
 										{

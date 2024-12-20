@@ -12,7 +12,7 @@ import (
 func TestTestDetailedError(t *testing.T) {
 	g := NewWithT(t)
 
-	e := &terrorz.TestDetailedErrorImpl{
+	e := &terrorz.SimpleMockTestDetailedError{
 		ErrorMessage: "errorMessage",
 		Name:         "name",
 		HTTPStatus:   500,
@@ -27,8 +27,8 @@ func TestTestDetailedError(t *testing.T) {
 func TestTestDetailedErrorUnwrapSingle(t *testing.T) {
 	g := NewWithT(t)
 
-	e := &terrorz.TestDetailedErrorUnwrapSingleImpl{
-		TestDetailedErrorImpl: &terrorz.TestDetailedErrorImpl{
+	e := &terrorz.SimpleMockTestDetailedUnwrapSingleError{
+		SimpleMockTestDetailedError: &terrorz.SimpleMockTestDetailedError{
 			ErrorMessage: "errorMessage",
 			Name:         "name",
 			HTTPStatus:   500,
@@ -46,8 +46,8 @@ func TestTestDetailedErrorUnwrapSingle(t *testing.T) {
 func TestTestDetailedErrorUnwrapMulti(t *testing.T) {
 	g := NewWithT(t)
 
-	e := &terrorz.TestDetailedErrorUnwrapMultiImpl{
-		TestDetailedErrorImpl: &terrorz.TestDetailedErrorImpl{
+	e := &terrorz.SimpleMockTestDetailedUnwrapMultiError{
+		SimpleMockTestDetailedError: &terrorz.SimpleMockTestDetailedError{
 			ErrorMessage: "errorMessage",
 			Name:         "name",
 			HTTPStatus:   500,
