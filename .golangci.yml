@@ -45,6 +45,7 @@ linters:
     - testpackage
     - unparam
     - unused
+    - wastedassign
     - whitespace
 linters-settings:
   exhaustive:
