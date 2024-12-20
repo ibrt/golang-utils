@@ -105,17 +105,17 @@ func (m *MockInjector) EXPECT() *MockInjectorMockRecorder {
 }
 
 // Inject mocks base method.
-func (m *MockInjector) Inject(arg0 context.Context) context.Context {
+func (m *MockInjector) Inject(ctx context.Context) context.Context {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Inject", arg0)
+	ret := m.ctrl.Call(m, "Inject", ctx)
 	ret0, _ := ret[0].(context.Context)
 	return ret0
 }
 
 // Inject indicates an expected call of Inject.
-func (mr *MockInjectorMockRecorder) Inject(arg0 any) *MockInjectorInjectCall {
+func (mr *MockInjectorMockRecorder) Inject(ctx any) *MockInjectorInjectCall {
 	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Inject", reflect.TypeOf((*MockInjector)(nil).Inject), arg0)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Inject", reflect.TypeOf((*MockInjector)(nil).Inject), ctx)
 	return &MockInjectorInjectCall{Call: call}
 }
 

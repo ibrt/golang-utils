@@ -17,22 +17,22 @@ import (
 
 // BeforeSuite describes a method invoked before starting a test suite.
 type BeforeSuite interface {
-	BeforeSuite(context.Context, *gomega.WithT) context.Context
+	BeforeSuite(ctx context.Context, g *gomega.WithT) context.Context
 }
 
 // AfterSuite represents a method invoked after completing a test suite.
 type AfterSuite interface {
-	AfterSuite(context.Context, *gomega.WithT)
+	AfterSuite(ctx context.Context, g *gomega.WithT)
 }
 
 // BeforeTest represents a method invoked before each test method in a suite.
 type BeforeTest interface {
-	BeforeTest(context.Context, *gomega.WithT, *gomock.Controller) context.Context
+	BeforeTest(ctx context.Context, g *gomega.WithT, ctrl *gomock.Controller) context.Context
 }
 
 // AfterTest represents a method invoked after each test method in a suite.
 type AfterTest interface {
-	AfterTest(context.Context, *gomega.WithT)
+	AfterTest(ctx context.Context, g *gomega.WithT)
 }
 
 // RunSuite runs the test suite.

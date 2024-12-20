@@ -1,6 +1,9 @@
 linters:
   disable-all: true
   enable:
+    - asciicheck
+    - bidichk
+    - contextcheck
     - copyloopvar
     - errcheck
     - gci
@@ -12,6 +15,8 @@ linters:
     - unused
     - stylecheck
     - whitespace
+    - unparam
+    - inamedparam
 issues:
   exclude-use-default: false
   max-issues-per-linter: 0
@@ -31,6 +36,8 @@ linters-settings:
     import-require-grouping: true
     const-require-grouping: true
     var-require-grouping: true
+  inamedparam:
+    skip-single-param: false
   whitespace:
     multi-func: true
     multi-if: true

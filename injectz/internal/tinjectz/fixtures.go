@@ -24,7 +24,7 @@ type Initializer interface {
 
 // Injector allows to mock an Injector func.
 type Injector interface {
-	Inject(context.Context) context.Context
+	Inject(ctx context.Context) context.Context
 }
 
 // Releaser allows to mock a Releaser func.
