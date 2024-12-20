@@ -26,6 +26,8 @@ linters:
     - inamedparam
     - ineffassign
     - makezero
+    - mirror
+    - misspell
     - staticcheck
     - stylecheck
     - testpackage
