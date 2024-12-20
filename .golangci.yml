@@ -19,6 +19,7 @@ linters:
     - goconst
     - godot
     - goprintffuncname
+    - gosec
     - gosimple
     - govet
     - grouper
@@ -53,6 +54,15 @@ linters-settings:
     rewrite-rules:
       - pattern: 'interface{}'
         replacement: 'any'
+  gosec:
+    excludes:
+      - G103
+      - G104
+      - G204
+      - G301
+      - G302
+      - G304
+      - G307
   grouper:
     import-require-single-import: true
     import-require-grouping: true
