@@ -10,9 +10,9 @@ linters:
     - errcheck
     - errname
     - errorlint
+    - exhaustive
     - exhaustruct
     - forcetypeassert
-    - makezero
     - gci
     - ginkgolinter
     - gocheckcompilerdirectives
@@ -24,6 +24,7 @@ linters:
     - grouper
     - inamedparam
     - ineffassign
+    - makezero
     - staticcheck
     - stylecheck
     - testpackage
@@ -31,6 +32,12 @@ linters:
     - unused
     - whitespace
 linters-settings:
+  exhaustive:
+    check:
+      - switch
+      - map
+    explicit-exhaustive-switch: true
+    explicit-exhaustive-map: true
   gci:
     sections:
       - standard
