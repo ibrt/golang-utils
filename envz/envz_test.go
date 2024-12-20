@@ -56,10 +56,10 @@ func (*Suite) TestEnviron(g *WithT) {
 			"K3=v3"))
 }
 
-func (*Suite) TestWithEnv(g *WithT) {
+func (*Suite) TestMustWithEnv(g *WithT) {
 	g.Expect(os.Setenv("k1", "v11")).To(Succeed())
 
-	envz.WithEnv(map[string]string{"k1": "v12", "k2": "v2"}, func() {
+	envz.MustWithEnv(map[string]string{"k1": "v12", "k2": "v2"}, func() {
 		g.Expect(os.Getenv("k1")).To(Equal("v12"))
 		g.Expect(os.Getenv("k2")).To(Equal("v2"))
 	})

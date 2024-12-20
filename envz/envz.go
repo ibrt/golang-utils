@@ -46,8 +46,8 @@ func MustUnsetenv(key string) {
 	errorz.MaybeMustWrap(os.Unsetenv(key))
 }
 
-// WithEnv runs the closure after setting the given env, cleans up after.
-func WithEnv(env map[string]string, f func()) {
+// MustWithEnv runs the closure after setting the given env, cleans up after.
+func MustWithEnv(env map[string]string, f func()) {
 	origEnv := make(map[string]*string)
 
 	defer func() {

@@ -1,5 +1,5 @@
-// Package tfilez provides test fixtures for the "filez" package.
-package tfilez
+// Package itfilez provides internal test fixtures for the "filez" package.
+package itfilez
 
 import (
 	"embed"

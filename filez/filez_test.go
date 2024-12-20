@@ -9,7 +9,7 @@ import (
 
 	"github.com/ibrt/golang-utils/errorz"
 	"github.com/ibrt/golang-utils/filez"
-	"github.com/ibrt/golang-utils/filez/internal/tfilez"
+	"github.com/ibrt/golang-utils/filez/internal/itfilez"
 	"github.com/ibrt/golang-utils/fixturez"
 )
 
@@ -128,7 +128,7 @@ func (s *Suite) TestMustExport_Level0(g *WithT) {
 	dirPath := filez.MustCreateTempDir()
 	defer filez.MustRemoveAll(dirPath)
 
-	filez.MustExport(tfilez.FixturesEmbed, ".", dirPath)
+	filez.MustExport(itfilez.FixturesEmbed, ".", dirPath)
 
 	g.Expect(filez.MustListRegularFilePaths(dirPath)).To(Equal([]string{
 		"fixtures/child/second.txt",
@@ -140,7 +140,7 @@ func (s *Suite) TestMustExport_Level1(g *WithT) {
 	dirPath := filez.MustCreateTempDir()
 	defer filez.MustRemoveAll(dirPath)
 
-	filez.MustExport(tfilez.FixturesEmbed, "fixtures", dirPath)
+	filez.MustExport(itfilez.FixturesEmbed, "fixtures", dirPath)
 
 	g.Expect(filez.MustListRegularFilePaths(dirPath)).To(Equal([]string{
 		"child/second.txt",
@@ -152,7 +152,7 @@ func (s *Suite) TestMustExport_Level2(g *WithT) {
 	dirPath := filez.MustCreateTempDir()
 	defer filez.MustRemoveAll(dirPath)
 
-	filez.MustExport(tfilez.FixturesEmbed, "fixtures/child", dirPath)
+	filez.MustExport(itfilez.FixturesEmbed, "fixtures/child", dirPath)
 	g.Expect(filez.MustListRegularFilePaths(dirPath)).To(Equal([]string{
 		"second.txt",
 	}))
