@@ -27,6 +27,7 @@ linters:
     - inamedparam
     - ineffassign
     - intrange
+    - lll
     - makezero
     - mirror
     - misspell
@@ -42,6 +43,7 @@ linters:
     - sqlclosecheck
     - staticcheck
     - stylecheck
+    - tagalign
     - tagliatelle
     - testableexamples
     - testpackage
@@ -51,7 +53,6 @@ linters:
     - wastedassign
     - whitespace
     - wrapcheck
-    - tagalign
 linters-settings:
   exhaustive:
     check:
@@ -90,6 +91,8 @@ linters-settings:
     var-require-grouping: true
   inamedparam:
     skip-single-param: false
+  lll:
+    tab-width: 4
   nakedret:
     max-func-lines: 0
   tagalign:
@@ -114,4 +117,5 @@ issues:
         - exhaustruct
         - forcetypeassert
         - goconst
+        - lll
         - wrapcheck

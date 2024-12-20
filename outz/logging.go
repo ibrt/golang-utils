@@ -76,7 +76,9 @@ func (f *HumanLogFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 
 	for _, rk := range memz.GetSortedMapKeys(entry.Data, cmp.Less) {
 		if k, v, ok := f.prepareField(rk, entry.Data[rk]); ok {
-			lines = append(lines, strings.Split(fmt.Sprintf("%v=%v", f.styles.LogLevel(entry.Level).Sprintf("%v", k), v), "\n")...)
+			lines = append(lines, strings.Split(
+				fmt.Sprintf("%v=%v", f.styles.LogLevel(entry.Level).Sprintf("%v", k), v),
+				"\n")...)
 		}
 	}
 

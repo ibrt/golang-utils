@@ -44,7 +44,8 @@ func OutputSetupStandard(outW *os.File, errW *os.File) OutputRestoreFunc {
 	}
 }
 
-// GetOutputSetupFatihColor returns a [OutputSetupFunc] that configures the color streams (from "github.com/fatih/color").
+// GetOutputSetupFatihColor returns a [OutputSetupFunc] that configures the color streams
+// (from "github.com/fatih/color").
 func GetOutputSetupFatihColor(noColor bool) OutputSetupFunc {
 	return func(outW *os.File, errW *os.File) OutputRestoreFunc {
 		origNoColor := color.NoColor
@@ -73,7 +74,8 @@ func OutputSetupRodaineTable(outW *os.File, _ *os.File) OutputRestoreFunc {
 	}
 }
 
-// OutputSetupSirupsenLogrus is a [OutputSetupFunc] that configures the logging streams (from "github.com/sirupsen/logrus").
+// OutputSetupSirupsenLogrus is a [OutputSetupFunc] that configures the logging streams
+// (from "github.com/sirupsen/logrus").
 func OutputSetupSirupsenLogrus(_ *os.File, errW *os.File) OutputRestoreFunc {
 	origErr := map[*logrus.Logger]io.Writer{}
 
@@ -126,7 +128,8 @@ func MustEndOutputCapture() (string, string) {
 }
 
 // ResetOutputCapture ensures the output capture is cleared and reset (e.g. after a panic, error or test assertion
-// that prevents [MustEndOutputCapture] from being called). Always defer [ResetOutputCapture] before using output captures.
+// that prevents [MustEndOutputCapture] from being called). Always defer [ResetOutputCapture] before using output
+// captures.
 func ResetOutputCapture() {
 	m.Lock()
 	defer m.Unlock()

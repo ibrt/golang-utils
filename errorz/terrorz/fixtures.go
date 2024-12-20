@@ -57,7 +57,8 @@ var (
 	_ TestDetailedUnwrapSingleError = (*SimpleMockTestDetailedUnwrapSingleError)(nil)
 )
 
-// SimpleMockTestDetailedUnwrapSingleError is a simple implementation of [TestDetailedUnwrapSingleError] for test purposes.
+// SimpleMockTestDetailedUnwrapSingleError is a simple implementation of [TestDetailedUnwrapSingleError] for test
+// purposes.
 type SimpleMockTestDetailedUnwrapSingleError struct {
 	*SimpleMockTestDetailedError
 	UnwrapSingle error
@@ -78,7 +79,8 @@ var (
 	_ TestDetailedUnwrapMultiError = (*SimpleMockTestDetailedUnwrapMultiError)(nil)
 )
 
-// SimpleMockTestDetailedUnwrapMultiError is a simple implementation of [TestDetailedUnwrapMultiError] for test purposes.
+// SimpleMockTestDetailedUnwrapMultiError is a simple implementation of [TestDetailedUnwrapMultiError] for test
+// purposes.
 type SimpleMockTestDetailedUnwrapMultiError struct {
 	*SimpleMockTestDetailedError
 	UnwrapMulti []error

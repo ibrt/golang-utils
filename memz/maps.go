@@ -56,7 +56,8 @@ func FilterMap[K comparable, V any](m map[K]V, f func(k K, v V) bool) map[K]V {
 	return out
 }
 
-// TransformMapValues returns a new map built by passing all values through the given function, while the keys remain stable.
+// TransformMapValues returns a new map built by passing all values through the given function, while the keys remain
+// stable.
 func TransformMapValues[K comparable, V1 any, V2 any](m map[K]V1, f func(k K, v V1) V2) map[K]V2 {
 	if m == nil {
 		return nil

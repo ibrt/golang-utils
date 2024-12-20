@@ -72,7 +72,11 @@ func Catch2[T1 any, T2 any](f func() (T1, T2, error)) (outV1 T1, outV2 T2, outEr
 }
 
 // Catch2Ctx catches panics in a "func(context.Context) (T1, T2, error)" closure.
-func Catch2Ctx[T1 any, T2 any](ctx context.Context, f func(ctx context.Context) (T1, T2, error)) (outV1 T1, outV2 T2, outErr error) {
+func Catch2Ctx[T1 any, T2 any](
+	ctx context.Context,
+	f func(ctx context.Context) (T1, T2, error),
+) (outV1 T1, outV2 T2, outErr error) {
+
 	defer func() {
 		if rErr := MaybeWrapRecover(recover()); rErr != nil {
 			var t1 T1
@@ -108,7 +112,11 @@ func Catch3[T1 any, T2 any, T3 any](f func() (T1, T2, T3, error)) (outV1 T1, out
 }
 
 // Catch3Ctx catches panics in a "func(context.Context) (T1, T2, T3, error)" closure.
-func Catch3Ctx[T1 any, T2 any, T3 any](ctx context.Context, f func(ctx context.Context) (T1, T2, T3, error)) (outV1 T1, outV2 T2, outV3 T3, outErr error) {
+func Catch3Ctx[T1 any, T2 any, T3 any](
+	ctx context.Context,
+	f func(ctx context.Context) (T1, T2, T3, error),
+) (outV1 T1, outV2 T2, outV3 T3, outErr error) {
+
 	defer func() {
 		if rErr := MaybeWrapRecover(recover()); rErr != nil {
 			var t1 T1
