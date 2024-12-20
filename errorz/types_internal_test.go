@@ -31,7 +31,7 @@ func TestValueError(t *testing.T) {
 		value: "test value",
 	}
 	g.Expect(err.Error()).To(Equal("test value"))
-	g.Expect(err.Unwrap()).To(BeNil())
+	g.Expect(err.Unwrap()).To(Succeed())
 
 	err = &valueError{
 		value: fmt.Errorf("test error"),
@@ -40,7 +40,7 @@ func TestValueError(t *testing.T) {
 	g.Expect(err.Unwrap()).To(Equal(fmt.Errorf("test error")))
 
 	g.Expect(func() { _ = (*valueError)(nil).Error() }).To(Panic())
-	g.Expect((*valueError)(nil).Unwrap()).To(BeNil())
+	g.Expect((*valueError)(nil).Unwrap()).To(Succeed())
 }
 
 func TestWrappedError(t *testing.T) {

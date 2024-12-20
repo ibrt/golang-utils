@@ -13,6 +13,7 @@ linters:
     - exhaustruct
     - forcetypeassert
     - gci
+    - ginkgolinter
     - gosimple
     - govet
     - grouper
@@ -30,6 +31,9 @@ linters-settings:
       - standard
       - default
       - localmodule
+  ginkgolinter:
+    forbid-spec-pollution: true
+    force-expect-to: true
   gofmt:
     rewrite-rules:
       - pattern: 'interface{}'

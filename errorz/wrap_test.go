@@ -90,12 +90,12 @@ func TestWrap(t *testing.T) {
 	e3 := stringError("o2")
 
 	err := errorz.Wrap(e1, e2)
-	g.Expect(err).ToNot(BeNil())
+	g.Expect(err).To(HaveOccurred())
 	g.Expect(err.Error()).To(Equal("o1: e"))
 	g.Expect(err.(errorz.UnwrapMulti).Unwrap()).To(HaveExactElements(e1, e2))
 
 	err = errorz.Wrap(err, nil, e3)
-	g.Expect(err).ToNot(BeNil())
+	g.Expect(err).To(HaveOccurred())
 	g.Expect(err.Error()).To(Equal("o2: o1: e"))
 	g.Expect(err.(errorz.UnwrapMulti).Unwrap()).To(HaveExactElements(e1, e2, e3))
 
@@ -109,11 +109,11 @@ func TestMaybeWrap(t *testing.T) {
 	e2 := &structError{k: "o1"}
 
 	err := errorz.MaybeWrap(e1, e2)
-	g.Expect(err).ToNot(BeNil())
+	g.Expect(err).To(HaveOccurred())
 	g.Expect(err.Error()).To(Equal("o1: e"))
 
 	err = errorz.MaybeWrap(nil)
-	g.Expect(err).To(BeNil())
+	g.Expect(err).To(Succeed())
 }
 
 func TestMustWrap(t *testing.T) {
@@ -143,11 +143,11 @@ func TestWrapRecover(t *testing.T) {
 	e2 := &structError{k: "o1"}
 
 	err := errorz.WrapRecover(e1, e2)
-	g.Expect(err).ToNot(BeNil())
+	g.Expect(err).To(HaveOccurred())
 	g.Expect(err.Error()).To(Equal("o1: e"))
 
 	err = errorz.WrapRecover("e", e2)
-	g.Expect(err).ToNot(BeNil())
+	g.Expect(err).To(HaveOccurred())
 	g.Expect(err.Error()).To(Equal("o1: e"))
 
 	g.Expect(func() { _ = errorz.WrapRecover(nil) }).To(PanicWith(MatchError("r is nil")))
@@ -160,11 +160,11 @@ func TestMaybeWrapRecover(t *testing.T) {
 	e2 := &structError{k: "o1"}
 
 	err := errorz.MaybeWrapRecover(e1, e2)
-	g.Expect(err).ToNot(BeNil())
+	g.Expect(err).To(HaveOccurred())
 	g.Expect(err.Error()).To(Equal("o1: e"))
 
 	err = errorz.MaybeWrapRecover("e", e2)
-	g.Expect(err).ToNot(BeNil())
+	g.Expect(err).To(HaveOccurred())
 	g.Expect(err.Error()).To(Equal("o1: e"))
 
 	g.Expect(func() { _ = errorz.MaybeWrapRecover(nil) }).ToNot(Panic())

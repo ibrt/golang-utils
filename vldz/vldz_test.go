@@ -23,7 +23,7 @@ func TestSuite(t *testing.T) {
 
 func (*Suite) TestValidationError(g *WithT) {
 	g.Expect((&vldz.ValidationError{}).Error()).To(Equal("validation error: unknown"))
-	g.Expect((*vldz.ValidationError)(nil).Unwrap()).To(BeNil())
+	g.Expect((*vldz.ValidationError)(nil).Unwrap()).To(Succeed())
 
 	err := fmt.Errorf("test error")
 	g.Expect(vldz.NewValidationError(err).Unwrap()).To(Equal(err))
@@ -54,7 +54,7 @@ func (*Suite) TestKindStructOrStructPtr(g *WithT) {
 			"validation error(s):",
 			"- Key: 'validatableStruct.value' Error:Field validation for 'value' failed on the 'kind-struct-or-struct-ptr' tag",
 		}, "\n")))
-		g.Expect(vErr.Unwrap()).ToNot(BeNil())
+		g.Expect(vErr.Unwrap()).To(HaveOccurred())
 	}
 
 	g.Expect(vldz.ValidateStruct(&validatableStruct{Value: struct{}{}})).To(Succeed())

@@ -13,7 +13,7 @@ func TestErrorf(t *testing.T) {
 	g := NewWithT(t)
 
 	err := errorz.Errorf("e: %v", "v")
-	g.Expect(err).ToNot(BeNil())
+	g.Expect(err).To(HaveOccurred())
 	g.Expect(err.Error()).To(Equal("e: v"))
 	g.Expect(err.(errorz.UnwrapMulti).Unwrap()).To(HaveExactElements(fmt.Errorf("e: v")))
 }
