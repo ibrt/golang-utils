@@ -15,6 +15,9 @@ linters:
     - gci
     - ginkgolinter
     - gocheckcompilerdirectives
+    - goconst
+    - godot
+    - goprintffuncname
     - gosimple
     - govet
     - grouper
@@ -35,6 +38,9 @@ linters-settings:
   ginkgolinter:
     forbid-spec-pollution: true
     force-expect-to: true
+  godot:
+    scope: toplevel
+    capital: true
   gofmt:
     rewrite-rules:
       - pattern: 'interface{}'
@@ -58,3 +64,4 @@ issues:
       linters:
         - exhaustruct
         - forcetypeassert
+        - goconst
