@@ -22,7 +22,7 @@ func TestAESSuite(t *testing.T) {
 func (*AESSuite) TestAES(g *WithT) {
 	key := cryptoz.MustGenerateRandomAESKey()
 
-	for i := 0; i < 100; i++ {
+	for range 100 {
 		plaintext := idz.MustNewRandomUUID()
 		ciphertext := cryptoz.MustEncryptAES(key, plaintext)
 		g.Expect(strings.HasPrefix(ciphertext, "enc:")).To(BeTrue())

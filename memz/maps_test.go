@@ -50,7 +50,7 @@ func (s *MapsSuite) TestTransformMapValues(g *WithT) {
 }
 
 func (s *MapsSuite) TestGetSortedMapKeys(g *WithT) {
-	for i := 0; i < 10; i++ {
+	for range 10 {
 		g.Expect(memz.GetSortedMapKeys(map[int]string{1: "a", 2: "b"}, cmp.Less)).To(Equal([]int{1, 2}))
 	}
 }

@@ -25,13 +25,13 @@ linters:
     - grouper
     - inamedparam
     - ineffassign
+    - intrange
     - makezero
     - mirror
     - misspell
     - musttag
     - nakedret
     - noctx
-    - usestdlibvars
     - nolintlint
     - nosprintfhostport
     - predeclared
@@ -45,6 +45,7 @@ linters:
     - testpackage
     - unparam
     - unused
+    - usestdlibvars
     - wastedassign
     - whitespace
 linters-settings:

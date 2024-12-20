@@ -94,7 +94,7 @@ func newRunnableSuite(t *testing.T, s any) (*runnableSuite, error) {
 func (rs *runnableSuite) inspectFields() error {
 	rs.t.Helper()
 
-	for i := 0; i < rs.sVI.NumField(); i++ {
+	for i := range rs.sVI.NumField() {
 		fV := rs.sVI.Field(i)
 		f := rs.sTI.Field(i)
 
@@ -119,7 +119,7 @@ func (rs *runnableSuite) inspectFields() error {
 func (rs *runnableSuite) inspectMethods() error {
 	rs.t.Helper()
 
-	for i := 0; i < rs.sV.NumMethod(); i++ {
+	for i := range rs.sV.NumMethod() {
 		m := rs.sT.Method(i)
 
 		if !rs.isTestMethod(rs.sV.Method(i), m) {
@@ -147,7 +147,7 @@ func (rs *runnableSuite) isTestMethod(mV reflect.Value, m reflect.Method) bool {
 		return false
 	}
 
-	for i := 0; i < mV.Type().NumIn(); i++ {
+	for i := range mV.Type().NumIn() {
 		switch mV.Type().In(i) {
 		case ctxT, gmgT, ctrT:
 			// ok
@@ -293,7 +293,7 @@ func (rs *runnableSuite) invokeTestMethod(
 	gmgT := reflect.TypeOf((*gomega.WithT)(nil))
 	ctrT := reflect.TypeOf((*gomock.Controller)(nil))
 
-	for i := 0; i < mV.Type().NumIn(); i++ {
+	for i := range mV.Type().NumIn() {
 		switch mV.Type().In(i) {
 		case ctxT:
 			args = append(args, reflect.ValueOf(ctx))
