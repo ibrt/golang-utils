@@ -23,6 +23,7 @@ linters:
     - gosimple
     - govet
     - grouper
+    - iface
     - inamedparam
     - ineffassign
     - intrange
@@ -41,6 +42,7 @@ linters:
     - sqlclosecheck
     - staticcheck
     - stylecheck
+    - tagliatelle
     - testableexamples
     - testpackage
     - unparam
@@ -49,6 +51,7 @@ linters:
     - wastedassign
     - whitespace
     - wrapcheck
+    - tagalign
 linters-settings:
   exhaustive:
     check:
@@ -88,7 +91,11 @@ linters-settings:
   inamedparam:
     skip-single-param: false
   nakedret:
-    max-func-lines: 1
+    max-func-lines: 0
+  tagalign:
+    align: false
+    sort: true
+    strict: true
   whitespace:
     multi-func: true
     multi-if: true

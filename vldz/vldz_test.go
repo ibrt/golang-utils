@@ -66,7 +66,7 @@ func (*Suite) TestValidateStruct(g *WithT) {
 
 	type validatableStruct struct {
 		First  string `json:"first" validate:"required"`
-		Second string `validate:"custom-validator"`
+		Second string `             validate:"custom-validator"`
 	}
 
 	{
