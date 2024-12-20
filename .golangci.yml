@@ -10,6 +10,7 @@ linters:
     - ineffassign
     - staticcheck
     - unused
+    - whitespace
 issues:
   max-issues-per-linter: 0
   max-same-issues: 0
@@ -27,5 +28,7 @@ linters-settings:
     import-require-single-import: true
     import-require-grouping: true
     const-require-grouping: true
-    # type-require-grouping: true
     var-require-grouping: true
+  whitespace:
+    multi-func: true
+    multi-if: true

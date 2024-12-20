@@ -75,7 +75,6 @@ func getSummaryInternal(err error) *Summary {
 	case UnwrapSingle:
 		if uErr := e.Unwrap(); uErr != nil {
 			s.Components = append(s.Components, getSummaryInternal(uErr))
-
 		}
 	}
 
