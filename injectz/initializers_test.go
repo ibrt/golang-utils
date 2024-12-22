@@ -10,7 +10,7 @@ import (
 
 	"github.com/ibrt/golang-utils/fixturez"
 	"github.com/ibrt/golang-utils/injectz"
-	"github.com/ibrt/golang-utils/injectz/internal/tinjectz"
+	"github.com/ibrt/golang-utils/injectz/tinjectz"
 )
 
 type InitializersSuite struct {
@@ -22,17 +22,17 @@ func TestInitializersSuite(t *testing.T) {
 }
 
 func (*InitializersSuite) TestMustInitialize_Success(g *WithT, ctrl *gomock.Controller) {
-	firstInitializer := tinjectz.NewMockInitializer(ctrl)
-	secondInitializer := tinjectz.NewMockInitializer(ctrl)
-	firstInjector := tinjectz.NewMockInjector(ctrl)
-	secondInjector := tinjectz.NewMockInjector(ctrl)
-	firstReleaser := tinjectz.NewMockReleaser(ctrl)
-	secondReleaser := tinjectz.NewMockReleaser(ctrl)
+	firstInitializer := tinjectz.NewMockTestInitializer(ctrl)
+	secondInitializer := tinjectz.NewMockTestInitializer(ctrl)
+	firstInjector := tinjectz.NewMockTestInjector(ctrl)
+	secondInjector := tinjectz.NewMockTestInjector(ctrl)
+	firstReleaser := tinjectz.NewMockTestReleaser(ctrl)
+	secondReleaser := tinjectz.NewMockTestReleaser(ctrl)
 	isSecondReleased := false
 
 	firstInitializer.EXPECT().Initialize(
 		gomock.Cond(func(ctx context.Context) bool {
-			return ctx.Value(tinjectz.FirstContextKey) == nil && ctx.Value(tinjectz.SecondContextKey) == nil
+			return ctx.Value(tinjectz.TestContextKeyA0) == nil && ctx.Value(tinjectz.TestContextKeyA1) == nil
 		})).
 		DoAndReturn(func(ctx context.Context) (injectz.Injector, injectz.Releaser) {
 			return firstInjector.Inject, firstReleaser.Release
@@ -40,7 +40,7 @@ func (*InitializersSuite) TestMustInitialize_Success(g *WithT, ctrl *gomock.Cont
 
 	secondInitializer.EXPECT().Initialize(
 		gomock.Cond(func(ctx context.Context) bool {
-			return ctx.Value(tinjectz.FirstContextKey) != nil && ctx.Value(tinjectz.SecondContextKey) == nil
+			return ctx.Value(tinjectz.TestContextKeyA0) != nil && ctx.Value(tinjectz.TestContextKeyA1) == nil
 		})).
 		DoAndReturn(func(ctx context.Context) (injectz.Injector, injectz.Releaser) {
 			return secondInjector.Inject, secondReleaser.Release
@@ -48,19 +48,19 @@ func (*InitializersSuite) TestMustInitialize_Success(g *WithT, ctrl *gomock.Cont
 
 	firstInjector.EXPECT().Inject(
 		gomock.Cond(func(ctx context.Context) bool {
-			return ctx.Value(tinjectz.FirstContextKey) == nil && ctx.Value(tinjectz.SecondContextKey) == nil
+			return ctx.Value(tinjectz.TestContextKeyA0) == nil && ctx.Value(tinjectz.TestContextKeyA1) == nil
 		})).
 		DoAndReturn(func(ctx context.Context) context.Context {
-			return context.WithValue(ctx, tinjectz.FirstContextKey, "v1")
+			return context.WithValue(ctx, tinjectz.TestContextKeyA0, "v1")
 		}).
 		Times(2)
 
 	secondInjector.EXPECT().Inject(
 		gomock.Cond(func(ctx context.Context) bool {
-			return ctx.Value(tinjectz.FirstContextKey) != nil && ctx.Value(tinjectz.SecondContextKey) == nil
+			return ctx.Value(tinjectz.TestContextKeyA0) != nil && ctx.Value(tinjectz.TestContextKeyA1) == nil
 		})).
 		DoAndReturn(func(ctx context.Context) context.Context {
-			return context.WithValue(ctx, tinjectz.SecondContextKey, "v2")
+			return context.WithValue(ctx, tinjectz.TestContextKeyA1, "v2")
 		}).
 		Times(2)
 
@@ -72,20 +72,20 @@ func (*InitializersSuite) TestMustInitialize_Success(g *WithT, ctrl *gomock.Cont
 		MustInitialize()
 
 	ctx := injector(context.Background())
-	g.Expect(ctx.Value(tinjectz.FirstContextKey)).To(Equal("v1"))
-	g.Expect(ctx.Value(tinjectz.SecondContextKey)).To(Equal("v2"))
+	g.Expect(ctx.Value(tinjectz.TestContextKeyA0)).To(Equal("v1"))
+	g.Expect(ctx.Value(tinjectz.TestContextKeyA1)).To(Equal("v2"))
 	releaser()
 }
 
 func (*InitializersSuite) TestMustInitialize_Error(g *WithT, ctrl *gomock.Controller) {
-	firstInitializer := tinjectz.NewMockInitializer(ctrl)
-	secondInitializer := tinjectz.NewMockInitializer(ctrl)
-	firstInjector := tinjectz.NewMockInjector(ctrl)
-	firstReleaser := tinjectz.NewMockReleaser(ctrl)
+	firstInitializer := tinjectz.NewMockTestInitializer(ctrl)
+	secondInitializer := tinjectz.NewMockTestInitializer(ctrl)
+	firstInjector := tinjectz.NewMockTestInjector(ctrl)
+	firstReleaser := tinjectz.NewMockTestReleaser(ctrl)
 
 	firstInitializer.EXPECT().Initialize(
 		gomock.Cond(func(ctx context.Context) bool {
-			return ctx.Value(tinjectz.FirstContextKey) == nil && ctx.Value(tinjectz.SecondContextKey) == nil
+			return ctx.Value(tinjectz.TestContextKeyA0) == nil && ctx.Value(tinjectz.TestContextKeyA1) == nil
 		})).
 		DoAndReturn(func(ctx context.Context) (injectz.Injector, injectz.Releaser) {
 			return firstInjector.Inject, firstReleaser.Release
@@ -93,7 +93,7 @@ func (*InitializersSuite) TestMustInitialize_Error(g *WithT, ctrl *gomock.Contro
 
 	secondInitializer.EXPECT().Initialize(
 		gomock.Cond(func(ctx context.Context) bool {
-			return ctx.Value(tinjectz.FirstContextKey) != nil && ctx.Value(tinjectz.SecondContextKey) == nil
+			return ctx.Value(tinjectz.TestContextKeyA0) != nil && ctx.Value(tinjectz.TestContextKeyA1) == nil
 		})).
 		DoAndReturn(func(ctx context.Context) (injectz.Injector, injectz.Releaser) {
 			panic(fmt.Errorf("initializer error"))
@@ -101,10 +101,10 @@ func (*InitializersSuite) TestMustInitialize_Error(g *WithT, ctrl *gomock.Contro
 
 	firstInjector.EXPECT().Inject(
 		gomock.Cond(func(ctx context.Context) bool {
-			return ctx.Value(tinjectz.FirstContextKey) == nil && ctx.Value(tinjectz.SecondContextKey) == nil
+			return ctx.Value(tinjectz.TestContextKeyA0) == nil && ctx.Value(tinjectz.TestContextKeyA1) == nil
 		})).
 		DoAndReturn(func(ctx context.Context) context.Context {
-			return context.WithValue(ctx, tinjectz.FirstContextKey, "v1")
+			return context.WithValue(ctx, tinjectz.TestContextKeyA0, "v1")
 		})
 
 	firstReleaser.EXPECT().Release()

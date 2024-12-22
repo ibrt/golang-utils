@@ -9,7 +9,8 @@ import (
 
 	"github.com/ibrt/golang-utils/fixturez"
 	"github.com/ibrt/golang-utils/injectz"
-	"github.com/ibrt/golang-utils/injectz/internal/tinjectz"
+	"github.com/ibrt/golang-utils/injectz/tinjectz"
+	"github.com/ibrt/golang-utils/ioz/tioz"
 )
 
 type ReleasersSuite struct {
@@ -27,14 +28,14 @@ func (*ReleasersSuite) TestNewNoopReleaser(g *WithT) {
 }
 
 func (*ReleasersSuite) TestNewCloseReleaser(ctrl *gomock.Controller) {
-	closer := tinjectz.NewMockCloser(ctrl)
+	closer := tioz.NewMockTestCloser(ctrl)
 	closer.EXPECT().Close().Return(fmt.Errorf("close error"))
 	injectz.NewCloseReleaser(closer)()
 }
 
 func (*ReleasersSuite) TestNewReleasers(g *WithT, ctrl *gomock.Controller) {
-	firstReleaser := tinjectz.NewMockReleaser(ctrl)
-	secondReleaser := tinjectz.NewMockReleaser(ctrl)
+	firstReleaser := tinjectz.NewMockTestReleaser(ctrl)
+	secondReleaser := tinjectz.NewMockTestReleaser(ctrl)
 	isSecondReleased := false
 
 	firstReleaser.EXPECT().Release().Do(func() { g.Expect(isSecondReleased).To(BeTrue()) })
