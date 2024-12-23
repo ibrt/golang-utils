@@ -6,6 +6,10 @@ import (
 
 // IgnoreClose calls [io.Closer.Close], ignoring the returned error. Handy for the "defer Close" pattern.
 func IgnoreClose(c io.Closer) {
+	defer func() {
+		_ = recover()
+	}()
+
 	if c != nil {
 		_ = c.Close()
 	}
