@@ -173,7 +173,9 @@ linters-settings:
       - name: unused-parameter
       - name: unused-receiver
       - name: use-any
-
+      - name: useless-break
+      - name: var-naming
+      - name: waitgroup-by-value
   tagalign:
     align: false
     sort: true
