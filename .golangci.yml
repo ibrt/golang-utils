@@ -162,6 +162,17 @@ linters-settings:
       - name: range-val-in-closure
       - name: range
       - name: receiver-naming
+      - name: redefines-builtin-id
+      - name: redundant-import-alias
+      - name: string-of-int
+      - name: struct-tag
+      - name: superfluous-else
+      - name: time-equal
+      - name: time-naming
+      - name: unconditional-recursion
+      - name: unexported-naming
+      - name: unexported-return
+
   tagalign:
     align: false
     sort: true
