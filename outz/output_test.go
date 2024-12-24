@@ -32,10 +32,10 @@ func (*OutputSuite) TestOutputCapture_Standard(g *WithT) {
 	g.Expect(fmt.Fprint(os.Stdout, "<out>")).Error().To(Succeed())
 	g.Expect(fmt.Fprint(os.Stderr, "<err>")).Error().To(Succeed())
 
-	outBuf, errBuf := outz.MustEndOutputCapture()
+	outStr, errStr := outz.MustEndOutputCapture()
 
-	g.Expect(outBuf).To(Equal("<out>"))
-	g.Expect(errBuf).To(Equal("<err>"))
+	g.Expect(outStr).To(Equal("<out>"))
+	g.Expect(errStr).To(Equal("<err>"))
 
 	g.Expect(func() {
 		outz.ResetOutputCapture()
@@ -52,10 +52,10 @@ func (*OutputSuite) TestOutputCapture_FatihColor_False(g *WithT) {
 	g.Expect(fmt.Fprint(color.Output, "<out>")).Error().To(Succeed())
 	g.Expect(fmt.Fprint(color.Error, "<err>")).Error().To(Succeed())
 
-	outBuf, errBuf := outz.MustEndOutputCapture()
+	outStr, errStr := outz.MustEndOutputCapture()
 
-	g.Expect(outBuf).To(Equal("\x1b[0m<out>\x1b[0m<out>"))
-	g.Expect(errBuf).To(Equal("<err>"))
+	g.Expect(outStr).To(Equal("\x1b[0m<out>\x1b[0m<out>"))
+	g.Expect(errStr).To(Equal("<err>"))
 
 	g.Expect(func() {
 		outz.ResetOutputCapture()
@@ -72,10 +72,10 @@ func (*OutputSuite) TestOutputCapture_FatihColor_True(g *WithT) {
 	g.Expect(fmt.Fprint(color.Output, "<out>")).Error().To(Succeed())
 	g.Expect(fmt.Fprint(color.Error, "<err>")).Error().To(Succeed())
 
-	outBuf, errBuf := outz.MustEndOutputCapture()
+	outStr, errStr := outz.MustEndOutputCapture()
 
-	g.Expect(outBuf).To(Equal("<out><out>"))
-	g.Expect(errBuf).To(Equal("<err>"))
+	g.Expect(outStr).To(Equal("<out><out>"))
+	g.Expect(errStr).To(Equal("<err>"))
 
 	g.Expect(func() {
 		outz.ResetOutputCapture()
@@ -91,10 +91,10 @@ func (*OutputSuite) TestOutputCapture_RodaineTable(g *WithT) {
 	table.New("h1").AddRow("v1").Print()
 	g.Expect(fmt.Fprint(table.DefaultWriter, "<out>")).Error().To(Succeed())
 
-	outBuf, errBuf := outz.MustEndOutputCapture()
+	outStr, errStr := outz.MustEndOutputCapture()
 
-	g.Expect(outBuf).To(Equal("h1  \nv1  \n<out>"))
-	g.Expect(errBuf).To(BeEmpty())
+	g.Expect(outStr).To(Equal("h1  \nv1  \n<out>"))
+	g.Expect(errStr).To(BeEmpty())
 
 	g.Expect(func() {
 		outz.ResetOutputCapture()
@@ -117,10 +117,10 @@ func (*OutputSuite) TestOutputCapture_SirupsenLogrus(g *WithT) {
 	l1.WithTime(t).Print("<err>")
 	l2.WithTime(t).Print("<err>")
 
-	outBuf, errBuf := outz.MustEndOutputCapture()
+	outStr, errStr := outz.MustEndOutputCapture()
 
-	g.Expect(outBuf).To(BeEmpty())
-	g.Expect(errBuf).To(Equal("time=\"2000-01-01T00:00:00Z\" level=info msg=\"<err>\"\ntime=\"2000-01-01T00:00:00Z\" level=info msg=\"<err>\"\ntime=\"2000-01-01T00:00:00Z\" level=info msg=\"<err>\"\ntime=\"2000-01-01T00:00:00Z\" level=info msg=\"<err>\"\n"))
+	g.Expect(outStr).To(BeEmpty())
+	g.Expect(errStr).To(Equal("time=\"2000-01-01T00:00:00Z\" level=info msg=\"<err>\"\ntime=\"2000-01-01T00:00:00Z\" level=info msg=\"<err>\"\ntime=\"2000-01-01T00:00:00Z\" level=info msg=\"<err>\"\ntime=\"2000-01-01T00:00:00Z\" level=info msg=\"<err>\"\n"))
 
 	g.Expect(func() {
 		outz.ResetOutputCapture()
