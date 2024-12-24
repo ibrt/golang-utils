@@ -111,6 +111,22 @@ linters-settings:
       - name: context-as-argument
       - name: context-keys-type
       - name: datarace
+      - name: deep-exit
+      - name: defer
+      - name: dot-imports
+        arguments:
+          allowedPackages:
+            - 'github.com/onsi/gomega'
+            - 'github.com/onsi/gomega/gstruct'
+      - name: duplicated-imports
+      - name: early-return
+        arguments:
+          - "preserveScope"
+      - name: empty-block
+      - name: enforce-map-style
+        arguments: 'make'
+      - name: enforce-repeated-arg-type-style
+        arguments: 'short'
   tagalign:
     align: false
     sort: true
