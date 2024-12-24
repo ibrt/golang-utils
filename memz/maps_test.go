@@ -41,7 +41,7 @@ func (*MapsSuite) TestFilterMap(g *WithT) {
 	g.Expect(memz.FilterMap[int, string](map[int]string{1: "a", 2: "b"}, func(k int, _ string) bool { return k == 1 })).To(Equal(map[int]string{1: "a"}))
 }
 
-func (s *MapsSuite) TestTransformMapValues(g *WithT) {
+func (*MapsSuite) TestTransformMapValues(g *WithT) {
 	f := func(_, v int) string { return fmt.Sprintf("%v", v) }
 
 	g.Expect(memz.TransformMapValues[int, int, string](nil, f)).To(BeNil())
@@ -49,7 +49,7 @@ func (s *MapsSuite) TestTransformMapValues(g *WithT) {
 	g.Expect(memz.TransformMapValues(map[int]int{1: 10, 2: 20}, f)).To(Equal(map[int]string{1: "10", 2: "20"}))
 }
 
-func (s *MapsSuite) TestGetSortedMapKeys(g *WithT) {
+func (*MapsSuite) TestGetSortedMapKeys(g *WithT) {
 	for range 10 {
 		g.Expect(memz.GetSortedMapKeys(map[int]string{1: "a", 2: "b"}, cmp.Less)).To(Equal([]int{1, 2}))
 	}

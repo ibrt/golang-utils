@@ -36,7 +36,7 @@ func (*Suite) TestMustEdit(g *WithT) {
 	}).ToNot(Panic())
 
 	g.Expect(func() {
-		urlz.MustEdit("\b", func(u *url.URL) {})
+		urlz.MustEdit("\b", func(_ *url.URL) {})
 	}).To(PanicWith(MatchError(`parse "\b": net/url: invalid control character in URL`)))
 }
 

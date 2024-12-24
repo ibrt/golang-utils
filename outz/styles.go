@@ -36,42 +36,42 @@ type stylesImpl struct {
 }
 
 // Default implements the [Styles] interface.
-func (s *stylesImpl) Default() *color.Color {
+func (*stylesImpl) Default() *color.Color {
 	return color.New(color.Reset)
 }
 
 // Highlight implements the [Styles] interface.
-func (s *stylesImpl) Highlight() *color.Color {
+func (*stylesImpl) Highlight() *color.Color {
 	return color.New(color.Bold)
 }
 
 // SecondaryHighlight implements the [Styles] interface.
-func (s *stylesImpl) SecondaryHighlight() *color.Color {
+func (*stylesImpl) SecondaryHighlight() *color.Color {
 	return color.New(color.Bold, color.Faint)
 }
 
 // Secondary implements the [Styles] interface.
-func (s *stylesImpl) Secondary() *color.Color {
+func (*stylesImpl) Secondary() *color.Color {
 	return color.New(color.Faint)
 }
 
 // Info implements the [Styles] interface.
-func (s *stylesImpl) Info() *color.Color {
+func (*stylesImpl) Info() *color.Color {
 	return color.New(color.FgCyan)
 }
 
 // Success implements the [Styles] interface.
-func (s *stylesImpl) Success() *color.Color {
+func (*stylesImpl) Success() *color.Color {
 	return color.New(color.FgGreen)
 }
 
 // Warning implements the [Styles] interface.
-func (s *stylesImpl) Warning() *color.Color {
+func (*stylesImpl) Warning() *color.Color {
 	return color.New(color.FgYellow)
 }
 
 // Error implements the [Styles] interface.
-func (s *stylesImpl) Error() *color.Color {
+func (*stylesImpl) Error() *color.Color {
 	return color.New(color.FgHiRed)
 }
 

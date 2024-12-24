@@ -15,7 +15,7 @@ func NewNoopInjector() Injector {
 }
 
 // NewSingletonInjector returns a constant [Injector].
-func NewSingletonInjector(contextKey, value interface{}) Injector {
+func NewSingletonInjector(contextKey, value any) Injector {
 	return func(ctx context.Context) context.Context {
 		return context.WithValue(ctx, contextKey, value)
 	}

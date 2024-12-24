@@ -17,7 +17,7 @@ func TestUtilsSuite(t *testing.T) {
 	fixturez.RunSuite(t, &UtilsSuite{})
 }
 
-func (s *UtilsSuite) TestMin(g *WithT) {
+func (*UtilsSuite) TestMin(g *WithT) {
 	g.Expect(memz.Min(1)).To(BeNumerically("==", 1))
 	g.Expect(memz.Min(1, 2)).To(BeNumerically("==", 1))
 	g.Expect(memz.Min(1, 2, 3)).To(BeNumerically("==", 1))
@@ -26,7 +26,7 @@ func (s *UtilsSuite) TestMin(g *WithT) {
 	g.Expect(memz.Min(3, 2)).To(BeNumerically("==", 2))
 }
 
-func (s *UtilsSuite) TestMax(g *WithT) {
+func (*UtilsSuite) TestMax(g *WithT) {
 	g.Expect(memz.Max(1)).To(BeNumerically("==", 1))
 	g.Expect(memz.Max(1, 2)).To(BeNumerically("==", 2))
 	g.Expect(memz.Max(1, 2, 3)).To(BeNumerically("==", 3))
@@ -39,7 +39,7 @@ func (*UtilsSuite) TestTernary(g *WithT) {
 	g.Expect(memz.Ternary(false, 1, 2)).To(BeNumerically("==", 2))
 }
 
-func (s *UtilsSuite) TestIsAnyNil(g *WithT) {
+func (*UtilsSuite) TestIsAnyNil(g *WithT) {
 	g.Expect(memz.IsAnyNil(nil)).To(BeTrue())
 	g.Expect(memz.IsAnyNil(memz.PtrZeroToNil(""))).To(BeTrue())
 	g.Expect(memz.IsAnyNil((*WithT)(nil))).To(BeTrue())

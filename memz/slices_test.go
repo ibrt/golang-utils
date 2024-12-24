@@ -60,7 +60,7 @@ func (*SlicesSuite) TestSafeSliceIndexPtr(g *WithT) {
 	g.Expect(memz.SafeSliceIndexPtr(s, 4)).To(BeNil())
 }
 
-func (s *SlicesSuite) TestConcatSlices(g *WithT) {
+func (*SlicesSuite) TestConcatSlices(g *WithT) {
 	g.Expect(memz.ConcatSlices[string](nil, nil)).To(Equal([]string{}))
 	g.Expect(memz.ConcatSlices[string](nil, []string{})).To(Equal([]string{}))
 	g.Expect(memz.ConcatSlices[string]([]string{}, nil)).To(Equal([]string{}))
@@ -79,12 +79,12 @@ func (*SlicesSuite) TestShallowCopySlice(g *WithT) {
 	g.Expect(memz.ShallowCopySlice([]string{"a", "b"})).To(Equal([]string{"a", "b"}))
 }
 
-func (s *SlicesSuite) TestFilterSlice(g *WithT) {
-	g.Expect(memz.FilterSlice(nil, func(i int) bool {
+func (*SlicesSuite) TestFilterSlice(g *WithT) {
+	g.Expect(memz.FilterSlice(nil, func(_ int) bool {
 		return true
 	})).To(BeNil())
 
-	g.Expect(memz.FilterSlice([]int{}, func(i int) bool {
+	g.Expect(memz.FilterSlice([]int{}, func(_ int) bool {
 		return true
 	})).To(Equal([]int{}))
 
@@ -93,7 +93,7 @@ func (s *SlicesSuite) TestFilterSlice(g *WithT) {
 	})).To(Equal([]int{2, 4}))
 }
 
-func (s *SlicesSuite) TestBatchSlice(g *WithT) {
+func (*SlicesSuite) TestBatchSlice(g *WithT) {
 	g.Expect(memz.BatchSlice([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, 2)).
 		To(Equal([][]int{
 			{0, 1},

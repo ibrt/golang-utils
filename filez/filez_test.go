@@ -36,7 +36,7 @@ func (*Suite) TestMustRel(g *WithT) {
 	}).ToNot(Panic())
 }
 
-func (s *Suite) TestGetwdAndChdir(g *WithT) {
+func (*Suite) TestGetwdAndChdir(g *WithT) {
 	g.Expect(func() {
 		wd1 := filez.MustGetwd()
 		defer filez.MustChdir(wd1)
@@ -124,7 +124,7 @@ func (*Suite) TestMustRelForDisplay(g *WithT) {
 	g.Expect(filez.MustRelForDisplay(filez.MustAbs(filepath.Join("..", "a")))).To(Equal(filez.MustAbs(filepath.Join("..", "a"))))
 }
 
-func (s *Suite) TestMustExport_Level0(g *WithT) {
+func (*Suite) TestMustExport_Level0(g *WithT) {
 	dirPath := filez.MustCreateTempDir()
 	defer filez.MustRemoveAll(dirPath)
 
@@ -136,7 +136,7 @@ func (s *Suite) TestMustExport_Level0(g *WithT) {
 	}))
 }
 
-func (s *Suite) TestMustExport_Level1(g *WithT) {
+func (*Suite) TestMustExport_Level1(g *WithT) {
 	dirPath := filez.MustCreateTempDir()
 	defer filez.MustRemoveAll(dirPath)
 
@@ -148,7 +148,7 @@ func (s *Suite) TestMustExport_Level1(g *WithT) {
 	}))
 }
 
-func (s *Suite) TestMustExport_Level2(g *WithT) {
+func (*Suite) TestMustExport_Level2(g *WithT) {
 	dirPath := filez.MustCreateTempDir()
 	defer filez.MustRemoveAll(dirPath)
 

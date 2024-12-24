@@ -72,10 +72,6 @@ linters-settings:
   godot:
     scope: toplevel
     capital: true
-  gofmt:
-    rewrite-rules:
-      - pattern: 'interface{}'
-        replacement: 'any'
   gosec:
     excludes:
       - G103
@@ -172,6 +168,11 @@ linters-settings:
       - name: unconditional-recursion
       - name: unexported-naming
       - name: unexported-return
+      - name: unnecessary-stmt
+      - name: unreachable-code
+      - name: unused-parameter
+      - name: unused-receiver
+      - name: use-any
 
   tagalign:
     align: false
