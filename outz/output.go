@@ -119,7 +119,7 @@ func MustBeginOutputCapture(outputSetupFuncs ...OutputSetupFunc) {
 
 // MustEndOutputCapture restores the real streams and returns the captured data.
 // It panics if no output capture is in progress.
-func MustEndOutputCapture() (string, string) {
+func MustEndOutputCapture() (outStr string, errStr string) {
 	m.Lock()
 	defer m.Unlock()
 
@@ -142,7 +142,7 @@ func ResetOutputCapture() {
 	}
 }
 
-func mustFlush() (string, string) {
+func mustFlush() (outStr string, errSr string) {
 	defer func() {
 		errorz.MaybeMustWrap(outR.Close())
 		errorz.MaybeMustWrap(errR.Close())

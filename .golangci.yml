@@ -39,6 +39,7 @@ linters:
     - predeclared
     - protogetter
     - recvcheck
+    - revive
     - rowserrcheck
     - sqlclosecheck
     - staticcheck
@@ -95,6 +96,18 @@ linters-settings:
     tab-width: 4
   nakedret:
     max-func-lines: 0
+  revive:
+    ignore-generated-header: true
+    severity: error
+    rules:
+      - name: atomic
+      - name: bare-return
+      - name: blank-imports
+      - name: bool-literal-in-expr
+      - name: call-to-gc
+      - name: comment-spacings
+      - name: confusing-naming
+      - name: confusing-results
   tagalign:
     align: false
     sort: true
