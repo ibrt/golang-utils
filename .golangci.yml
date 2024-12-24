@@ -155,10 +155,12 @@ linters-settings:
       - name: modifies-parameter
       - name: modifies-value-receiver
       - name: nested-structs
-
-
-
-
+        exclude:
+          - 'TEST'
+      - name: package-comments
+      - name: range-val-address
+      - name: range-val-in-closure
+      - name: range
   tagalign:
     align: false
     sort: true
