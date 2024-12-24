@@ -108,6 +108,9 @@ linters-settings:
       - name: comment-spacings
       - name: confusing-naming
       - name: confusing-results
+      - name: context-as-argument
+      - name: context-keys-type
+      - name: datarace
   tagalign:
     align: false
     sort: true
