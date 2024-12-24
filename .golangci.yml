@@ -153,6 +153,10 @@ linters-settings:
       - name: increment-decrement
       - name: indent-error-flow
       - name: modifies-parameter
+      - name: modifies-value-receiver
+      - name: nested-structs
+
+
 
 
   tagalign:
