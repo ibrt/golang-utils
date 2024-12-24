@@ -48,7 +48,7 @@ func MustUnsetenv(key string) {
 
 // MustWithEnv runs the closure after setting the given env, cleans up after.
 func MustWithEnv(env map[string]string, f func()) {
-	origEnv := map[string]*string{}
+	origEnv := make(map[string]*string)
 
 	defer func() {
 		for k, v := range origEnv {

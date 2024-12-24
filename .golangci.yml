@@ -124,9 +124,23 @@ linters-settings:
           - "preserveScope"
       - name: empty-block
       - name: enforce-map-style
-        arguments: 'literal'
+        arguments: 'make'
+        exclude:
+          - 'TEST'
       - name: enforce-repeated-arg-type-style
         arguments: 'short'
+      - name: enforce-slice-style
+        arguments: 'make'
+        exclude:
+          - 'TEST'
+      - name: error-naming
+      - name: error-return
+      - name: error-strings
+      - name: errorf
+      - name: exported
+        arguments:
+          - 'disableStutteringCheck'
+          - 'checkPrivateReceivers'
   tagalign:
     align: false
     sort: true

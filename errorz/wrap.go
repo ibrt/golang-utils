@@ -18,7 +18,7 @@ func Wrap(err error, outerErrs ...error) error {
 			m:        &sync.Mutex{},
 			errs:     []error{err},
 			frames:   GetFrames(nil),
-			metadata: map[any]any{},
+			metadata: make(map[any]any),
 		}
 	}
 

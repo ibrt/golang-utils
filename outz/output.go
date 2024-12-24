@@ -77,7 +77,7 @@ func OutputSetupRodaineTable(outW, _ *os.File) OutputRestoreFunc {
 // OutputSetupSirupsenLogrus is a [OutputSetupFunc] that configures the logging streams
 // (from "github.com/sirupsen/logrus").
 func OutputSetupSirupsenLogrus(_, errW *os.File) OutputRestoreFunc {
-	origErr := map[*logrus.Logger]io.Writer{}
+	origErr := make(map[*logrus.Logger]io.Writer)
 
 	for _, logger := range loggers {
 		origErr[logger] = logger.Out

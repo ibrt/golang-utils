@@ -23,7 +23,7 @@ func GetSummary(err error, includeComponents bool) *Summary {
 		Name:       "",
 		Message:    err.Error(),
 		HTTPStatus: 0,
-		Details:    map[string]any{},
+		Details:    make(map[string]any),
 		Components: []*Summary{
 			getSummaryInternal(err),
 		},
