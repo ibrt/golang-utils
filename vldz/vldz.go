@@ -56,7 +56,7 @@ type ValidationError struct {
 // NewValidationError initializes a new validation error.
 func NewValidationError(err error) *ValidationError {
 	if validationErrs, ok := errorz.As[validator.ValidationErrors](err); ok {
-		fieldsSummary := make(map[string]any)
+		fieldsSummary := map[string]any{}
 
 		for _, err := range validationErrs {
 			n := err.Namespace()

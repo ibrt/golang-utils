@@ -124,7 +124,7 @@ linters-settings:
           - "preserveScope"
       - name: empty-block
       - name: enforce-map-style
-        arguments: 'make'
+        arguments: 'literal'
       - name: enforce-repeated-arg-type-style
         arguments: 'short'
   tagalign:
