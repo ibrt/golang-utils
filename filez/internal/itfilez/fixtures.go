@@ -6,8 +6,8 @@ import (
 )
 
 var (
-	// FixturesEmbed provides an embedded FS for tests.
+	// AssetsEmbed provides an embedded FS for tests.
 	//
-	//go:embed fixtures
-	FixturesEmbed embed.FS
+	//go:embed assets
+	AssetsEmbed embed.FS
 )

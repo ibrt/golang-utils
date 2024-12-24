@@ -128,11 +128,11 @@ func (s *Suite) TestMustExport_Level0(g *WithT) {
 	dirPath := filez.MustCreateTempDir()
 	defer filez.MustRemoveAll(dirPath)
 
-	filez.MustExport(itfilez.FixturesEmbed, ".", dirPath)
+	filez.MustExport(itfilez.AssetsEmbed, ".", dirPath)
 
 	g.Expect(filez.MustListRegularFilePaths(dirPath)).To(Equal([]string{
-		"fixtures/child/second.txt",
-		"fixtures/first.txt",
+		"assets/child/second.txt",
+		"assets/first.txt",
 	}))
 }
 
@@ -140,7 +140,7 @@ func (s *Suite) TestMustExport_Level1(g *WithT) {
 	dirPath := filez.MustCreateTempDir()
 	defer filez.MustRemoveAll(dirPath)
 
-	filez.MustExport(itfilez.FixturesEmbed, "fixtures", dirPath)
+	filez.MustExport(itfilez.AssetsEmbed, "assets", dirPath)
 
 	g.Expect(filez.MustListRegularFilePaths(dirPath)).To(Equal([]string{
 		"child/second.txt",
@@ -152,7 +152,7 @@ func (s *Suite) TestMustExport_Level2(g *WithT) {
 	dirPath := filez.MustCreateTempDir()
 	defer filez.MustRemoveAll(dirPath)
 
-	filez.MustExport(itfilez.FixturesEmbed, "fixtures/child", dirPath)
+	filez.MustExport(itfilez.AssetsEmbed, "assets/child", dirPath)
 	g.Expect(filez.MustListRegularFilePaths(dirPath)).To(Equal([]string{
 		"second.txt",
 	}))
