@@ -35,9 +35,9 @@ func MustRegisterValidator(tag string, validator validator.Func) {
 }
 
 // RegexpValidatorFactory creates a validator that matches a string against the given regexp.
-func RegexpValidatorFactory(regexp *regexp.Regexp) validator.Func {
+func RegexpValidatorFactory(r *regexp.Regexp) validator.Func {
 	return func(fl validator.FieldLevel) bool {
-		return regexp.MatchString(fl.Field().String())
+		return r.MatchString(fl.Field().String())
 	}
 }
 

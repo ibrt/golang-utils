@@ -142,6 +142,19 @@ linters-settings:
           - 'checkPrivateReceivers'
           - 'checkPublicInterface'
           - 'disableStutteringCheck'
+      - name: filename-format
+        arguments:
+          - '^[a-z_][a-z0-9_]*\.go'
+      - name: get-return
+      - name: identical-branches
+      - name: if-return
+      - name: import-alias-naming
+      - name: import-shadowing
+      - name: increment-decrement
+      - name: indent-error-flow
+      - name: modifies-parameter
+
+
   tagalign:
     align: false
     sort: true
