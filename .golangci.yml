@@ -161,6 +161,7 @@ linters-settings:
       - name: range-val-address
       - name: range-val-in-closure
       - name: range
+      - name: receiver-naming
   tagalign:
     align: false
     sort: true
