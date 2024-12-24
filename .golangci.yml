@@ -139,8 +139,9 @@ linters-settings:
       - name: errorf
       - name: exported
         arguments:
-          - 'disableStutteringCheck'
           - 'checkPrivateReceivers'
+          - 'checkPublicInterface'
+          - 'disableStutteringCheck'
   tagalign:
     align: false
     sort: true
