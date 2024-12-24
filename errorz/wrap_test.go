@@ -3,24 +3,22 @@ package errorz_test
 import (
 	"errors"
 	"fmt"
-	"net/http"
 	"strings"
 	"testing"
 
 	. "github.com/onsi/gomega"
 
 	"github.com/ibrt/golang-utils/errorz"
+	"github.com/ibrt/golang-utils/errorz/terrorz"
 )
 
 var (
-	_ error                  = (*structError)(nil)
-	_ error                  = stringError("")
-	_ error                  = (*wrapSingleError)(nil)
-	_ error                  = (*wrapMultiError)(nil)
-	_ errorz.ErrorName       = stringError("")
-	_ errorz.ErrorHTTPStatus = (*structError)(nil)
-	_ errorz.UnwrapSingle    = (*wrapSingleError)(nil)
-	_ errorz.UnwrapMulti     = (*wrapMultiError)(nil)
+	_ error               = (*structError)(nil)
+	_ error               = terrorz.TestStringError("")
+	_ error               = (*wrapSingleError)(nil)
+	_ error               = (*wrapMultiError)(nil)
+	_ errorz.UnwrapSingle = (*wrapSingleError)(nil)
+	_ errorz.UnwrapMulti  = (*wrapMultiError)(nil)
 )
 
 type structError struct {
@@ -29,20 +27,6 @@ type structError struct {
 
 func (e *structError) Error() string {
 	return e.k
-}
-
-func (e *structError) GetErrorHTTPStatus() int {
-	return http.StatusBadRequest
-}
-
-type stringError string
-
-func (e stringError) Error() string {
-	return string(e)
-}
-
-func (e stringError) GetErrorName() string {
-	return "string-error"
 }
 
 type wrapSingleError struct {
@@ -87,7 +71,7 @@ func TestWrap(t *testing.T) {
 
 	e1 := fmt.Errorf("e")
 	e2 := &structError{k: "o1"}
-	e3 := stringError("o2")
+	e3 := terrorz.TestStringError("o2")
 
 	err := errorz.Wrap(e1, e2)
 	g.Expect(err).To(HaveOccurred())
@@ -175,7 +159,7 @@ func TestErrorsIsInterop(t *testing.T) {
 
 	e1 := &structError{k: "e"}
 	e2 := fmt.Errorf("o1")
-	e3 := stringError("o2")
+	e3 := terrorz.TestStringError("o2")
 	ew := fmt.Errorf("x: %w", e1)
 
 	err := errorz.Wrap(e1, e2, e3)
@@ -184,8 +168,8 @@ func TestErrorsIsInterop(t *testing.T) {
 	g.Expect(errors.Is(err, e3)).To(BeTrue())
 	g.Expect(errors.Is(err, &structError{k: "e"})).To(BeFalse()) // errors.Is requires "==" true or an "Is() bool" method returning true
 	g.Expect(errors.Is(err, fmt.Errorf("o1"))).To(BeFalse())
-	g.Expect(errors.Is(err, stringError("o2"))).To(BeTrue())
-	g.Expect(errors.Is(err, stringError(""))).To(BeFalse())
+	g.Expect(errors.Is(err, terrorz.TestStringError("o2"))).To(BeTrue())
+	g.Expect(errors.Is(err, terrorz.TestStringError(""))).To(BeFalse())
 
 	err = errorz.Wrap(ew, e2, e3)
 	g.Expect(errors.Is(err, e1)).To(BeTrue())
@@ -193,15 +177,15 @@ func TestErrorsIsInterop(t *testing.T) {
 	g.Expect(errors.Is(err, e3)).To(BeTrue())
 	g.Expect(errors.Is(err, &structError{k: "e"})).To(BeFalse()) // errors.Is requires "==" true or an "Is() bool" method returning true
 	g.Expect(errors.Is(err, fmt.Errorf("o1"))).To(BeFalse())
-	g.Expect(errors.Is(err, stringError("o2"))).To(BeTrue())
-	g.Expect(errors.Is(err, stringError(""))).To(BeFalse())
+	g.Expect(errors.Is(err, terrorz.TestStringError("o2"))).To(BeTrue())
+	g.Expect(errors.Is(err, terrorz.TestStringError(""))).To(BeFalse())
 
 	err = errorz.Wrap(e2, ew, e3)
 	g.Expect(errors.Is(err, e1)).To(BeTrue())
 	g.Expect(errors.Is(err, e2)).To(BeTrue())
 	g.Expect(errors.Is(err, e3)).To(BeTrue())
 	g.Expect(errors.Is(err, &structError{k: "v"})).To(BeFalse()) // errors.Is requires "==" true or an "Is() bool" method returning true
-	g.Expect(errors.Is(err, stringError(""))).To(BeFalse())
+	g.Expect(errors.Is(err, terrorz.TestStringError(""))).To(BeFalse())
 	g.Expect(errors.Is(err, fmt.Errorf("o1"))).To(BeFalse())
 }
 
@@ -210,7 +194,7 @@ func TestErrorsAsInterop(t *testing.T) {
 
 	e1 := &structError{k: "e"}
 	e2 := fmt.Errorf("o1")
-	e3 := stringError("o2")
+	e3 := terrorz.TestStringError("o2")
 	ew := fmt.Errorf("x: %w", e1)
 
 	err := errorz.Wrap(e1, e2, e3)
@@ -221,7 +205,7 @@ func TestErrorsAsInterop(t *testing.T) {
 		g.Expect(e).To(Equal(e1))
 	}
 	{
-		var e stringError
+		var e terrorz.TestStringError
 		as := errors.As(err, &e)
 		g.Expect(as).To(BeTrue())
 		g.Expect(e).To(Equal(e3))
@@ -235,7 +219,7 @@ func TestErrorsAsInterop(t *testing.T) {
 		g.Expect(e).To(Equal(e1))
 	}
 	{
-		var e stringError
+		var e terrorz.TestStringError
 		as := errors.As(err, &e)
 		g.Expect(as).To(BeTrue())
 		g.Expect(e).To(Equal(e3))
@@ -249,7 +233,7 @@ func TestErrorsAsInterop(t *testing.T) {
 		g.Expect(e).To(Equal(e1))
 	}
 	{
-		var e stringError
+		var e terrorz.TestStringError
 		as := errors.As(err, &e)
 		g.Expect(as).To(BeTrue())
 		g.Expect(e).To(Equal(e3))
@@ -261,7 +245,7 @@ func TestAs(t *testing.T) {
 
 	e1 := &structError{k: "e"}
 	e2 := fmt.Errorf("o1")
-	e3 := stringError("o2")
+	e3 := terrorz.TestStringError("o2")
 	ew := fmt.Errorf("x: %w", e1)
 
 	err := errorz.Wrap(e1, e2, e3)
@@ -271,7 +255,7 @@ func TestAs(t *testing.T) {
 		g.Expect(e).To(Equal(e1))
 	}
 	{
-		e, ok := errorz.As[stringError](err)
+		e, ok := errorz.As[terrorz.TestStringError](err)
 		g.Expect(ok).To(BeTrue())
 		g.Expect(e).To(Equal(e3))
 	}
@@ -283,7 +267,7 @@ func TestAs(t *testing.T) {
 		g.Expect(e).To(Equal(e1))
 	}
 	{
-		e, ok := errorz.As[stringError](err)
+		e, ok := errorz.As[terrorz.TestStringError](err)
 		g.Expect(ok).To(BeTrue())
 		g.Expect(e).To(Equal(e3))
 	}
@@ -295,7 +279,7 @@ func TestAs(t *testing.T) {
 		g.Expect(e).To(Equal(e1))
 	}
 	{
-		e, ok := errorz.As[stringError](err)
+		e, ok := errorz.As[terrorz.TestStringError](err)
 		g.Expect(ok).To(BeTrue())
 		g.Expect(e).To(Equal(e3))
 	}
