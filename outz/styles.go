@@ -7,14 +7,23 @@ import (
 
 // Styles describes a set of output styles.
 type Styles interface {
+	// Default returns a style.
 	Default() *color.Color
+	// Highlight returns a style.
 	Highlight() *color.Color
+	// SecondaryHighlight returns a style.
 	SecondaryHighlight() *color.Color
+	// Secondary returns a style.
 	Secondary() *color.Color
+	// Info returns a style.
 	Info() *color.Color
+	// Success returns a style.
 	Success() *color.Color
+	// Warning returns a style.
 	Warning() *color.Color
+	// Error returns a style.
 	Error() *color.Color
+	// LogLevel the corresponding style for a given log level.
 	LogLevel(level logrus.Level) *color.Color
 }
 
