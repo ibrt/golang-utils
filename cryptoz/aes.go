@@ -15,10 +15,11 @@ import (
 const (
 	CiphertextPrefix = "enc:"
 	KeyLen           = 32
+	EncodedKeyLen    = 64
 )
 
 // MustEncryptAES encrypts the given plaintext using symmetric AES, GCM mode.
-// The key must consist of 32 bytes, hex-encoded.
+// The key must consist of 32 bytes, hex-encoded (i.e. 64 characters).
 // The ciphertext will be base64-encoded, prefixed with "enc:".
 func MustEncryptAES(key, plaintext string) string {
 	errorz.Assertf(!strings.HasPrefix(plaintext, CiphertextPrefix), "already encrypted")
@@ -42,7 +43,7 @@ func MustEncryptAES(key, plaintext string) string {
 }
 
 // MustDecryptAES decrypts a ciphertext encrypted by MustEncryptAES.
-// The key must consist of 32 bytes, hex-encoded.
+// The key must consist of 32 bytes, hex-encoded (i.e. 64 characters).
 // The ciphertext must be base64-encoded, prefixed with "enc:".
 func MustDecryptAES(key, ciphertext string) string {
 	errorz.Assertf(strings.HasPrefix(ciphertext, CiphertextPrefix), "not encrypted")

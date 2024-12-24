@@ -1,59 +1,79 @@
 package errorz_test
 
 import (
-	"fmt"
 	"testing"
 
 	. "github.com/onsi/gomega"
+	"go.uber.org/mock/gomock"
 
 	"github.com/ibrt/golang-utils/errorz"
+	"github.com/ibrt/golang-utils/ioz/tioz"
 )
 
-type closer struct {
-	err      error
-	isClosed bool
-}
-
-func (c *closer) Close() error {
-	c.isClosed = true
-	return c.err
-}
-
-func TestIgnoreClose(t *testing.T) {
+func TestIgnoreClose_Success(t *testing.T) {
 	g := NewWithT(t)
+	ctrl := gomock.NewController(t)
+	c := tioz.NewMockTestReadCloser(ctrl)
 
-	g.Expect(
-		func() {
-			c := &closer{err: nil}
-			errorz.IgnoreClose(c)
-			g.Expect(c.isClosed).To(BeTrue())
-		}).
-		ToNot(Panic())
+	c.EXPECT().
+		Close().
+		Return(nil).
+		Times(1)
 
-	g.Expect(
-		func() {
-			c := &closer{err: fmt.Errorf("e")}
-			errorz.IgnoreClose(c)
-			g.Expect(c.isClosed).To(BeTrue())
-		}).
-		ToNot(Panic())
+	g.Expect(func() { errorz.IgnoreClose(c) }).ToNot(Panic())
 }
 
-func TestMustClose(t *testing.T) {
+func TestIgnoreClose_Error(t *testing.T) {
 	g := NewWithT(t)
+	ctrl := gomock.NewController(t)
+	c := tioz.NewMockTestReadCloser(ctrl)
 
-	g.Expect(
-		func() {
-			c := &closer{err: nil}
-			errorz.MustClose(c)
-			g.Expect(c.isClosed).To(BeTrue())
-		}).
-		ToNot(Panic())
+	c.EXPECT().
+		Close().
+		Return(errorz.Errorf("test error")).
+		Times(1)
 
-	g.Expect(
-		func() {
-			c := &closer{err: fmt.Errorf("e")}
-			errorz.MustClose(c)
+	g.Expect(func() { errorz.IgnoreClose(c) }).ToNot(Panic())
+}
+
+func TestIgnoreClose_Panic(t *testing.T) {
+	g := NewWithT(t)
+	ctrl := gomock.NewController(t)
+	c := tioz.NewMockTestReadCloser(ctrl)
+
+	c.EXPECT().
+		Close().
+		DoAndReturn(func() error {
+			errorz.MustErrorf("test error")
+			return nil
 		}).
-		To(PanicWith(MatchError("e")))
+		Times(1)
+
+	g.Expect(func() { errorz.IgnoreClose(c) }).ToNot(Panic())
+}
+
+func TestMustClose_Success(t *testing.T) {
+	g := NewWithT(t)
+	ctrl := gomock.NewController(t)
+	c := tioz.NewMockTestReadCloser(ctrl)
+
+	c.EXPECT().
+		Close().
+		Return(nil).
+		Times(1)
+
+	g.Expect(func() { errorz.MustClose(c) }).ToNot(Panic())
+}
+
+func TestMustClose_Error(t *testing.T) {
+	g := NewWithT(t)
+	ctrl := gomock.NewController(t)
+	c := tioz.NewMockTestReadCloser(ctrl)
+
+	c.EXPECT().
+		Close().
+		Return(errorz.Errorf("test error")).
+		Times(1)
+
+	g.Expect(func() { errorz.MustClose(c) }).To(PanicWith(MatchError("test error")))
 }

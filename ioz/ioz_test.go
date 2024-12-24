@@ -8,29 +8,13 @@ import (
 	"testing/iotest"
 
 	. "github.com/onsi/gomega"
+	"go.uber.org/mock/gomock"
 
+	"github.com/ibrt/golang-utils/errorz"
 	"github.com/ibrt/golang-utils/fixturez"
 	"github.com/ibrt/golang-utils/ioz"
+	"github.com/ibrt/golang-utils/ioz/tioz"
 )
-
-type readCloser struct {
-	r        io.Reader
-	closeErr error
-	isClosed bool
-}
-
-func (c *readCloser) Read(p []byte) (n int, err error) {
-	if c.isClosed {
-		return 0, fmt.Errorf("already closed")
-	}
-
-	return c.r.Read(p)
-}
-
-func (c *readCloser) Close() error {
-	c.isClosed = true
-	return c.closeErr
-}
 
 type Suite struct {
 	// intentionally empty
@@ -68,46 +52,110 @@ func (*Suite) TestMustReadAllString(g *WithT) {
 		To(PanicWith(MatchError("test error")))
 }
 
-func (*Suite) TestMustReadAllAndClose(g *WithT) {
-	g.Expect(
-		func() {
-			rc := &readCloser{r: strings.NewReader("r")}
-			g.Expect(ioz.MustReadAllAndClose(rc)).To(Equal([]byte("r")))
-			g.Expect(rc.isClosed).To(BeTrue())
+func (*Suite) TestMustReadAllAndClose_Success(g *WithT, ctrl *gomock.Controller) {
+	rc := tioz.NewMockTestReadCloser(ctrl)
+
+	rc.EXPECT().
+		Read(gomock.Any()).
+		DoAndReturn(func(p []byte) (n int, err error) {
+			p[0] = 'r'
+			return 1, io.EOF
 		}).
-		ToNot(Panic())
+		Times(1)
 
-	{
-		rc := &readCloser{r: iotest.ErrReader(fmt.Errorf("test error"))}
-		g.Expect(func() { ioz.MustReadAllAndClose(rc) }).To(PanicWith(MatchError("test error")))
-		g.Expect(rc.isClosed).To(BeTrue())
-	}
+	rc.EXPECT().
+		Close().
+		Return(nil).
+		Times(1)
 
-	{
-		rc := &readCloser{r: strings.NewReader("r"), closeErr: fmt.Errorf("close error")}
-		g.Expect(func() { ioz.MustReadAllAndClose(rc) }).To(PanicWith(MatchError("close error")))
-		g.Expect(rc.isClosed).To(BeTrue())
-	}
+	g.Expect(ioz.MustReadAllAndClose(rc)).To(Equal([]byte("r")))
 }
 
-func (*Suite) TestMustReadAllAndCloseString(g *WithT) {
-	g.Expect(
-		func() {
-			rc := &readCloser{r: strings.NewReader("r")}
-			g.Expect(ioz.MustReadAllAndCloseString(rc)).To(Equal("r"))
-			g.Expect(rc.isClosed).To(BeTrue())
+func (*Suite) TestMustReadAllAndClose_ReadError(g *WithT, ctrl *gomock.Controller) {
+	rc := tioz.NewMockTestReadCloser(ctrl)
+
+	rc.EXPECT().
+		Read(gomock.Any()).
+		Return(0, errorz.Errorf("test error")).
+		Times(1)
+
+	rc.EXPECT().
+		Close().
+		Return(nil).
+		Times(1)
+
+	g.Expect(func() { ioz.MustReadAllAndClose(rc) }).To(PanicWith(MatchError("test error")))
+}
+
+func (*Suite) TestMustReadAllAndClose_CloseError(g *WithT, ctrl *gomock.Controller) {
+	rc := tioz.NewMockTestReadCloser(ctrl)
+
+	rc.EXPECT().
+		Read(gomock.Any()).
+		DoAndReturn(func(p []byte) (n int, err error) {
+			p[0] = 'r'
+			return 1, io.EOF
 		}).
-		ToNot(Panic())
+		Times(1)
 
-	{
-		rc := &readCloser{r: iotest.ErrReader(fmt.Errorf("test error"))}
-		g.Expect(func() { ioz.MustReadAllAndCloseString(rc) }).To(PanicWith(MatchError("test error")))
-		g.Expect(rc.isClosed).To(BeTrue())
-	}
+	rc.EXPECT().
+		Close().
+		Return(errorz.Errorf("test error")).
+		Times(1)
 
-	{
-		rc := &readCloser{r: strings.NewReader("r"), closeErr: fmt.Errorf("close error")}
-		g.Expect(func() { ioz.MustReadAllAndCloseString(rc) }).To(PanicWith(MatchError("close error")))
-		g.Expect(rc.isClosed).To(BeTrue())
-	}
+	g.Expect(func() { ioz.MustReadAllAndClose(rc) }).To(PanicWith(MatchError("test error")))
+}
+
+func (*Suite) TestMustReadAllAndCloseString_Success(g *WithT, ctrl *gomock.Controller) {
+	rc := tioz.NewMockTestReadCloser(ctrl)
+
+	rc.EXPECT().
+		Read(gomock.Any()).
+		DoAndReturn(func(p []byte) (n int, err error) {
+			p[0] = 'r'
+			return 1, io.EOF
+		}).
+		Times(1)
+
+	rc.EXPECT().
+		Close().
+		Return(nil).
+		Times(1)
+
+	g.Expect(ioz.MustReadAllAndCloseString(rc)).To(Equal("r"))
+}
+
+func (*Suite) TestMustReadAllAndCloseString_ReadError(g *WithT, ctrl *gomock.Controller) {
+	rc := tioz.NewMockTestReadCloser(ctrl)
+
+	rc.EXPECT().
+		Read(gomock.Any()).
+		Return(0, errorz.Errorf("test error")).
+		Times(1)
+
+	rc.EXPECT().
+		Close().
+		Return(nil).
+		Times(1)
+
+	g.Expect(func() { ioz.MustReadAllAndCloseString(rc) }).To(PanicWith(MatchError("test error")))
+}
+
+func (*Suite) TestMustReadAllAndCloseString_CloseError(g *WithT, ctrl *gomock.Controller) {
+	rc := tioz.NewMockTestReadCloser(ctrl)
+
+	rc.EXPECT().
+		Read(gomock.Any()).
+		DoAndReturn(func(p []byte) (n int, err error) {
+			p[0] = 'r'
+			return 1, io.EOF
+		}).
+		Times(1)
+
+	rc.EXPECT().
+		Close().
+		Return(errorz.Errorf("test error")).
+		Times(1)
+
+	g.Expect(func() { ioz.MustReadAllAndCloseString(rc) }).To(PanicWith(MatchError("test error")))
 }

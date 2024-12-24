@@ -30,6 +30,7 @@ func NewCountingReader(r io.Reader) *CountingReader {
 func (c *CountingReader) Read(p []byte) (int, error) {
 	n, err := c.r.Read(p)
 	c.counter.Add(int64(n))
+	// Note: wrapping "err" causes methods like [io.Copy] that do not yet use [errors.Is] to not recognize [io.EOF].
 	return n, err //nolint:wrapcheck
 }
 
