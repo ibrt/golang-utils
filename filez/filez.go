@@ -65,14 +65,14 @@ func MustReadFileString(filePath string) string {
 }
 
 // MustWriteFile creates a file with the given mode and contents, also ensuring the containing folder exists.
-func MustWriteFile(filePath string, dirMode os.FileMode, fileMode os.FileMode, contents []byte) string {
+func MustWriteFile(filePath string, dirMode, fileMode os.FileMode, contents []byte) string {
 	errorz.MaybeMustWrap(os.MkdirAll(filepath.Dir(filePath), dirMode))
 	errorz.MaybeMustWrap(os.WriteFile(filePath, contents, fileMode))
 	return filePath
 }
 
 // MustWriteFileString creates a file with the given mode and contents, also ensuring the containing folder exists.
-func MustWriteFileString(filePath string, dirMode os.FileMode, fileMode os.FileMode, contents string) string {
+func MustWriteFileString(filePath string, dirMode, fileMode os.FileMode, contents string) string {
 	return MustWriteFile(filePath, dirMode, fileMode, []byte(contents))
 }
 
@@ -147,7 +147,7 @@ func MustRelForDisplay(path string) string {
 }
 
 // MustExport exports an embedded FS to disk.
-func MustExport(eFS embed.FS, rootDirPath string, outDirPath string) {
+func MustExport(eFS embed.FS, rootDirPath, outDirPath string) {
 	errorz.MaybeMustWrap(fs.WalkDir(eFS, rootDirPath, func(path string, d fs.DirEntry, err error) error {
 		errorz.MaybeMustWrap(err)
 

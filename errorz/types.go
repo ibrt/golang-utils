@@ -11,26 +11,31 @@ import (
 
 // ErrorName can be implemented by errors to return a name different from their Go type.
 type ErrorName interface {
+	// GetErrorName returns a human-readable name describing an error.
 	GetErrorName() string
 }
 
 // ErrorHTTPStatus can be implemented by errors to attach an HTTP status to themselves.
 type ErrorHTTPStatus interface {
+	// GetErrorHTTPStatus returns an HTTP status associated with an error.
 	GetErrorHTTPStatus() int
 }
 
 // ErrorDetails can be implemented by errors to export some additional, human-readable information about the error.
 type ErrorDetails interface {
+	// GetErrorDetails returns some human-readable information about an error.
 	GetErrorDetails() map[string]any
 }
 
 // UnwrapSingle describes a method which returns a single error.
 type UnwrapSingle interface {
+	// Unwrap returns a single wrapped error, if any, nil otherwise.
 	Unwrap() error
 }
 
 // UnwrapMulti describes a method which returns multiple errors.
 type UnwrapMulti interface {
+	// Unwrap returns one or more wrapped errors, if any, nil otherwise.
 	Unwrap() []error
 }
 

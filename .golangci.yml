@@ -39,6 +39,7 @@ linters:
     - predeclared
     - protogetter
     - recvcheck
+    - revive
     - rowserrcheck
     - sqlclosecheck
     - staticcheck
@@ -71,10 +72,6 @@ linters-settings:
   godot:
     scope: toplevel
     capital: true
-  gofmt:
-    rewrite-rules:
-      - pattern: 'interface{}'
-        replacement: 'any'
   gosec:
     excludes:
       - G103
@@ -95,6 +92,90 @@ linters-settings:
     tab-width: 4
   nakedret:
     max-func-lines: 0
+  revive:
+    ignore-generated-header: true
+    severity: error
+    rules:
+      - name: atomic
+      - name: bare-return
+      - name: blank-imports
+      - name: bool-literal-in-expr
+      - name: call-to-gc
+      - name: comment-spacings
+      - name: confusing-naming
+      - name: confusing-results
+      - name: context-as-argument
+      - name: context-keys-type
+      - name: datarace
+      - name: deep-exit
+      - name: defer
+      - name: dot-imports
+        arguments:
+          allowedPackages:
+            - 'github.com/onsi/gomega'
+            - 'github.com/onsi/gomega/gstruct'
+      - name: duplicated-imports
+      - name: early-return
+        arguments:
+          - "preserveScope"
+      - name: empty-block
+      - name: enforce-map-style
+        arguments: 'make'
+        exclude:
+          - 'TEST'
+      - name: enforce-repeated-arg-type-style
+        arguments: 'short'
+      - name: enforce-slice-style
+        arguments: 'make'
+        exclude:
+          - 'TEST'
+      - name: error-naming
+      - name: error-return
+      - name: error-strings
+      - name: errorf
+      - name: exported
+        arguments:
+          - 'checkPrivateReceivers'
+          - 'checkPublicInterface'
+          - 'disableStutteringCheck'
+      - name: filename-format
+        arguments:
+          - '^[a-z_][a-z0-9_]*\.go'
+      - name: get-return
+      - name: identical-branches
+      - name: if-return
+      - name: import-alias-naming
+      - name: import-shadowing
+      - name: increment-decrement
+      - name: indent-error-flow
+      - name: modifies-parameter
+      - name: modifies-value-receiver
+      - name: nested-structs
+        exclude:
+          - 'TEST'
+      - name: package-comments
+      - name: range-val-address
+      - name: range-val-in-closure
+      - name: range
+      - name: receiver-naming
+      - name: redefines-builtin-id
+      - name: redundant-import-alias
+      - name: string-of-int
+      - name: struct-tag
+      - name: superfluous-else
+      - name: time-equal
+      - name: time-naming
+      - name: unconditional-recursion
+      - name: unexported-naming
+      - name: unexported-return
+      - name: unnecessary-stmt
+      - name: unreachable-code
+      - name: unused-parameter
+      - name: unused-receiver
+      - name: use-any
+      - name: useless-break
+      - name: var-naming
+      - name: waitgroup-by-value
   tagalign:
     align: false
     sort: true

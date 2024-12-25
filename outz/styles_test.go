@@ -18,7 +18,7 @@ func TestStylesSuite(t *testing.T) {
 	fixturez.RunSuite(t, &StylesSuite{})
 }
 
-func (s *StylesSuite) TestStyles(g *WithT) {
+func (*StylesSuite) TestStyles(g *WithT) {
 	g.Expect(outz.DefaultStyles.Default()).ToNot(BeNil())
 	g.Expect(outz.DefaultStyles.Highlight()).ToNot(BeNil())
 	g.Expect(outz.DefaultStyles.SecondaryHighlight()).ToNot(BeNil())

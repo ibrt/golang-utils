@@ -25,13 +25,13 @@ var (
 )
 
 // OutputSetupFunc describes a function that replaces some streams with mock ones for capturing.
-type OutputSetupFunc func(outW *os.File, errW *os.File) OutputRestoreFunc
+type OutputSetupFunc func(outW, errW *os.File) OutputRestoreFunc
 
 // OutputRestoreFunc describe a function that restores some real streams after capturing.
 type OutputRestoreFunc func()
 
 // OutputSetupStandard is a [OutputSetupFunc] that configures the stdout/stderr streams.
-func OutputSetupStandard(outW *os.File, errW *os.File) OutputRestoreFunc {
+func OutputSetupStandard(outW, errW *os.File) OutputRestoreFunc {
 	origOut := os.Stdout
 	origErr := os.Stderr
 
@@ -47,7 +47,7 @@ func OutputSetupStandard(outW *os.File, errW *os.File) OutputRestoreFunc {
 // GetOutputSetupFatihColor returns a [OutputSetupFunc] that configures the color streams
 // (from "github.com/fatih/color").
 func GetOutputSetupFatihColor(noColor bool) OutputSetupFunc {
-	return func(outW *os.File, errW *os.File) OutputRestoreFunc {
+	return func(outW, errW *os.File) OutputRestoreFunc {
 		origNoColor := color.NoColor
 		origOut := color.Output
 		origErr := color.Error
@@ -65,7 +65,7 @@ func GetOutputSetupFatihColor(noColor bool) OutputSetupFunc {
 }
 
 // OutputSetupRodaineTable is a [OutputSetupFunc] that configures the table streams (from "github.com/rodaine/table").
-func OutputSetupRodaineTable(outW *os.File, _ *os.File) OutputRestoreFunc {
+func OutputSetupRodaineTable(outW, _ *os.File) OutputRestoreFunc {
 	origOut := table.DefaultWriter
 	table.DefaultWriter = outW
 
@@ -76,8 +76,8 @@ func OutputSetupRodaineTable(outW *os.File, _ *os.File) OutputRestoreFunc {
 
 // OutputSetupSirupsenLogrus is a [OutputSetupFunc] that configures the logging streams
 // (from "github.com/sirupsen/logrus").
-func OutputSetupSirupsenLogrus(_ *os.File, errW *os.File) OutputRestoreFunc {
-	origErr := map[*logrus.Logger]io.Writer{}
+func OutputSetupSirupsenLogrus(_, errW *os.File) OutputRestoreFunc {
+	origErr := make(map[*logrus.Logger]io.Writer)
 
 	for _, logger := range loggers {
 		origErr[logger] = logger.Out
@@ -119,7 +119,7 @@ func MustBeginOutputCapture(outputSetupFuncs ...OutputSetupFunc) {
 
 // MustEndOutputCapture restores the real streams and returns the captured data.
 // It panics if no output capture is in progress.
-func MustEndOutputCapture() (string, string) {
+func MustEndOutputCapture() (outStr, errStr string) {
 	m.Lock()
 	defer m.Unlock()
 
@@ -142,7 +142,7 @@ func ResetOutputCapture() {
 	}
 }
 
-func mustFlush() (string, string) {
+func mustFlush() (outStr, errSr string) {
 	defer func() {
 		errorz.MaybeMustWrap(outR.Close())
 		errorz.MaybeMustWrap(errR.Close())

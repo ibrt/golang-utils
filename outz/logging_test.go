@@ -46,8 +46,8 @@ func (*LoggingSuite) TestHumanLogFormatter(g *WithT) {
 			"other": "v",
 		}).Info("message")
 
-	outBuf, errBuf := outz.MustEndOutputCapture()
+	outStr, errStr := outz.MustEndOutputCapture()
 
-	g.Expect(outBuf).To(Equal(""))
-	g.Expect(errBuf).To(Equal("\x1b[36m┌─ INFO[0001]\x1b[0m message\n\x1b[36m│    \x1b[0m\x1b[36mduration\x1b[0m=1s\n\x1b[36m│    \x1b[0m\x1b[36mmap\x1b[0m={\n\x1b[36m│    \x1b[0m  \"k\": \"v\"\n\x1b[36m│    \x1b[0m}\n\x1b[36m│    \x1b[0m\x1b[36mother\x1b[0m=v\n\x1b[36m│    \x1b[0m\x1b[36mslice\x1b[0m=[\n\x1b[36m│    \x1b[0m  \"v\"\n\x1b[36m│    \x1b[0m]\n\x1b[36m└─   \x1b[0m\x1b[36mstruct\x1b[0m={\"k\":\"v\"}\n"))
+	g.Expect(outStr).To(Equal(""))
+	g.Expect(errStr).To(Equal("\x1b[36m┌─ INFO[0001]\x1b[0m message\n\x1b[36m│    \x1b[0m\x1b[36mduration\x1b[0m=1s\n\x1b[36m│    \x1b[0m\x1b[36mmap\x1b[0m={\n\x1b[36m│    \x1b[0m  \"k\": \"v\"\n\x1b[36m│    \x1b[0m}\n\x1b[36m│    \x1b[0m\x1b[36mother\x1b[0m=v\n\x1b[36m│    \x1b[0m\x1b[36mslice\x1b[0m=[\n\x1b[36m│    \x1b[0m  \"v\"\n\x1b[36m│    \x1b[0m]\n\x1b[36m└─   \x1b[0m\x1b[36mstruct\x1b[0m={\"k\":\"v\"}\n"))
 }

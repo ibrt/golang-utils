@@ -95,7 +95,7 @@ func (f *HumanLogFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (f *HumanLogFormatter) prepareField(k string, v any) (string, any, bool) {
+func (*HumanLogFormatter) prepareField(k string, v any) (string, any, bool) {
 	switch k {
 	case "name":
 		return "", nil, false

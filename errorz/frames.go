@@ -21,7 +21,7 @@ type Frame struct {
 }
 
 // NewFrame initializes a new frame.
-func NewFrame(frameFunction string, file string, line int) *Frame {
+func NewFrame(frameFunction, file string, line int) *Frame {
 	fileAndLine := ""
 
 	if file != "" {

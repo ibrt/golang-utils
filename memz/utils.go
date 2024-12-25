@@ -28,7 +28,7 @@ func Max[T cmp.Ordered](v1 T, vs ...T) T {
 }
 
 // Ternary returns "vT" if "cond" is true, "vF" otherwise.
-func Ternary[V any](cond bool, vT V, vF V) V {
+func Ternary[V any](cond bool, vT, vF V) V {
 	if cond {
 		return vT
 	}

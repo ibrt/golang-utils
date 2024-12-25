@@ -34,7 +34,7 @@ func (*InitializersSuite) TestMustInitialize_Success(g *WithT, ctrl *gomock.Cont
 		gomock.Cond(func(ctx context.Context) bool {
 			return ctx.Value(tinjectz.TestContextKeyA0) == nil && ctx.Value(tinjectz.TestContextKeyA1) == nil
 		})).
-		DoAndReturn(func(ctx context.Context) (injectz.Injector, injectz.Releaser) {
+		DoAndReturn(func(_ context.Context) (injectz.Injector, injectz.Releaser) {
 			return firstInjector.Inject, firstReleaser.Release
 		})
 
@@ -42,7 +42,7 @@ func (*InitializersSuite) TestMustInitialize_Success(g *WithT, ctrl *gomock.Cont
 		gomock.Cond(func(ctx context.Context) bool {
 			return ctx.Value(tinjectz.TestContextKeyA0) != nil && ctx.Value(tinjectz.TestContextKeyA1) == nil
 		})).
-		DoAndReturn(func(ctx context.Context) (injectz.Injector, injectz.Releaser) {
+		DoAndReturn(func(_ context.Context) (injectz.Injector, injectz.Releaser) {
 			return secondInjector.Inject, secondReleaser.Release
 		})
 
@@ -87,7 +87,7 @@ func (*InitializersSuite) TestMustInitialize_Error(g *WithT, ctrl *gomock.Contro
 		gomock.Cond(func(ctx context.Context) bool {
 			return ctx.Value(tinjectz.TestContextKeyA0) == nil && ctx.Value(tinjectz.TestContextKeyA1) == nil
 		})).
-		DoAndReturn(func(ctx context.Context) (injectz.Injector, injectz.Releaser) {
+		DoAndReturn(func(_ context.Context) (injectz.Injector, injectz.Releaser) {
 			return firstInjector.Inject, firstReleaser.Release
 		})
 
@@ -95,7 +95,7 @@ func (*InitializersSuite) TestMustInitialize_Error(g *WithT, ctrl *gomock.Contro
 		gomock.Cond(func(ctx context.Context) bool {
 			return ctx.Value(tinjectz.TestContextKeyA0) != nil && ctx.Value(tinjectz.TestContextKeyA1) == nil
 		})).
-		DoAndReturn(func(ctx context.Context) (injectz.Injector, injectz.Releaser) {
+		DoAndReturn(func(_ context.Context) (injectz.Injector, injectz.Releaser) {
 			panic(fmt.Errorf("initializer error"))
 		})
 

@@ -45,15 +45,18 @@ const (
 
 // TestInitializer is a mock blueprint.
 type TestInitializer interface {
+	// Initialize provides a [injectz.Initializer] for test purposes.
 	Initialize(ctx context.Context) (injectz.Injector, injectz.Releaser)
 }
 
 // TestInjector is a mock blueprint.
 type TestInjector interface {
+	// Inject provides a [injectz.Injector] for test purposes.
 	Inject(ctx context.Context) context.Context
 }
 
 // TestReleaser is a mock blueprint.
 type TestReleaser interface {
+	// Release provides a [injectz.Releaser] for test purposes.
 	Release()
 }
