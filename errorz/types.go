@@ -41,6 +41,8 @@ type UnwrapMulti interface {
 
 var (
 	_ error        = (*valueError)(nil)
+	_ ErrorName    = (*valueError)(nil)
+	_ ErrorDetails = (*valueError)(nil)
 	_ UnwrapSingle = (*valueError)(nil)
 )
 
@@ -48,9 +50,16 @@ type valueError struct {
 	value any
 }
 
-// Error implements the error interface.
-func (e *valueError) Error() string {
-	return fmt.Sprintf("%v", e.value)
+// GetErrorName implements the [ErrorName] interface.
+func (*valueError) GetErrorName() string {
+	return "value-error"
+}
+
+// GetErrorDetails implements the [ErrorDetails] interface.
+func (e *valueError) GetErrorDetails() map[string]any {
+	return map[string]any{
+		"value": e.value,
+	}
 }
 
 // Unwrap implements the [UnwrapSingle] interface.
@@ -69,6 +78,11 @@ var (
 	_ error       = (*wrappedError)(nil)
 	_ UnwrapMulti = (*wrappedError)(nil)
 )
+
+// Error implements the error interface.
+func (e *valueError) Error() string {
+	return fmt.Sprintf("%v", e.value)
+}
 
 type wrappedError struct {
 	m        *sync.Mutex

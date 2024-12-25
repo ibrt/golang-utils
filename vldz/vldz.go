@@ -2,6 +2,7 @@
 package vldz
 
 import (
+	"fmt"
 	"reflect"
 	"regexp"
 	"strings"
@@ -43,12 +44,15 @@ func RegexpValidatorFactory(r *regexp.Regexp) validator.Func {
 
 var (
 	_ error               = (*ValidationError)(nil)
+	_ errorz.ErrorName    = (*ValidationError)(nil)
+	_ errorz.ErrorDetails = (*ValidationError)(nil)
 	_ errorz.UnwrapSingle = (*ValidationError)(nil)
 )
 
 // ValidationError describes a validation error.
 type ValidationError struct {
-	fieldsSummary    map[string]any
+	invalidFieldKeys []string
+	invalidFields    map[string]any
 	validationErrors validator.ValidationErrors
 	otherError       error
 }
@@ -56,53 +60,56 @@ type ValidationError struct {
 // NewValidationError initializes a new validation error.
 func NewValidationError(err error) *ValidationError {
 	if validationErrs, ok := errorz.As[validator.ValidationErrors](err); ok {
-		fieldsSummary := make(map[string]any)
+		invalidFieldKeys := make([]string, 0, len(validationErrs))
+		invalidFields := make(map[string]any)
 
-		for _, err := range validationErrs {
-			n := err.Namespace()
-			if i := strings.Index(err.Namespace(), "."); i >= 0 {
-				n = err.Namespace()[i+1:]
-			}
-			fieldsSummary[n] = err.Tag()
+		for _, e := range validationErrs {
+			invalidFieldKeys = append(invalidFieldKeys, e.Field())
+			invalidFields[e.Field()] = e.Tag()
 		}
 
 		return &ValidationError{
-			fieldsSummary:    fieldsSummary,
+			invalidFieldKeys: invalidFieldKeys,
+			invalidFields:    invalidFields,
 			validationErrors: validationErrs,
 			otherError:       nil,
 		}
 	}
 
 	return &ValidationError{
-		fieldsSummary:    nil,
+		invalidFieldKeys: nil,
+		invalidFields:    nil,
 		validationErrors: nil,
 		otherError:       err,
 	}
-}
-
-// MaybeGetFieldsSummary returns the fields summary if available.
-func (e *ValidationError) MaybeGetFieldsSummary() map[string]any {
-	return e.fieldsSummary
 }
 
 // Error implements the error interface.
 func (e *ValidationError) Error() string {
 	switch {
 	case e.validationErrors != nil:
-		w := strings.Builder{}
-		w.WriteString("validation error(s):")
-
-		for _, vErr := range e.validationErrors {
-			w.WriteString("\n- ")
-			w.WriteString(vErr.Error())
-		}
-
-		return w.String()
+		return fmt.Sprintf("validation errors: invalid field(s): %v", strings.Join(e.invalidFieldKeys, ", "))
 	case e.otherError != nil:
 		return "validation error: " + e.otherError.Error()
 	default:
 		return "validation error: unknown"
 	}
+}
+
+// GetErrorName implements the [errorz.ErrorName] interface.
+func (*ValidationError) GetErrorName() string {
+	return "validation-error"
+}
+
+// GetErrorDetails implements the [errorz.ErrorDetails] interface.
+func (e *ValidationError) GetErrorDetails() map[string]any {
+	if len(e.invalidFieldKeys) > 0 {
+		return map[string]any{
+			"fields": e.invalidFields,
+		}
+	}
+
+	return nil
 }
 
 // Unwrap implements the [errorz.UnwrapSingle] interface.
