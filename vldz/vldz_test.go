@@ -3,7 +3,6 @@ package vldz_test
 import (
 	"fmt"
 	"regexp"
-	"strings"
 	"testing"
 
 	. "github.com/onsi/gomega"
@@ -49,11 +48,12 @@ func (*Suite) TestKindStructOrStructPtr(g *WithT) {
 		vErr, ok := errorz.As[*vldz.ValidationError](err)
 		g.Expect(ok).To(BeTrue())
 
-		g.Expect(vErr.MaybeGetFieldsSummary()).To(Equal(map[string]any{"value": "kind-struct-or-struct-ptr"}))
-		g.Expect(vErr.Error()).To(Equal(strings.Join([]string{
-			"validation error(s):",
-			"- Key: 'validatableStruct.value' Error:Field validation for 'value' failed on the 'kind-struct-or-struct-ptr' tag",
-		}, "\n")))
+		g.Expect(vErr.Error()).To(Equal("validation errors: invalid field(s): value"))
+		g.Expect(vErr.GetErrorName()).To(Equal("validation-error"))
+		g.Expect(vErr.GetErrorDetails()).To(Equal(map[string]any{
+			"fields": map[string]any{
+				"value": "kind-struct-or-struct-ptr",
+			}}))
 		g.Expect(vErr.Unwrap()).To(HaveOccurred())
 	}
 
@@ -76,15 +76,13 @@ func (*Suite) TestValidateStruct(g *WithT) {
 		vErr, ok := errorz.As[*vldz.ValidationError](err)
 		g.Expect(ok).To(BeTrue())
 
-		g.Expect(vErr.MaybeGetFieldsSummary()).To(Equal(map[string]any{
-			"first":  "required",
-			"Second": "custom-validator",
+		g.Expect(vErr.GetErrorDetails()).To(Equal(map[string]any{
+			"fields": map[string]any{
+				"first":  "required",
+				"Second": "custom-validator",
+			},
 		}))
-		g.Expect(vErr.Error()).To(Equal(strings.Join([]string{
-			"validation error(s):",
-			"- Key: 'validatableStruct.first' Error:Field validation for 'first' failed on the 'required' tag",
-			"- Key: 'validatableStruct.Second' Error:Field validation for 'Second' failed on the 'custom-validator' tag",
-		}, "\n")))
+		g.Expect(vErr.Error()).To(Equal("validation errors: invalid field(s): first, Second"))
 	}
 
 	{
@@ -102,7 +100,7 @@ func (*Suite) TestValidateStruct(g *WithT) {
 		vErr, ok := errorz.As[*vldz.ValidationError](err)
 		g.Expect(ok).To(BeTrue())
 
-		g.Expect(vErr.MaybeGetFieldsSummary()).To(BeNil())
+		g.Expect(vErr.GetErrorDetails()).To(BeNil())
 		g.Expect(vErr.Error()).To(Equal("validation error: validator: (nil string)"))
 	}
 
