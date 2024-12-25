@@ -30,14 +30,18 @@ func TestValueError(t *testing.T) {
 	err := &valueError{
 		value: "test value",
 	}
-	g.Expect(err.Error()).To(Equal("test value"))
+	g.Expect(err.GetErrorName()).To(Equal("value-error"))
+	g.Expect(err.GetErrorDetails()).To(Equal(map[string]any{"value": "test value"}))
 	g.Expect(err.Unwrap()).To(Succeed())
+	g.Expect(err.Error()).To(Equal("test value"))
 
 	err = &valueError{
 		value: fmt.Errorf("test error"),
 	}
-	g.Expect(err.Error()).To(Equal("test error"))
+	g.Expect(err.GetErrorName()).To(Equal("value-error"))
+	g.Expect(err.GetErrorDetails()).To(Equal(map[string]any{"value": fmt.Errorf("test error")}))
 	g.Expect(err.Unwrap()).To(Equal(fmt.Errorf("test error")))
+	g.Expect(err.Error()).To(Equal("test error"))
 
 	g.Expect(func() { _ = (*valueError)(nil).Error() }).To(Panic())
 	g.Expect((*valueError)(nil).Unwrap()).To(Succeed())
