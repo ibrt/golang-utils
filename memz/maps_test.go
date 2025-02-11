@@ -50,7 +50,49 @@ func (*MapsSuite) TestTransformMapValues(g *WithT) {
 }
 
 func (*MapsSuite) TestGetSortedMapKeys(g *WithT) {
+	g.Expect(memz.GetSortedMapKeys[int, string](nil, cmp.Less)).To(BeNil())
+
 	for range 10 {
 		g.Expect(memz.GetSortedMapKeys(map[int]string{1: "a", 2: "b"}, cmp.Less)).To(Equal([]int{1, 2}))
+	}
+}
+
+func (*MapsSuite) TestGetMapValuesSortedByKey(g *WithT) {
+	g.Expect(memz.GetMapValuesSortedByKey[int, string](nil, cmp.Less)).To(BeNil())
+
+	for range 10 {
+		g.Expect(memz.GetMapValuesSortedByKey(map[int]string{1: "b", 2: "a"}, cmp.Less)).To(Equal([]string{"b", "a"}))
+	}
+}
+
+func (*MapsSuite) TestGetSortedMapValues(g *WithT) {
+	g.Expect(memz.GetSortedMapValues[int, string](nil, cmp.Less)).To(BeNil())
+
+	for range 10 {
+		g.Expect(memz.GetSortedMapValues(map[int]string{1: "b", 2: "a"}, cmp.Less)).To(Equal([]string{"a", "b"}))
+	}
+}
+
+func (*MapsSuite) TestGetMapEntriesSortedByKey(g *WithT) {
+	g.Expect(memz.GetMapEntriesSortedByKey[int, string](nil, cmp.Less)).To(BeNil())
+
+	for range 10 {
+		g.Expect(memz.GetMapEntriesSortedByKey(map[int]string{1: "b", 2: "a"}, cmp.Less)).
+			To(Equal([]*memz.MapEntry[int, string]{
+				{Key: 1, Value: "b"},
+				{Key: 2, Value: "a"},
+			}))
+	}
+}
+
+func (*MapsSuite) TestGetMapEntriesSortedByValue(g *WithT) {
+	g.Expect(memz.GetMapEntriesSortedByValue[int, string](nil, cmp.Less)).To(BeNil())
+
+	for range 10 {
+		g.Expect(memz.GetMapEntriesSortedByValue(map[int]string{1: "b", 2: "a"}, cmp.Less)).
+			To(Equal([]*memz.MapEntry[int, string]{
+				{Key: 2, Value: "a"},
+				{Key: 1, Value: "b"},
+			}))
 	}
 }
