@@ -81,7 +81,7 @@ func (*SuiteCorrect) TestSecond(ctx context.Context, g *WithT, ctrl *gomock.Cont
 
 func (*SuiteCorrect) TestErrorFormatter(g *WithT) {
 	g.Expect(format.Object(errorz.Errorf("test error"), 0)).
-		To(ContainSubstring("Message: (string) (len=10) \"test error\","))
+		To(ContainSubstring("\"message\": \"test error\""))
 
 	g.Expect(format.Object("test string", 0)).
 		To(Equal("<string>: \"test string\""))

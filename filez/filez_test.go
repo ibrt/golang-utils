@@ -109,6 +109,51 @@ func (*Suite) TestFilesAndDirs(g *WithT) {
 	}
 }
 
+func (*Suite) TestWithFilesAndDirs(g *WithT) {
+	{
+		var generatedFilePath string
+
+		g.Expect(func() {
+			filez.WithMustCreateTempFile([]byte("content"), func(filePath string) {
+				generatedFilePath = filePath
+				g.Expect(filez.MustReadFile(filePath)).To(Equal([]byte("content")))
+			})
+		}).ToNot(Panic())
+
+		g.Expect(generatedFilePath).ToNot(BeEmpty())
+		g.Expect(filez.MustCheckFileExists(generatedFilePath)).To(BeFalse())
+	}
+
+	{
+		var generatedFilePath string
+
+		g.Expect(func() {
+			filez.WithMustCreateTempFileString("content", func(filePath string) {
+				generatedFilePath = filePath
+				g.Expect(filez.MustReadFileString(filePath)).To(Equal("content"))
+			})
+		}).ToNot(Panic())
+
+		g.Expect(generatedFilePath).ToNot(BeEmpty())
+		g.Expect(filez.MustCheckFileExists(generatedFilePath)).To(BeFalse())
+	}
+
+	{
+		var generatedDirPath string
+
+		g.Expect(func() {
+			filez.WithMustCreateTempDir(func(dirPath string) {
+				generatedDirPath = dirPath
+				g.Expect(filez.MustCheckPathExists(generatedDirPath)).To(BeTrue())
+				g.Expect(filez.MustCheckFileExists(generatedDirPath)).To(BeFalse())
+			})
+		}).ToNot(Panic())
+
+		g.Expect(generatedDirPath).ToNot(BeEmpty())
+		g.Expect(filez.MustCheckPathExists(generatedDirPath)).To(BeFalse())
+	}
+}
+
 func (*Suite) TestMustIsChild(g *WithT) {
 	g.Expect(filez.MustIsChild("a", "a")).To(BeTrue())
 	g.Expect(filez.MustIsChild("", "a")).To(BeTrue())

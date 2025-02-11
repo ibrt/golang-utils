@@ -1,6 +1,7 @@
 package cryptoz_test
 
 import (
+	"encoding/hex"
 	"strings"
 	"testing"
 
@@ -28,4 +29,8 @@ func (*AESSuite) TestAES(g *WithT) {
 		g.Expect(strings.HasPrefix(ciphertext, "enc:")).To(BeTrue())
 		g.Expect(cryptoz.MustDecryptAES(key, ciphertext)).To(Equal(plaintext))
 	}
+}
+
+func (*AESSuite) TestEncodedKeyLen(g *WithT) {
+	g.Expect(cryptoz.EncodedKeyLen).To(Equal(hex.EncodedLen(cryptoz.KeyLen)))
 }

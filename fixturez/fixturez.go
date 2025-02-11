@@ -3,6 +3,7 @@ package fixturez
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"reflect"
 	"strings"
@@ -189,7 +190,9 @@ func (rs *runnableSuite) registerCustomFormatters() {
 		format.RegisterCustomFormatter(func(v any) (string, bool) {
 			switch err := v.(type) {
 			case error:
-				return format.Indent + errorz.SDump(err), true
+				buf, err := json.MarshalIndent(errorz.GetSummary(err, true), "", "  ")
+				errorz.MaybeMustWrap(err)
+				return format.Indent + string(buf), true
 			default:
 				return "", false
 			}

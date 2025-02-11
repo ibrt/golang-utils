@@ -74,15 +74,111 @@ func TransformMapValues[K comparable, V1 any, V2 any](m map[K]V1, f func(k K, v 
 
 // GetSortedMapKeys returns a slice built by appending all keys in the map and sorting them.
 func GetSortedMapKeys[K cmp.Ordered, V any](m map[K]V, less func(K, K) bool) []K {
-	ks := make([]K, 0)
-
-	for k := range m {
-		ks = append(ks, k)
+	if m == nil {
+		return nil
 	}
 
-	sort.Slice(ks, func(i, j int) bool {
-		return less(ks[i], ks[j])
+	out := make([]K, len(m))
+	i := 0
+
+	for k := range m {
+		out[i] = k
+		i++
+	}
+
+	sort.Slice(out, func(i, j int) bool {
+		return less(out[i], out[j])
 	})
 
-	return ks
+	return out
+}
+
+// GetMapValuesSortedByKey returns a slice built by appending all values in the map, sorted by their key.
+func GetMapValuesSortedByKey[K cmp.Ordered, V any](m map[K]V, less func(K, K) bool) []V {
+	if m == nil {
+		return nil
+	}
+
+	out := make([]V, len(m))
+
+	for i, k := range GetSortedMapKeys(m, less) {
+		out[i] = m[k]
+	}
+
+	return out
+}
+
+// GetSortedMapValues returns a slice built by appending all values in the map and sorting them.
+func GetSortedMapValues[K, V cmp.Ordered](m map[K]V, less func(V, V) bool) []V {
+	if m == nil {
+		return nil
+	}
+
+	out := make([]V, len(m))
+	i := 0
+
+	for _, v := range m {
+		out[i] = v
+		i++
+	}
+
+	sort.Slice(out, func(i, j int) bool {
+		return less(out[i], out[j])
+	})
+
+	return out
+}
+
+// MapEntry describes a (key, value) pair.
+type MapEntry[K, V any] struct {
+	Key   K
+	Value V
+}
+
+// GetMapEntriesSortedByKey returns a slice built by appending all (key, value) in the map, sorted by key.
+func GetMapEntriesSortedByKey[K cmp.Ordered, V any](m map[K]V, less func(K, K) bool) []*MapEntry[K, V] {
+	if m == nil {
+		return nil
+	}
+
+	out := make([]*MapEntry[K, V], len(m))
+	i := 0
+
+	for k, v := range m {
+		out[i] = &MapEntry[K, V]{
+			Key:   k,
+			Value: v,
+		}
+		i++
+	}
+
+	sort.Slice(out, func(i, j int) bool {
+		return less(out[i].Key, out[j].Key)
+	})
+
+	return out
+}
+
+// GetMapEntriesSortedByValue returns a slice built by appending all (key, value) in the map, sorted by value.
+func GetMapEntriesSortedByValue[K, V cmp.Ordered](m map[K]V, less func(V, V) bool) []*MapEntry[K, V] {
+	if m == nil {
+		return nil
+	}
+
+	out := make([]*MapEntry[K, V], len(m))
+	i := 0
+
+	for k, v := range m {
+		out[i] = &MapEntry[K, V]{
+			Key:   k,
+			Value: v,
+		}
+		i++
+	}
+
+	sort.Slice(out, func(i, j int) bool {
+		return less(out[i].Value, out[j].Value)
+	})
+
+	return out
 }
