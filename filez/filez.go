@@ -87,9 +87,25 @@ func MustCreateTempFile(contents []byte) string {
 	return fd.Name()
 }
 
+// WithMustCreateTempFile calls MustCreateTempFile, then the given closure, then deletes the temp file.
+func WithMustCreateTempFile(contents []byte, f func(filePath string)) {
+	filePath := MustCreateTempFile(contents)
+	defer func() { errorz.MaybeMustWrap(os.RemoveAll(filePath)) }()
+
+	f(filePath)
+}
+
 // MustCreateTempFileString creates a temporary file with the given contents.
 func MustCreateTempFileString(contents string) string {
 	return MustCreateTempFile([]byte(contents))
+}
+
+// WithMustCreateTempFileString calls MustCreateTempFileString, then the given closure, then deletes the temp file.
+func WithMustCreateTempFileString(contents string, f func(filePath string)) {
+	filePath := MustCreateTempFileString(contents)
+	defer func() { MustRemoveAll(filePath) }()
+
+	f(filePath)
 }
 
 // MustCreateTempDir is like [os.MkdirTemp], but panics on error.
@@ -97,6 +113,14 @@ func MustCreateTempDir() string {
 	dirPath, err := os.MkdirTemp("", "golang-utils-")
 	errorz.MaybeMustWrap(err)
 	return dirPath
+}
+
+// WithMustCreateTempDir calls WithMustCreateTempDir, then the given closure, then deletes the temp dir.
+func WithMustCreateTempDir(f func(dirPath string)) {
+	dirPath := MustCreateTempDir()
+	defer func() { MustRemoveAll(dirPath) }()
+
+	f(dirPath)
 }
 
 // MustPrepareDir deletes the given directory and its contents (if present) and recreates it.
